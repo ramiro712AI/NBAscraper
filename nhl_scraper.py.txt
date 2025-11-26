@@ -1,0 +1,246 @@
+#!/usr/bin/env python3
+"""
+nhl_qtr_stats.py
+- Saca por jugador G, A y Shots (SOG) para 1er y 2do periodo de los juegos del día.
+- Para cada jugador que juega hoy, además procesa sus últimos 5 juegos (game log)
+  y calcula las mismas métricas (periodos 1 y 2) por jugador x juego.
+Salida:
+  CSV -> nhl_period_stats_<YYYYMMDD_HHMM>.csv
+"""
+
+import requests, time, sys
+import pandas as pd
+from datetime import datetime, date
+
+# -------- CONFIG --------
+DATE_MANUAL = None   # e.g. "2025-11-25" (YYYY-MM-DD) -> None usa hoy
+MAX_LAST_GAMES = 5
+SLEEP_BETWEEN_REQUESTS = 0.6
+# ------------------------
+
+BASE = "https://statsapi.web.nhl.com/api/v1"
+
+session = requests.Session()
+session.headers.update({'User-Agent': 'Mozilla/5.0 (compatible; NHL-Scraper/1.0)'})
+
+def iso_today():
+    return DATE_MANUAL or date.today().isoformat()
+
+def get_schedule_for_date(d):
+    url = f"{BASE}/schedule?date={d}"
+    r = session.get(url, timeout=30)
+    r.raise_for_status()
+    return r.json()
+
+def get_game_feed(gamePk):
+    url = f"{BASE}/game/{gamePk}/feed/live"
+    r = session.get(url, timeout=30)
+    r.raise_for_status()
+    return r.json()
+
+def get_player_game_log(personId, max_games=MAX_LAST_GAMES):
+    # people/{id}/stats?stats=gameLog
+    url = f"{BASE}/people/{personId}/stats?stats=gameLog"
+    r = session.get(url, timeout=30)
+    r.raise_for_status()
+    data = r.json()
+    try:
+        splits = data['stats'][0]['splits']
+    except Exception:
+        return []
+    # splits are newest -> oldest, take first max_games and extract gamePk
+    game_ids = []
+    for sp in splits[:max_games]:
+        game = sp.get('game', {})
+        if 'gamePk' in game:
+            game_ids.append(game['gamePk'])
+    return game_ids
+
+def safe_player_name(p):
+    return p.get('fullName') if isinstance(p, dict) else str(p)
+
+def process_feed_for_game(gamePk):
+    """
+    Devuelve dict: { playerId: { 'name':..., 'team':..., 'periods': {1:{G,A,Shots}, 2:{...}} } }
+    """
+    feed = get_game_feed(gamePk)
+    plays = feed.get('liveData', {}).get('plays', {}).get('allPlays', [])
+    # mapping player id -> structure
+    players = {}
+
+    # helper to ensure player entry
+    def ensure_player(pid, pname, team = None):
+        pid_s = str(pid)
+        if pid_s not in players:
+            players[pid_s] = {'name': pname, 'team': team, 'periods': {1: {'G':0,'A':0,'Shots':0}, 2: {'G':0,'A':0,'Shots':0}}}
+        else:
+            if not players[pid_s].get('team') and team:
+                players[pid_s]['team'] = team
+
+    for ev in plays:
+        try:
+            about = ev.get('about', {})
+            period = about.get('period', 0)
+            if period not in (1,2):
+                continue
+            players_in_ev = ev.get('players', [])  # list of player dicts with 'player' and 'playerType'
+            event_type = ev.get('result', {}).get('eventTypeId') or ev.get('result', {}).get('event')
+            # Shots: eventTypeId == 'SHOT' or result.eventTypeId == 'SHOT'
+            if event_type == 'SHOT':
+                # identify shooter
+                for p in players_in_ev:
+                    if p.get('playerType') and p['playerType'].lower() in ('shooter','scorer','attacker','player'):
+                        pid = p.get('player', {}).get('id')
+                        pname = p.get('player', {}).get('fullName')
+                        # team: sometimes available in ev['team']
+                        team_name = ev.get('team', {}).get('triCode') or ev.get('team', {}).get('name') or None
+                        if pid:
+                            ensure_player(pid, pname, team_name)
+                            players[str(pid)]['periods'][period]['Shots'] += 1
+                            break
+            # Goal: eventTypeId == 'GOAL'
+            if event_type == 'GOAL':
+                # scorer + assists
+                # players_in_ev contains entries with playerType: 'Scorer', 'Assist', maybe 'Goalie'
+                scorer = None
+                assists = []
+                for p in players_in_ev:
+                    ptype = (p.get('playerType') or "").lower()
+                    pid = p.get('player', {}).get('id')
+                    pname = p.get('player', {}).get('fullName')
+                    team_name = ev.get('team', {}).get('triCode') or ev.get('team', {}).get('name') or None
+                    if ptype == 'scorer' and pid:
+                        scorer = (pid, pname, team_name)
+                    elif ptype and 'assist' in ptype and pid:
+                        assists.append((pid, pname, team_name))
+                # increment scorer
+                if scorer:
+                    pid, pname, team_name = scorer
+                    ensure_player(pid, pname, team_name)
+                    players[str(pid)]['periods'][period]['G'] += 1
+                # increment assists
+                for (apid, apname, apteam) in assists:
+                    ensure_player(apid, apname, apteam)
+                    players[str(apid)]['periods'][period]['A'] += 1
+        except Exception:
+            continue
+
+    return players
+
+def merge_stats(existing, newdata):
+    # existing: dict player-> periods; newdata same; merge sums (used when processing multiple games)
+    for pid, info in newdata.items():
+        if pid not in existing:
+            existing[pid] = info
+        else:
+            # merge periods
+            for pno in (1,2):
+                for k in ('G','A','Shots'):
+                    existing[pid]['periods'][pno][k] += info['periods'][pno].get(k,0)
+    return existing
+
+def main():
+    day = iso_today()
+    print(f"Fecha: {day}")
+    schedule = get_schedule_for_date(day)
+    games = schedule.get('dates', [])
+    if not games:
+        print("No hay partidos esa fecha.")
+        return
+
+    game_list = []
+    for d in games:
+        for g in d.get('games', []):
+            game_list.append({'gamePk': g.get('gamePk'), 'home': g.get('teams',{}).get('home',{}).get('team',{}).get('name'),
+                              'away': g.get('teams',{}).get('away',{}).get('team',{}).get('name'),
+                              'gameDate': g.get('gameDate')})
+    if not game_list:
+        print("No games found.")
+        return
+
+    all_rows = []
+    players_today = set()
+    print(f"PARTIDOS DEL DIA: {len(game_list)}")
+    for gi, g in enumerate(game_list, start=1):
+        gp = g['gamePk']
+        print(f"Procesando {gi}/{len(game_list)}: {g['away']} @ {g['home']} (gamePk={gp})")
+        try:
+            p_stats = process_feed_for_game(gp)
+            # convert p_stats -> rows per player per period
+            for pid, info in p_stats.items():
+                pname = info.get('name') or pid
+                team = info.get('team') or ""
+                opponent = g['away'] if team and team in g['home'] else g['home']
+                for pno in (1,2):
+                    vals = info['periods'][pno]
+                    row = {
+                        'GameDate': g.get('gameDate'),
+                        'GamePk': gp, 'PlayerID': pid, 'PlayerName': pname,
+                        'Team': team, 'Opponent': opponent,
+                        'Period': f"{pno}", 'G': vals.get('G',0), 'A': vals.get('A',0), 'Shots': vals.get('Shots',0),
+                        'Source': 'TODAY'
+                    }
+                    all_rows.append(row)
+                players_today.add(pid)
+            time.sleep(SLEEP_BETWEEN_REQUESTS)
+        except Exception as e:
+            print("Error procesando gamePk", gp, e)
+            continue
+
+    # Now fetch last N games per player
+    print(f"\nFetching last {MAX_LAST_GAMES} games for {len(players_today)} players...")
+    for pid in list(players_today):
+        try:
+            # get last gamePk list
+            last_game_ids = get_player_game_log(pid, max_games=MAX_LAST_GAMES)
+            # process each game id similarly
+            for gid in last_game_ids:
+                try:
+                    p_stats = process_feed_for_game(gid)
+                    # find player in p_stats by pid or by name fallback
+                    key = str(pid)
+                    if key not in p_stats:
+                        # try to map by name using people endpoint
+                        # get player name
+                        resp = session.get(f"{BASE}/people/{pid}", timeout=20).json()
+                        pname = resp.get('people',[{}])[0].get('fullName')
+                        # find a matching key
+                        found = None
+                        for k,v in p_stats.items():
+                            if pname and pname.lower() in (v.get('name') or "").lower():
+                                found = k
+                                break
+                        if found:
+                            key = found
+                    if key in p_stats:
+                        info = p_stats[key]
+                        pname = info.get('name') or key
+                        team = info.get('team') or ""
+                        for pno in (1,2):
+                            vals = info['periods'][pno]
+                            all_rows.append({
+                                'GameDate': None, 'GamePk': gid, 'PlayerID': pid, 'PlayerName': pname,
+                                'Team': team, 'Opponent': '', 'Period': f"{pno}",
+                                'G': vals.get('G',0), 'A': vals.get('A',0), 'Shots': vals.get('Shots',0),
+                                'Source': 'LAST_N'
+                            })
+                    time.sleep(SLEEP_BETWEEN_REQUESTS)
+                except Exception:
+                    continue
+        except Exception:
+            continue
+
+    # Save CSV
+    if all_rows:
+        df = pd.DataFrame(all_rows)
+        fn = f"nhl_period_stats_{datetime.now().strftime('%Y%m%d_%H%M')}.csv"
+        # reorder
+        cols = ['GameDate','GamePk','PlayerID','PlayerName','Team','Opponent','Period','G','A','Shots','Source']
+        df = df[[c for c in cols if c in df.columns]]
+        df.to_csv(fn, index=False, encoding='utf-8-sig')
+        print(f"\n✅ Guardado: {fn} -> {len(df)} filas")
+    else:
+        print("No se extrajeron filas.")
+
+if __name__ == "__main__":
+    main()
