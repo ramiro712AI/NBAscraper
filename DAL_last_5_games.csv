@@ -1,0 +1,57 @@
+Game_Date,Opponent,Player,Player_Status,Injury_Status,PTS_Q1,REB_Q1,AST_Q1,3PM_Q1,PTS_Q2,REB_Q2,AST_Q2,3PM_Q2,PTS_Q3,REB_Q3,AST_Q3,3PM_Q3,PTS_Q4,REB_Q4,AST_Q4,3PM_Q4,PTS_TOTAL,REB_TOTAL,AST_TOTAL,3PM_TOTAL
+11/26,LA Clippers,Austin Reaves,Starter,Healthy,2,3,2,0,7,5,0,1,4,1,0,0,18,0,1,1,31,9,3,2
+11/26,LA Clippers,Jaxson Hayes,Starter,Healthy,2,1,0,0,2,0,0,0,0,0,0,0,4,3,3,0,8,4,3,0
+11/26,LA Clippers,LeBron James,Starter,Healthy,0,0,1,0,8,1,1,0,9,0,1,0,7,5,3,1,25,6,6,2
+11/26,LA Clippers,Luka Doncic,Starter,Healthy,23,1,3,4,8,2,3,1,7,5,5,1,4,1,2,0,43,9,13,7
+11/26,LA Clippers,Rui Hachimura,Starter,Healthy,7,2,0,1,2,0,0,0,2,1,0,0,2,0,0,0,13,3,0,1
+11/24,Utah Jazz,Austin Reaves,Starter,Healthy,7,4,2,0,5,2,0,1,5,3,1,0,5,1,1,0,22,10,4,1
+11/24,Utah Jazz,Deandre Ayton,Starter,Day-To-Day,0,3,0,0,2,0,0,0,0,0,0,0,0,0,0,0,2,3,0,0
+11/24,Utah Jazz,LeBron James,Starter,Healthy,2,0,1,0,8,4,5,0,3,1,1,0,4,1,1,0,17,6,8,0
+11/24,Utah Jazz,Luka Doncic,Starter,Healthy,13,2,1,1,2,0,4,0,10,3,2,1,8,6,1,1,33,11,8,3
+11/24,Utah Jazz,Rui Hachimura,Starter,Healthy,7,3,0,1,3,0,0,1,1,2,0,0,2,1,0,0,13,6,0,2
+11/19,Utah Jazz,Austin Reaves,Starter,Healthy,3,1,0,0,11,1,1,1,5,1,0,0,7,2,0,0,26,5,1,1
+11/19,Utah Jazz,Deandre Ayton,Starter,Day-To-Day,2,4,0,0,4,4,1,0,4,1,0,0,10,5,0,0,20,14,1,0
+11/19,Utah Jazz,LeBron James,Starter,Healthy,0,1,2,0,6,1,2,1,4,0,2,0,0,1,6,0,11,3,12,2
+11/19,Utah Jazz,Luka Doncic,Starter,Healthy,9,0,4,0,11,1,2,1,17,3,3,1,0,1,1,0,37,5,10,2
+11/19,Utah Jazz,Rui Hachimura,Starter,Healthy,4,3,0,0,2,1,1,0,0,0,0,0,0,0,0,0,6,4,1,0
+11/16,Milwaukee Bucks,Austin Reaves,Starter,Healthy,5,1,0,0,3,1,7,0,8,2,1,2,9,2,0,3,25,6,8,5
+11/16,Milwaukee Bucks,Bronny James,Starter,Healthy,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,0,0,1,1,0
+11/16,Milwaukee Bucks,Deandre Ayton,Starter,Day-To-Day,2,2,0,0,14,4,0,0,4,1,0,0,0,3,0,0,20,10,0,0
+11/16,Milwaukee Bucks,Jake LaRavia,Starter,Healthy,0,1,0,0,2,2,1,0,0,0,0,0,2,3,0,0,4,6,1,0
+11/16,Milwaukee Bucks,Luka Doncic,Starter,Healthy,12,4,5,2,9,1,0,1,15,2,1,2,5,2,0,0,41,9,6,5
+11/15,New Orleans Pelicans,Austin Reaves,Starter,Healthy,9,0,2,1,2,0,1,0,7,0,3,0,12,4,1,0,31,4,7,2
+11/15,New Orleans Pelicans,Deandre Ayton,Starter,Day-To-Day,6,5,1,0,8,6,0,0,6,3,1,0,0,2,0,0,20,16,2,0
+11/15,New Orleans Pelicans,Luka Doncic,Starter,Healthy,6,2,4,0,13,1,5,2,2,3,1,0,2,1,2,0,24,7,12,3
+11/15,New Orleans Pelicans,Marcus Smart,Starter,Day-To-Day,7,1,0,1,0,2,0,0,4,2,3,0,2,0,2,0,13,5,5,1
+11/15,New Orleans Pelicans,Rui Hachimura,Starter,Healthy,2,3,0,0,0,0,0,0,5,0,0,1,7,1,0,1,14,4,0,2
+11/26,LA Clippers,Adou Thiero,Bench,Healthy,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+11/26,LA Clippers,Bronny James,Bench,Healthy,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,1,0
+11/26,LA Clippers,Dalton Knecht,Bench,Healthy,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+11/26,LA Clippers,Drew Timme,Bench,Healthy,0,0,0,0,0,0,0,0,0,0,0,0,2,0,0,0,2,0,0,0
+11/26,LA Clippers,Gabe Vincent,Bench,Healthy,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+11/26,LA Clippers,Jake LaRavia,Bench,Healthy,2,0,0,0,2,0,0,0,0,0,0,0,0,1,0,0,4,1,0,0
+11/26,LA Clippers,Marcus Smart,Bench,Day-To-Day,0,0,2,0,0,1,1,0,7,2,0,1,0,0,0,0,7,3,3,1
+11/26,LA Clippers,Maxi Kleber,Bench,Healthy,0,2,0,0,2,1,0,0,0,0,0,0,0,0,0,0,2,3,0,0
+11/24,Utah Jazz,Gabe Vincent,Bench,Healthy,0,0,0,0,0,1,0,0,0,0,0,0,3,0,0,1,3,1,0,1
+11/24,Utah Jazz,Jake LaRavia,Bench,Healthy,0,0,1,0,5,1,0,1,0,0,1,0,0,0,0,0,5,1,2,1
+11/24,Utah Jazz,Jaxson Hayes,Bench,Healthy,0,2,1,0,2,0,0,0,3,0,0,0,0,2,0,0,5,4,1,0
+11/24,Utah Jazz,Marcus Smart,Bench,Day-To-Day,3,0,0,1,3,0,0,1,0,0,0,0,0,0,0,0,6,0,0,2
+11/24,Utah Jazz,Maxi Kleber,Bench,Healthy,0,0,0,0,0,0,0,0,0,2,0,0,2,1,0,0,2,3,0,0
+11/19,Utah Jazz,Adou Thiero,Bench,Healthy,0,0,0,0,0,0,0,0,0,0,0,0,2,0,0,0,2,0,0,0
+11/19,Utah Jazz,Bronny James,Bench,Healthy,0,0,0,0,0,0,0,0,0,0,0,0,3,0,2,1,3,0,2,1
+11/19,Utah Jazz,Dalton Knecht,Bench,Healthy,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+11/19,Utah Jazz,Gabe Vincent,Bench,Healthy,0,0,0,0,0,0,1,0,3,0,0,1,3,0,0,1,6,0,1,2
+11/19,Utah Jazz,Jake LaRavia,Bench,Healthy,7,0,0,1,0,0,1,0,0,3,0,0,9,1,1,1,16,4,2,2
+11/19,Utah Jazz,Jaxson Hayes,Bench,Healthy,2,0,0,0,0,0,0,0,4,3,0,0,2,0,0,0,8,3,0,0
+11/19,Utah Jazz,Marcus Smart,Bench,Day-To-Day,0,1,0,0,5,2,0,1,0,0,1,0,0,0,0,0,5,3,1,1
+11/19,Utah Jazz,Maxi Kleber,Bench,Healthy,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+11/16,Milwaukee Bucks,Adou Thiero,Bench,Healthy,0,1,0,0,0,0,0,0,0,0,0,0,4,0,0,0,4,1,0,0
+11/16,Milwaukee Bucks,Dalton Knecht,Bench,Healthy,2,2,0,0,5,4,0,1,0,0,0,0,2,0,1,0,9,6,1,1
+11/16,Milwaukee Bucks,Jarred Vanderbilt,Bench,Healthy,0,0,0,0,0,1,0,0,0,0,0,0,0,0,1,0,0,1,1,0
+11/16,Milwaukee Bucks,Jaxson Hayes,Bench,Healthy,6,3,0,0,2,2,1,0,0,0,0,0,2,1,0,0,10,6,1,0
+11/16,Milwaukee Bucks,Maxi Kleber,Bench,Healthy,3,0,0,1,0,0,0,0,0,1,1,0,0,0,2,0,3,1,3,1
+11/16,Milwaukee Bucks,Nick Smith Jr.,Bench,Healthy,0,0,0,0,0,0,0,0,0,0,0,0,3,0,1,1,3,0,1,1
+11/15,New Orleans Pelicans,Dalton Knecht,Bench,Healthy,3,0,0,1,2,1,0,0,0,0,0,0,0,0,0,0,5,1,0,1
+11/15,New Orleans Pelicans,Jake LaRavia,Bench,Healthy,2,0,0,0,4,0,0,0,0,2,0,0,0,1,0,0,6,3,0,0
+11/15,New Orleans Pelicans,Jarred Vanderbilt,Bench,Healthy,0,0,0,0,0,0,1,0,3,0,0,1,0,2,0,0,3,2,1,1
+11/15,New Orleans Pelicans,Jaxson Hayes,Bench,Healthy,0,0,0,0,0,0,0,0,2,2,1,0,0,1,0,0,2,3,1,0
