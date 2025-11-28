@@ -86,6 +86,72 @@ def get_todays_games():
         print(f"❌ Error obteniendo juegos de hoy: {e}")
         return []
 
+def get_team_roster(team_id):
+    """
+    Obtiene el roster completo del equipo con información de titulares y suplentes
+    """
+    url = f"https://site.api.espn.com/apis/site/v2/sports/basketball/nba/teams/{team_id}/roster"
+
+    try:
+        response = requests.get(url, headers=HEADERS, timeout=10)
+        data = response.json()
+
+        roster = {}
+        athletes = data.get('athletes', [])
+
+        for athlete in athletes:
+            player_name = athlete.get('displayName', '')
+            position = athlete.get('position', {}).get('abbreviation', '')
+
+            # Determinar si es titular (aproximación: primeros 5-7 jugadores suelen ser starters)
+            # En ESPN no hay un campo específico de "starter", así que usaremos depth chart position
+            athlete_info = athlete.get('athlete', athlete)
+
+            roster[player_name] = {
+                'position': position,
+                'player_status': 'Starter'  # Se actualizará con datos del boxscore real
+            }
+
+        return roster
+
+    except Exception as e:
+        print(f"  ⚠️  Error obteniendo roster: {e}")
+        return {}
+
+def get_injury_report():
+    """
+    Obtiene el injury report actual de todos los equipos de la NBA
+    """
+    url = "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/injuries"
+
+    try:
+        response = requests.get(url, headers=HEADERS, timeout=10)
+        data = response.json()
+
+        injuries = {}
+        teams = data.get('injuries', [])
+
+        for team in teams:
+            team_injuries = team.get('injuries', [])
+
+            for injury in team_injuries:
+                athlete = injury.get('athlete', {})
+                player_name = athlete.get('displayName', '')
+                status = injury.get('status', 'Unknown')
+                description = injury.get('description', '')
+
+                if player_name:
+                    injuries[player_name] = {
+                        'status': status,
+                        'description': description
+                    }
+
+        return injuries
+
+    except Exception as e:
+        print(f"  ⚠️  Error obteniendo injury report: {e}")
+        return {}
+
 def get_team_schedule(team_id, limit=5):
     """
     Obtiene los últimos N juegos del equipo
@@ -154,61 +220,77 @@ def get_team_schedule(team_id, limit=5):
 def get_boxscore_totals(game_id, team_id):
     """
     Extrae las estadísticas TOTALES del Box Score para TODOS los jugadores
+    Retorna también información de si es titular (Starter) o suplente (Bench)
     """
     url = f"https://site.api.espn.com/apis/site/v2/sports/basketball/nba/summary?event={game_id}"
-    
+
     try:
         response = requests.get(url, timeout=10)
         data = response.json()
-        
+
         players_stats = {}
-        
+
         boxscore = data.get('boxscore', {})
         players_data = boxscore.get('players', [])
-        
+
         for team_data in players_data:
             current_team_id = team_data.get('team', {}).get('id')
             if str(current_team_id) != str(team_id):
                 continue
-            
+
             statistics = team_data.get('statistics', [])
             if not statistics:
                 continue
-                
+
             stats_info = statistics[0]
             labels = stats_info.get('labels', [])
             athletes = stats_info.get('athletes', [])
-            
+
+            # Los primeros 5 jugadores con minutos > 0 suelen ser starters
+            player_index = 0
+
             for player in athletes:
                 athlete_info = player.get('athlete', {})
                 player_name = athlete_info.get('displayName', '')
                 stats = player.get('stats', [])
-                
+                starter = player.get('starter', False)  # ESPN a veces incluye este campo
+
                 if not stats or not player_name:
                     continue
-                
+
                 stats_dict = {label: value for label, value in zip(labels, stats)}
                 minutes = stats_dict.get('MIN', '0')
-                
-                if minutes == '0' or minutes == 0:
-                    continue
-                
+
+                # Determinar si es starter o bench
+                # Si ESPN provee el campo 'starter', usarlo; sino usar posición en la lista
+                if starter:
+                    player_status = 'Starter'
+                elif player_index < 5 and minutes != '0' and minutes != 0:
+                    player_status = 'Starter'
+                else:
+                    player_status = 'Bench'
+
                 pts = stats_dict.get('PTS', '0')
                 reb = stats_dict.get('REB', '0')
                 ast = stats_dict.get('AST', '0')
                 three_pt_raw = stats_dict.get('3PT', '0-0')
-                
+
                 three_pt = three_pt_raw.split('-')[0] if '-' in str(three_pt_raw) else '0'
-                
+
                 players_stats[player_name] = {
                     'PTS_TOTAL': int(pts) if str(pts).isdigit() else 0,
                     'REB_TOTAL': int(reb) if str(reb).isdigit() else 0,
                     'AST_TOTAL': int(ast) if str(ast).isdigit() else 0,
-                    '3PM_TOTAL': int(three_pt) if str(three_pt).isdigit() else 0
+                    '3PM_TOTAL': int(three_pt) if str(three_pt).isdigit() else 0,
+                    'player_status': player_status,
+                    'minutes': minutes
                 }
-        
+
+                if minutes != '0' and minutes != 0:
+                    player_index += 1
+
         return players_stats
-        
+
     except Exception as e:
         print(f"  ❌ Error obteniendo estadísticas totales: {e}")
         return {}
@@ -325,45 +407,65 @@ def get_quarter_stats_from_playbyplay(game_id, team_id):
         print(f"  ❌ Error obteniendo estadísticas por quarter: {e}")
         return {}
 
-def process_team(team_abbr):
+def process_team(team_abbr, injury_report):
     """
-    Procesa un equipo específico y genera su CSV
+    Procesa un equipo específico y genera su CSV con roster completo e injury report
     """
     team_id, team_name = TEAM_ABBREVIATIONS[team_abbr]
-    
+
     print(f"\n{'='*60}")
     print(f"PROCESANDO: {team_abbr} ({team_name.upper()})")
     print(f"{'='*60}")
-    
+
+    # Obtener roster completo del equipo
+    roster = get_team_roster(team_id)
+    print(f"📋 Roster: {len(roster)} jugadores")
+
+    # Obtener últimos 5 juegos
     games = get_team_schedule(team_id, limit=5)
-    
+
     if not games:
         print(f"❌ No se encontraron juegos completados para {team_abbr}")
         return False
-    
+
     print(f"✅ Se encontraron {len(games)} juegos\n")
-    
+
+    # Diccionario para acumular información de player_status de cada jugador
+    # (se determina por el juego más reciente donde jugó)
+    player_status_map = {}
+
     all_data = []
-    
+
     for idx, game in enumerate(games, 1):
         game_id = game['game_id']
         game_date = game['date']
         matchup = f"{game['away_team']} @ {game['home_team']}"
-        
+
         print(f"  JUEGO {idx}/{len(games)}: {matchup} ({game_date})")
-        
+
         totals = get_boxscore_totals(game_id, team_id)
         quarter_stats = get_quarter_stats_from_playbyplay(game_id, team_id)
-        
+
         print(f"    ✅ {len(totals)} jugadores procesados")
-        
+
+        # Actualizar player_status_map con información del juego más reciente
+        for player_name, stats in totals.items():
+            if player_name not in player_status_map:
+                player_status_map[player_name] = stats.get('player_status', 'Bench')
+
         for player_name in totals:
             player_quarter_data = quarter_stats.get(player_name, {})
-            
+
+            # Verificar estado de lesión
+            injury_info = injury_report.get(player_name, {})
+            injury_status = injury_info.get('status', 'Healthy')
+
             player_data = {
                 'Game_Date': game_date,
                 'Opponent': game['away_team'] if team_name.upper() in game['home_team'].upper() else game['home_team'],
                 'Player': player_name,
+                'Player_Status': totals[player_name].get('player_status', 'Bench'),
+                'Injury_Status': injury_status,
                 # Q1
                 'PTS_Q1': player_quarter_data.get('PTS_Q1', 0),
                 'REB_Q1': player_quarter_data.get('REB_Q1', 0),
@@ -391,24 +493,35 @@ def process_team(team_abbr):
                 '3PM_TOTAL': totals[player_name]['3PM_TOTAL']
             }
             all_data.append(player_data)
-        
+
         time.sleep(0.5)
-    
+
     # Crear DataFrame
     df = pd.DataFrame(all_data)
-    df = df.sort_values(['Game_Date', 'Player'], ascending=[False, True])
+
+    # Ordenar por: Player_Status (Starter primero), luego por Game_Date y Player
+    # Crear columna auxiliar para ordenar (Starter=0, Bench=1)
+    df['_status_order'] = df['Player_Status'].apply(lambda x: 0 if x == 'Starter' else 1)
+    df = df.sort_values(['_status_order', 'Game_Date', 'Player'], ascending=[True, False, True])
+    df = df.drop(columns=['_status_order'])
+
     df['Game_Date'] = pd.to_datetime(df['Game_Date']).dt.strftime('%m/%d')
-    
+
     # Guardar CSV
-    output_file = f"{team_abbr}_last_5_games_ALL_QUARTERS.csv"
+    output_file = f"{team_abbr}_last_5_games_FULL_ROSTER.csv"
     df.to_csv(output_file, index=False)
-    
+
     print(f"\n✅ CSV GUARDADO: {output_file}")
     print(f"📊 Total registros: {len(df)}")
-    
+
     unique_players = df['Player'].unique()
-    print(f"👥 Jugadores incluidos: {len(unique_players)}\n")
-    
+    starters = df[df['Player_Status'] == 'Starter']['Player'].unique()
+    injured = df[df['Injury_Status'] != 'Healthy']['Player'].unique()
+
+    print(f"👥 Jugadores incluidos: {len(unique_players)}")
+    print(f"🏀 Titulares: {len(starters)}")
+    print(f"🚑 Lesionados: {len(injured)}\n")
+
     return True
 
 def main():
@@ -416,32 +529,38 @@ def main():
     Función principal
     """
     print("\n" + "="*60)
-    print("NBA SCRAPER AUTOMÁTICO V3 - CON 4 QUARTERS")
+    print("NBA SCRAPER AUTOMÁTICO V4 - ROSTER COMPLETO + INJURY REPORT")
     print("="*60)
     print(f"Fecha/Hora: {datetime.now().strftime('%Y-%m-%d %I:%M:%S %p')}")
     print("="*60 + "\n")
-    
+
+    # Obtener injury report global
+    print("🚑 Obteniendo injury report...")
+    injury_report = get_injury_report()
+    print(f"✅ Injury report obtenido: {len(injury_report)} jugadores con lesiones\n")
+
+    # Obtener equipos que juegan hoy
     teams_today = get_todays_games()
-    
+
     if not teams_today:
         print("\n⚠️  No hay equipos jugando hoy. Script terminado.")
         return
-    
+
     successful = 0
     failed = 0
-    
+
     for team_abbr in teams_today:
         try:
-            if process_team(team_abbr):
+            if process_team(team_abbr, injury_report):
                 successful += 1
             else:
                 failed += 1
         except Exception as e:
             print(f"❌ Error procesando {team_abbr}: {e}")
             failed += 1
-        
+
         time.sleep(1)
-    
+
     print("\n" + "="*60)
     print("RESUMEN FINAL")
     print("="*60)
