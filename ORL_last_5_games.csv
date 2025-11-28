@@ -1,0 +1,59 @@
+Game_Date,Opponent,Player,Player_Status,Injury_Status,PTS_Q1,REB_Q1,AST_Q1,3PM_Q1,PTS_Q2,REB_Q2,AST_Q2,3PM_Q2,PTS_Q3,REB_Q3,AST_Q3,3PM_Q3,PTS_Q4,REB_Q4,AST_Q4,3PM_Q4,PTS_TOTAL,REB_TOTAL,AST_TOTAL,3PM_TOTAL
+11/26,Philadelphia 76ers,Desmond Bane,Starter,Healthy,3,0,0,0,5,1,3,1,7,0,3,0,0,1,0,0,15,2,6,1
+11/26,Philadelphia 76ers,Franz Wagner,Starter,Healthy,2,4,0,0,9,0,1,0,10,1,2,1,0,0,0,0,21,5,3,1
+11/26,Philadelphia 76ers,Jalen Suggs,Starter,Healthy,4,3,2,0,0,2,9,0,0,0,0,0,0,0,0,0,4,5,11,0
+11/26,Philadelphia 76ers,Tristan da Silva,Starter,Healthy,2,0,2,0,0,0,0,0,8,4,1,2,0,0,0,0,10,4,3,2
+11/26,Philadelphia 76ers,Wendell Carter Jr.,Starter,Healthy,2,3,0,0,10,2,0,0,0,3,1,0,0,0,0,0,12,8,1,0
+11/23,Boston Celtics,Anthony Black,Starter,Healthy,2,1,1,0,10,0,1,2,2,2,3,0,0,0,0,0,14,3,5,2
+11/23,Boston Celtics,Desmond Bane,Starter,Healthy,5,2,1,0,7,1,2,1,2,0,2,0,4,1,0,0,18,4,5,1
+11/23,Boston Celtics,Franz Wagner,Starter,Healthy,8,4,1,0,5,1,1,0,2,3,3,0,0,0,0,0,15,8,5,0
+11/23,Boston Celtics,Orlando Robinson,Starter,Healthy,5,2,0,1,2,1,0,0,0,0,1,0,0,0,0,0,7,3,1,1
+11/23,Boston Celtics,Tristan da Silva,Starter,Healthy,2,0,2,0,0,0,0,0,7,1,0,1,0,0,0,0,9,1,2,1
+11/22,New York Knicks,Desmond Bane,Starter,Healthy,10,1,0,1,5,1,0,1,5,1,3,1,7,0,2,0,27,3,5,3
+11/22,New York Knicks,Franz Wagner,Starter,Healthy,11,2,2,0,11,0,1,1,7,3,2,1,7,1,2,1,37,6,7,4
+11/22,New York Knicks,Jalen Suggs,Starter,Healthy,4,2,0,0,7,1,0,1,8,0,1,0,7,0,0,1,26,3,1,2
+11/22,New York Knicks,Tristan da Silva,Starter,Healthy,0,2,1,0,0,0,1,0,2,0,1,0,2,1,1,0,4,3,4,0
+11/22,New York Knicks,Wendell Carter Jr.,Starter,Healthy,3,2,1,0,0,0,0,0,8,1,0,2,0,1,0,0,11,4,1,2
+11/21,LA Clippers,Desmond Bane,Starter,Healthy,0,1,1,0,2,4,2,0,7,2,1,1,6,0,1,2,15,7,5,3
+11/21,LA Clippers,Franz Wagner,Starter,Healthy,2,2,2,0,4,1,0,0,11,1,1,0,3,2,0,0,20,6,3,0
+11/21,LA Clippers,Jalen Suggs,Starter,Healthy,10,0,2,2,10,2,3,2,3,1,2,1,0,0,0,0,23,3,7,5
+11/21,LA Clippers,Tristan da Silva,Starter,Healthy,2,5,0,0,8,0,0,2,2,2,1,0,5,1,0,1,17,8,1,3
+11/21,LA Clippers,Wendell Carter Jr.,Starter,Healthy,2,3,2,0,2,1,0,0,0,2,3,0,3,1,1,1,7,7,6,1
+11/19,Golden State Warriors,Desmond Bane,Starter,Healthy,9,1,3,1,3,0,1,0,2,1,0,0,9,4,1,1,23,6,5,2
+11/19,Golden State Warriors,Franz Wagner,Starter,Healthy,2,2,1,0,6,3,1,0,6,3,1,0,4,0,0,0,18,8,3,0
+11/19,Golden State Warriors,Jalen Suggs,Starter,Healthy,6,2,2,0,4,1,0,0,2,2,4,0,1,0,2,0,13,5,8,0
+11/19,Golden State Warriors,Tristan da Silva,Starter,Healthy,8,1,2,2,4,1,0,0,3,1,0,1,0,1,0,0,15,4,2,3
+11/19,Golden State Warriors,Wendell Carter Jr.,Starter,Healthy,5,4,0,1,2,2,0,0,2,2,0,0,8,4,2,0,17,12,2,1
+11/26,Philadelphia 76ers,Anthony Black,Bench,Healthy,7,0,1,1,20,0,0,3,4,1,2,0,0,0,0,0,31,1,3,4
+11/26,Philadelphia 76ers,Goga Bitadze,Bench,Healthy,6,4,0,0,0,2,1,0,2,1,0,0,2,2,1,0,10,9,2,0
+11/26,Philadelphia 76ers,Jamal Cain,Bench,Healthy,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,0,1,1,1,0
+11/26,Philadelphia 76ers,Jase Richardson,Bench,Healthy,0,0,0,0,0,0,0,0,0,0,0,0,7,0,1,1,7,0,1,1
+11/26,Philadelphia 76ers,Jett Howard,Bench,Healthy,0,0,0,0,5,0,0,1,2,1,0,0,6,1,1,0,13,2,1,1
+11/26,Philadelphia 76ers,Noah Penda,Bench,Healthy,1,1,0,0,2,2,1,0,0,0,0,0,7,6,1,1,10,9,2,1
+11/26,Philadelphia 76ers,Orlando Robinson,Bench,Healthy,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,1,0
+11/26,Philadelphia 76ers,Tyus Jones,Bench,Healthy,8,0,1,2,0,1,0,0,2,0,2,0,0,0,0,0,10,1,3,2
+11/23,Boston Celtics,Jamal Cain,Bench,Healthy,2,0,0,0,0,1,0,0,0,0,0,0,0,2,0,0,2,3,0,0
+11/23,Boston Celtics,Jase Richardson,Bench,Healthy,0,0,0,0,4,2,0,0,0,1,1,0,13,2,1,2,18,5,2,3
+11/23,Boston Celtics,Jett Howard,Bench,Healthy,0,0,1,0,2,3,0,0,6,0,1,2,22,4,1,3,30,7,3,5
+11/23,Boston Celtics,Jonathan Isaac,Bench,Healthy,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0
+11/23,Boston Celtics,Noah Penda,Bench,Healthy,0,0,0,0,0,1,0,0,13,4,0,2,0,3,4,0,13,8,4,2
+11/23,Boston Celtics,Tyus Jones,Bench,Healthy,3,1,1,1,0,0,2,0,0,0,0,0,0,0,3,0,3,1,6,1
+11/22,New York Knicks,Anthony Black,Bench,Healthy,0,0,0,0,4,0,1,0,2,0,1,0,5,1,2,1,11,1,4,1
+11/22,New York Knicks,Goga Bitadze,Bench,Healthy,2,2,0,0,2,3,2,0,2,1,0,0,0,1,1,0,6,7,3,0
+11/22,New York Knicks,Jase Richardson,Bench,Healthy,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+11/22,New York Knicks,Jett Howard,Bench,Healthy,0,0,0,0,2,0,0,0,0,0,0,0,3,0,0,1,5,0,0,1
+11/22,New York Knicks,Jonathan Isaac,Bench,Healthy,0,0,0,0,2,4,0,0,0,1,0,0,4,2,0,0,6,7,0,0
+11/22,New York Knicks,Noah Penda,Bench,Healthy,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,1,0,0
+11/22,New York Knicks,Tyus Jones,Bench,Healthy,0,1,0,0,0,0,1,0,0,0,0,0,0,0,2,0,0,1,3,0
+11/21,LA Clippers,Anthony Black,Bench,Healthy,0,1,0,0,5,1,3,0,4,2,1,0,3,0,0,1,12,4,4,1
+11/21,LA Clippers,Goga Bitadze,Bench,Healthy,2,1,1,0,0,2,0,0,2,2,0,0,6,1,2,0,10,6,3,0
+11/21,LA Clippers,Jamal Cain,Bench,Healthy,0,0,0,0,0,0,0,0,0,0,0,0,5,0,1,1,5,0,1,1
+11/21,LA Clippers,Jase Richardson,Bench,Healthy,0,0,0,0,0,0,0,0,0,0,0,0,3,1,1,1,3,1,1,1
+11/21,LA Clippers,Jett Howard,Bench,Healthy,3,0,0,1,0,0,0,0,3,0,0,1,2,1,0,0,8,1,0,2
+11/21,LA Clippers,Jonathan Isaac,Bench,Healthy,9,2,0,1,0,1,0,0,0,0,0,0,0,4,1,0,9,7,1,1
+11/21,LA Clippers,Tyus Jones,Bench,Healthy,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,1,0,0
+11/19,Golden State Warriors,Anthony Black,Bench,Healthy,2,1,0,0,9,1,0,0,4,1,1,0,6,1,1,0,21,4,2,0
+11/19,Golden State Warriors,Goga Bitadze,Bench,Healthy,4,1,1,0,0,1,1,0,2,0,1,0,0,0,0,0,6,2,3,0
+11/19,Golden State Warriors,Jamal Cain,Bench,Healthy,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+11/19,Golden State Warriors,Jonathan Isaac,Bench,Healthy,0,0,0,0,0,2,0,0,0,0,0,0,0,0,0,0,0,2,0,0
+11/19,Golden State Warriors,Tyus Jones,Bench,Healthy,0,0,0,0,3,0,1,1,5,0,1,1,0,0,1,0,8,0,3,2

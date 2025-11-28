@@ -1,0 +1,54 @@
+Game_Date,Opponent,Player,Player_Status,Injury_Status,PTS_Q1,REB_Q1,AST_Q1,3PM_Q1,PTS_Q2,REB_Q2,AST_Q2,3PM_Q2,PTS_Q3,REB_Q3,AST_Q3,3PM_Q3,PTS_Q4,REB_Q4,AST_Q4,3PM_Q4,PTS_TOTAL,REB_TOTAL,AST_TOTAL,3PM_TOTAL
+11/25,Toronto Raptors,Donovan Mitchell,Starter,Healthy,5,0,3,1,0,0,3,0,2,0,1,0,10,1,1,2,17,1,8,3
+11/25,Toronto Raptors,Evan Mobley,Starter,Healthy,5,1,1,1,3,2,1,1,6,2,2,0,0,0,0,0,14,5,4,2
+11/25,Toronto Raptors,Jaylon Tyson,Starter,Healthy,5,1,0,0,0,4,0,0,6,4,1,2,4,0,1,0,15,9,2,2
+11/25,Toronto Raptors,Larry Nance Jr.,Starter,Healthy,3,1,0,1,0,0,2,0,3,0,0,1,0,0,0,0,6,1,2,2
+11/25,Toronto Raptors,Lonzo Ball,Starter,Healthy,6,2,1,2,2,2,0,0,0,0,3,0,0,3,3,0,8,7,7,2
+11/23,LA Clippers,Darius Garland,Starter,Healthy,2,0,5,0,2,1,0,0,0,0,1,0,4,0,2,0,8,1,8,0
+11/23,LA Clippers,De'Andre Hunter,Starter,Healthy,3,0,0,1,6,1,2,1,8,1,1,2,0,2,1,0,17,4,4,4
+11/23,LA Clippers,Donovan Mitchell,Starter,Healthy,9,2,1,1,8,2,1,0,11,4,2,1,7,0,2,1,37,8,6,5
+11/23,LA Clippers,Evan Mobley,Starter,Healthy,2,3,0,0,4,1,1,0,4,4,1,0,8,2,0,0,18,10,2,0
+11/23,LA Clippers,Jaylon Tyson,Starter,Healthy,0,2,0,0,0,0,0,0,2,2,0,0,5,0,0,1,7,4,0,1
+11/22,Indiana Pacers,Darius Garland,Starter,Healthy,5,0,3,1,13,0,0,2,0,2,2,0,2,0,2,0,20,2,7,3
+11/22,Indiana Pacers,De'Andre Hunter,Starter,Healthy,5,3,0,1,3,0,1,0,5,2,0,1,7,2,0,1,20,7,1,3
+11/22,Indiana Pacers,Donovan Mitchell,Starter,Healthy,5,1,1,1,7,3,1,0,14,3,2,1,6,2,1,2,32,9,5,4
+11/22,Indiana Pacers,Evan Mobley,Starter,Healthy,12,2,0,0,0,3,2,0,5,6,2,0,5,1,0,1,22,12,4,1
+11/22,Indiana Pacers,Jaylon Tyson,Starter,Healthy,4,2,1,0,2,1,0,0,8,2,1,2,0,3,1,0,14,8,3,2
+11/20,Houston Rockets,De'Andre Hunter,Starter,Healthy,8,0,1,2,3,3,0,1,4,0,1,0,10,1,0,2,25,4,2,5
+11/20,Houston Rockets,Donovan Mitchell,Starter,Healthy,2,1,0,0,0,0,0,0,0,1,1,0,18,1,1,2,21,3,2,3
+11/20,Houston Rockets,Evan Mobley,Starter,Healthy,5,0,0,0,5,2,0,0,8,1,0,0,0,3,0,0,18,6,0,0
+11/20,Houston Rockets,Jarrett Allen,Starter,Out,0,4,1,0,4,1,1,0,2,1,1,0,2,1,0,0,8,7,3,0
+11/20,Houston Rockets,Nae'Qwan Tomlin,Starter,Healthy,1,0,0,0,7,2,0,0,2,0,0,0,0,0,0,0,10,2,0,0
+11/18,Milwaukee Bucks,De'Andre Hunter,Starter,Healthy,2,2,0,0,4,1,0,0,5,2,0,1,0,0,1,0,11,5,1,1
+11/18,Milwaukee Bucks,Donovan Mitchell,Starter,Healthy,14,0,2,2,11,0,1,1,8,2,2,1,4,3,2,0,37,5,7,4
+11/18,Milwaukee Bucks,Evan Mobley,Starter,Healthy,3,1,1,1,4,1,2,0,3,2,1,0,4,2,2,0,14,6,6,1
+11/18,Milwaukee Bucks,Jarrett Allen,Starter,Out,2,0,1,0,10,5,0,0,0,1,1,0,0,0,0,0,12,6,2,0
+11/18,Milwaukee Bucks,Sam Merrill,Starter,Out,0,1,0,0,3,3,0,1,6,1,0,2,11,0,0,3,20,5,0,6
+11/25,Toronto Raptors,Chris Livingston,Bench,Day-To-Day,0,0,0,0,3,1,0,0,0,0,0,0,4,2,1,0,7,3,1,0
+11/25,Toronto Raptors,Luke Travers,Bench,Healthy,0,1,1,0,2,1,0,0,3,0,0,0,0,0,0,0,5,2,1,0
+11/25,Toronto Raptors,Nae'Qwan Tomlin,Bench,Healthy,4,1,0,0,6,1,0,2,2,2,0,0,2,0,0,0,14,4,0,2
+11/25,Toronto Raptors,Thomas Bryant,Bench,Healthy,0,0,0,0,2,1,0,0,0,1,0,0,3,0,1,1,5,2,1,1
+11/25,Toronto Raptors,Tyrese Proctor,Bench,Healthy,4,2,1,0,4,0,0,0,0,1,0,0,0,0,0,0,8,3,1,0
+11/23,LA Clippers,Dean Wade,Bench,Day-To-Day,2,1,1,0,0,3,2,0,3,1,0,1,0,0,0,0,5,5,3,1
+11/23,LA Clippers,Larry Nance Jr.,Bench,Healthy,0,0,0,0,3,0,0,1,0,0,0,0,0,1,0,0,3,1,0,1
+11/23,LA Clippers,Luke Travers,Bench,Healthy,0,0,0,0,3,1,1,1,0,0,0,0,0,1,0,0,3,2,1,1
+11/23,LA Clippers,Nae'Qwan Tomlin,Bench,Healthy,4,1,0,0,0,0,1,0,4,0,0,1,0,1,0,0,8,2,1,1
+11/23,LA Clippers,Thomas Bryant,Bench,Healthy,0,0,0,0,0,0,0,0,0,0,0,0,3,1,0,1,3,1,0,1
+11/23,LA Clippers,Tyrese Proctor,Bench,Healthy,5,2,0,1,5,1,0,1,0,0,2,0,1,0,1,0,11,3,3,2
+11/22,Indiana Pacers,Craig Porter Jr.,Bench,Day-To-Day,0,0,0,0,2,1,1,0,0,0,0,0,0,0,0,0,2,1,1,0
+11/22,Indiana Pacers,Dean Wade,Bench,Day-To-Day,0,1,1,0,0,0,0,0,4,2,0,0,0,0,0,0,4,3,1,0
+11/22,Indiana Pacers,Larry Nance Jr.,Bench,Healthy,2,0,0,0,0,1,0,0,2,1,1,0,0,0,0,0,4,2,1,0
+11/22,Indiana Pacers,Lonzo Ball,Bench,Healthy,0,3,0,0,0,2,1,0,0,1,2,0,0,1,2,0,0,7,5,0
+11/22,Indiana Pacers,Nae'Qwan Tomlin,Bench,Healthy,0,0,0,0,2,0,0,0,0,0,0,0,0,0,0,0,2,0,0,0
+11/22,Indiana Pacers,Thomas Bryant,Bench,Healthy,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+11/22,Indiana Pacers,Tyrese Proctor,Bench,Healthy,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,1,0,0
+11/20,Houston Rockets,Craig Porter Jr.,Bench,Day-To-Day,3,2,0,1,0,3,0,0,6,1,1,0,0,1,4,0,9,7,5,1
+11/20,Houston Rockets,Dean Wade,Bench,Day-To-Day,0,0,1,0,0,1,0,0,1,5,2,0,3,1,0,1,4,7,3,1
+11/20,Houston Rockets,Lonzo Ball,Bench,Healthy,0,0,0,0,0,1,2,0,6,1,0,1,0,0,0,0,7,2,2,2
+11/20,Houston Rockets,Thomas Bryant,Bench,Healthy,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+11/20,Houston Rockets,Tyrese Proctor,Bench,Healthy,0,0,0,0,2,1,3,0,0,0,0,0,0,0,0,0,2,1,3,0
+11/18,Milwaukee Bucks,Craig Porter Jr.,Bench,Day-To-Day,2,0,0,0,0,0,0,0,6,0,0,0,3,1,0,1,11,1,0,1
+11/18,Milwaukee Bucks,Dean Wade,Bench,Day-To-Day,3,1,0,1,0,0,1,0,0,2,1,0,2,5,1,0,5,8,3,1
+11/18,Milwaukee Bucks,Lonzo Ball,Bench,Healthy,0,1,2,0,1,1,0,0,5,2,1,1,0,1,2,0,6,5,5,1
+11/18,Milwaukee Bucks,Nae'Qwan Tomlin,Bench,Healthy,0,0,0,0,0,1,0,0,0,0,0,0,2,1,1,0,2,2,1,0
+11/18,Milwaukee Bucks,Thomas Bryant,Bench,Healthy,0,0,0,0,0,1,0,0,0,0,0,0,0,1,0,0,0,2,0,0

@@ -1,0 +1,53 @@
+Game_Date,Opponent,Player,Player_Status,Injury_Status,PTS_Q1,REB_Q1,AST_Q1,3PM_Q1,PTS_Q2,REB_Q2,AST_Q2,3PM_Q2,PTS_Q3,REB_Q3,AST_Q3,3PM_Q3,PTS_Q4,REB_Q4,AST_Q4,3PM_Q4,PTS_TOTAL,REB_TOTAL,AST_TOTAL,3PM_TOTAL
+11/26,Washington Wizards,Dyson Daniels,Starter,Healthy,0,4,0,0,2,2,1,0,2,1,4,0,7,2,2,1,11,9,7,1
+11/26,Washington Wizards,Jalen Johnson,Starter,Healthy,0,2,3,0,3,2,2,0,0,3,0,0,4,0,2,0,7,7,7,0
+11/26,Washington Wizards,Kristaps Porzingis,Starter,Healthy,5,0,0,0,5,2,0,0,5,3,1,1,7,3,0,1,22,8,1,2
+11/26,Washington Wizards,Nickeil Alexander-Walker,Starter,Healthy,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,8,2,4,2
+11/26,Washington Wizards,Zaccharie Risacher,Starter,Healthy,3,2,0,1,0,0,0,0,6,1,0,2,8,2,0,1,17,5,0,4
+11/23,Charlotte Hornets,Dyson Daniels,Starter,Healthy,3,2,1,0,5,3,2,1,8,2,1,0,6,2,2,0,22,9,6,1
+11/23,New Orleans Pelicans,Dyson Daniels,Starter,Healthy,6,3,0,0,4,1,1,0,2,3,2,0,2,1,1,0,14,8,4,0
+11/23,Charlotte Hornets,Jalen Johnson,Starter,Healthy,7,4,3,1,9,1,1,1,8,3,6,0,4,0,1,0,28,8,11,2
+11/23,New Orleans Pelicans,Jalen Johnson,Starter,Healthy,4,4,1,1,11,3,2,1,0,3,2,0,3,1,4,0,18,11,9,2
+11/23,New Orleans Pelicans,Kristaps Porzingis,Starter,Healthy,2,2,2,0,14,2,0,1,7,2,1,1,6,1,1,0,30,7,4,2
+11/23,Charlotte Hornets,Nickeil Alexander-Walker,Starter,Healthy,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,23,5,4,3
+11/23,New Orleans Pelicans,Nickeil Alexander-Walker,Starter,Healthy,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,10,5,3,2
+11/23,Charlotte Hornets,Onyeka Okongwu,Starter,Healthy,6,1,1,0,5,2,2,1,7,2,0,1,2,2,0,0,20,7,3,2
+11/23,Charlotte Hornets,Zaccharie Risacher,Starter,Healthy,5,1,1,1,0,1,0,0,0,0,1,0,0,0,1,0,5,2,3,1
+11/23,New Orleans Pelicans,Zaccharie Risacher,Starter,Healthy,0,0,0,0,0,0,1,0,6,2,3,0,2,1,0,0,8,3,4,0
+11/21,San Antonio Spurs,Dyson Daniels,Starter,Healthy,4,2,2,0,0,0,0,0,0,4,1,0,4,0,2,0,8,6,5,0
+11/21,San Antonio Spurs,Jalen Johnson,Starter,Healthy,5,3,1,1,10,2,4,0,6,5,2,1,5,2,0,0,26,12,7,2
+11/21,San Antonio Spurs,Kristaps Porzingis,Starter,Healthy,5,3,0,1,5,0,0,1,4,1,1,0,2,1,0,0,16,5,1,2
+11/21,San Antonio Spurs,Nickeil Alexander-Walker,Starter,Healthy,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,38,4,5,8
+11/21,San Antonio Spurs,Zaccharie Risacher,Starter,Healthy,0,0,1,0,2,1,0,0,0,1,0,0,0,0,0,0,2,2,1,0
+11/19,Detroit Pistons,Dyson Daniels,Starter,Healthy,0,2,1,0,4,4,2,0,4,1,2,0,4,2,1,0,12,9,6,0
+11/19,Detroit Pistons,Jalen Johnson,Starter,Healthy,9,3,3,1,5,1,2,1,8,2,2,0,3,2,2,1,25,8,9,3
+11/19,Detroit Pistons,Nickeil Alexander-Walker,Starter,Healthy,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,24,3,3,1
+11/19,Detroit Pistons,Onyeka Okongwu,Starter,Healthy,5,0,0,1,2,1,0,0,9,0,1,2,5,0,2,1,21,1,3,4
+11/19,Detroit Pistons,Vit Krejci,Starter,Healthy,0,1,0,0,3,1,1,1,0,0,0,0,6,1,1,2,9,3,2,3
+11/26,Washington Wizards,Asa Newell,Bench,Healthy,0,0,0,0,0,0,0,0,0,0,0,0,0,1,2,0,0,1,2,0
+11/26,Washington Wizards,Jacob Toppin,Bench,Healthy,0,0,0,0,0,0,0,0,0,0,0,0,2,0,0,0,2,0,0,0
+11/26,Washington Wizards,Keaton Wallace,Bench,Healthy,0,0,3,0,0,0,0,0,0,0,0,0,0,2,1,0,0,2,4,0
+11/26,Washington Wizards,Luke Kennard,Bench,Healthy,3,0,1,0,6,1,2,1,0,0,1,0,0,0,0,0,9,1,4,1
+11/26,Washington Wizards,Mouhamed Gueye,Bench,Healthy,0,1,0,0,0,1,0,0,0,1,0,0,7,2,1,0,7,5,1,0
+11/26,Washington Wizards,Onyeka Okongwu,Bench,Healthy,4,1,0,0,11,1,0,2,5,1,0,1,0,0,0,0,20,3,0,3
+11/26,Washington Wizards,Vit Krejci,Bench,Healthy,5,1,0,1,2,0,2,0,3,0,1,1,0,0,0,0,10,1,3,2
+11/23,Charlotte Hornets,Asa Newell,Bench,Healthy,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,1,0,0
+11/23,New Orleans Pelicans,Asa Newell,Bench,Healthy,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+11/23,New Orleans Pelicans,Caleb Houstan,Bench,Healthy,0,0,0,0,0,0,0,0,0,0,0,0,3,1,0,1,3,1,0,1
+11/23,New Orleans Pelicans,Jacob Toppin,Bench,Healthy,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,1,0
+11/23,Charlotte Hornets,Keaton Wallace,Bench,Healthy,2,0,0,0,3,0,0,1,2,1,0,0,3,0,0,1,10,1,0,2
+11/23,New Orleans Pelicans,Luke Kennard,Bench,Healthy,6,0,1,2,2,0,1,0,0,0,1,0,0,0,0,0,8,0,3,2
+11/23,Charlotte Hornets,Mouhamed Gueye,Bench,Healthy,0,1,1,0,0,0,0,0,2,0,0,0,2,0,0,0,4,1,1,0
+11/23,New Orleans Pelicans,Mouhamed Gueye,Bench,Healthy,3,2,0,1,0,2,0,0,0,1,0,0,0,1,0,0,3,6,0,1
+11/23,Charlotte Hornets,Vit Krejci,Bench,Healthy,0,0,1,0,1,1,1,0,0,1,1,0,0,1,1,0,1,3,4,0
+11/23,New Orleans Pelicans,Vit Krejci,Bench,Healthy,0,1,0,0,0,0,0,0,12,0,0,4,9,0,0,3,21,1,0,7
+11/21,San Antonio Spurs,Keaton Wallace,Bench,Healthy,0,0,1,0,0,0,1,0,6,0,0,2,0,0,0,0,6,0,2,2
+11/21,San Antonio Spurs,Luke Kennard,Bench,Healthy,3,1,0,1,3,0,0,1,2,1,2,0,2,0,1,0,10,3,3,2
+11/21,San Antonio Spurs,Mouhamed Gueye,Bench,Healthy,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+11/21,San Antonio Spurs,Onyeka Okongwu,Bench,Healthy,7,1,0,1,0,1,2,0,3,3,2,1,5,2,1,1,15,7,5,3
+11/21,San Antonio Spurs,Vit Krejci,Bench,Healthy,3,0,1,1,0,0,0,0,0,0,0,0,2,0,0,0,5,0,1,1
+11/19,Detroit Pistons,Asa Newell,Bench,Healthy,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+11/19,Detroit Pistons,Caleb Houstan,Bench,Healthy,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+11/19,Detroit Pistons,Keaton Wallace,Bench,Healthy,6,0,0,2,1,0,0,0,0,0,0,0,0,0,2,0,7,0,2,2
+11/19,Detroit Pistons,Luke Kennard,Bench,Healthy,3,0,2,1,0,0,2,0,0,0,1,0,0,0,0,0,3,0,5,1
+11/19,Detroit Pistons,Mouhamed Gueye,Bench,Healthy,2,4,0,0,5,1,1,1,2,2,0,0,2,4,0,0,11,11,1,1

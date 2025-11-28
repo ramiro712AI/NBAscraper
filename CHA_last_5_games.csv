@@ -1,0 +1,53 @@
+Game_Date,Opponent,Player,Player_Status,Injury_Status,PTS_Q1,REB_Q1,AST_Q1,3PM_Q1,PTS_Q2,REB_Q2,AST_Q2,3PM_Q2,PTS_Q3,REB_Q3,AST_Q3,3PM_Q3,PTS_Q4,REB_Q4,AST_Q4,3PM_Q4,PTS_TOTAL,REB_TOTAL,AST_TOTAL,3PM_TOTAL
+11/27,New York Knicks,Brandon Miller,Starter,Healthy,3,0,2,1,2,3,0,0,8,1,1,2,5,0,0,1,18,4,3,4
+11/27,New York Knicks,Kon Knueppel,Starter,Healthy,2,0,2,0,0,3,0,0,1,1,0,0,3,0,0,0,6,4,2,0
+11/27,New York Knicks,LaMelo Ball,Starter,Healthy,5,0,0,1,0,0,2,0,2,2,1,0,4,4,1,1,11,6,4,2
+11/27,New York Knicks,Miles Bridges,Starter,Healthy,5,0,0,1,5,0,0,1,7,3,1,1,0,1,0,0,17,4,1,3
+11/27,New York Knicks,Ryan Kalkbrenner,Starter,Healthy,2,1,0,0,2,0,0,0,2,2,0,0,2,3,0,0,8,6,0,0
+11/23,Atlanta Hawks,Collin Sexton,Starter,Healthy,9,0,1,0,3,0,0,0,4,0,3,0,6,0,0,1,22,0,4,1
+11/23,Atlanta Hawks,Kon Knueppel,Starter,Healthy,6,2,0,2,5,0,1,1,8,0,0,2,9,4,2,2,28,6,3,7
+11/23,Atlanta Hawks,Mason Plumlee,Starter,Healthy,2,2,2,0,3,3,3,0,0,3,1,0,1,0,0,0,6,8,6,0
+11/23,Atlanta Hawks,Miles Bridges,Starter,Healthy,6,2,2,0,4,1,1,0,11,0,0,1,0,2,2,0,21,5,5,1
+11/23,Atlanta Hawks,Sion James,Starter,Healthy,2,1,1,0,2,1,2,0,3,3,0,1,0,1,0,0,7,6,3,1
+11/22,LA Clippers,Brandon Miller,Starter,Healthy,8,0,1,0,0,0,0,0,2,0,2,0,11,1,0,2,21,1,3,2
+11/22,LA Clippers,Kon Knueppel,Starter,Healthy,7,0,0,1,11,0,1,3,3,0,0,1,5,1,0,1,26,1,1,6
+11/22,LA Clippers,LaMelo Ball,Starter,Healthy,8,1,1,1,0,3,1,0,4,0,1,0,6,0,4,0,18,4,7,1
+11/22,LA Clippers,Miles Bridges,Starter,Healthy,3,2,2,0,8,0,0,0,8,1,0,0,0,0,0,0,19,3,2,0
+11/22,LA Clippers,Ryan Kalkbrenner,Starter,Healthy,2,2,1,0,0,0,0,0,0,0,0,0,0,0,0,0,2,2,1,0
+11/20,Indiana Pacers,Kon Knueppel,Starter,Healthy,9,1,0,1,3,3,2,0,8,2,3,2,8,2,2,2,28,8,7,5
+11/20,Indiana Pacers,LaMelo Ball,Starter,Healthy,4,2,3,0,5,2,2,1,5,0,0,1,4,3,4,0,18,7,9,2
+11/20,Indiana Pacers,Miles Bridges,Starter,Healthy,7,2,2,1,4,2,0,0,5,1,0,1,9,0,0,1,25,5,2,3
+11/20,Indiana Pacers,Ryan Kalkbrenner,Starter,Healthy,4,5,0,0,2,3,0,0,4,1,0,0,0,0,0,0,10,9,0,0
+11/20,Indiana Pacers,Sion James,Starter,Healthy,1,1,0,0,0,1,0,0,0,0,1,0,0,0,0,0,1,2,1,0
+11/18,Toronto Raptors,Kon Knueppel,Starter,Healthy,6,3,0,2,7,2,0,1,7,2,1,1,4,0,0,0,24,7,1,4
+11/18,Toronto Raptors,LaMelo Ball,Starter,Healthy,8,1,2,0,5,0,1,0,7,0,3,1,0,4,2,0,20,5,8,1
+11/18,Toronto Raptors,Miles Bridges,Starter,Healthy,7,3,0,1,3,3,1,0,5,2,0,1,7,0,2,1,22,8,3,3
+11/18,Toronto Raptors,Ryan Kalkbrenner,Starter,Healthy,3,4,0,0,0,3,0,0,2,2,0,0,2,1,0,0,7,10,0,0
+11/18,Toronto Raptors,Sion James,Starter,Healthy,0,1,0,0,0,1,1,0,0,3,1,0,0,0,0,0,0,5,2,0
+11/27,New York Knicks,Collin Sexton,Bench,Healthy,7,1,1,0,2,0,1,0,6,0,0,0,0,0,0,0,15,1,2,0
+11/27,New York Knicks,Liam McNeeley,Bench,Healthy,3,0,0,1,0,0,0,0,0,0,0,0,0,1,0,0,3,1,0,1
+11/27,New York Knicks,Moussa Diabate,Bench,Healthy,0,1,0,0,0,1,0,0,2,2,0,0,2,0,0,0,4,4,0,0
+11/27,New York Knicks,Sion James,Bench,Healthy,0,0,0,0,0,1,0,0,0,1,0,0,4,0,0,0,4,2,0,0
+11/27,New York Knicks,Tre Mann,Bench,Healthy,4,1,2,0,5,0,0,1,0,2,1,0,6,0,0,2,15,3,3,3
+11/23,Atlanta Hawks,Drew Peterson,Bench,Healthy,0,1,0,0,0,0,0,0,0,0,0,0,0,1,1,0,0,2,1,0
+11/23,Atlanta Hawks,KJ Simpson,Bench,Healthy,0,0,1,0,5,2,0,1,0,0,1,0,0,0,0,0,5,2,2,1
+11/23,Atlanta Hawks,Liam McNeeley,Bench,Healthy,0,0,0,0,3,1,0,1,3,1,0,1,0,0,0,0,6,2,0,2
+11/23,Atlanta Hawks,Moussa Diabate,Bench,Healthy,0,1,1,0,2,4,0,0,4,4,0,0,6,2,0,0,12,11,1,0
+11/23,Atlanta Hawks,Tre Mann,Bench,Healthy,0,1,0,0,3,0,0,1,0,0,1,0,0,0,0,0,3,1,1,1
+11/22,LA Clippers,Collin Sexton,Bench,Healthy,2,1,0,0,8,1,2,0,2,1,1,0,6,0,1,0,18,3,4,0
+11/22,LA Clippers,Drew Peterson,Bench,Healthy,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,1,0,0
+11/22,LA Clippers,Liam McNeeley,Bench,Healthy,0,0,0,0,0,1,0,0,0,3,0,0,3,2,1,1,3,6,1,1
+11/22,LA Clippers,Mason Plumlee,Bench,Healthy,0,0,0,0,0,2,0,0,0,0,0,0,0,4,1,0,0,6,1,0
+11/22,LA Clippers,Moussa Diabate,Bench,Healthy,0,1,0,0,0,3,1,0,6,3,0,0,0,0,0,0,6,7,1,0
+11/22,LA Clippers,Pat Connaughton,Bench,Out,0,0,0,0,0,2,0,0,0,0,0,0,0,0,0,0,0,2,0,0
+11/22,LA Clippers,Sion James,Bench,Healthy,0,0,0,0,0,1,2,0,0,0,0,0,3,1,1,1,3,2,3,1
+11/20,Indiana Pacers,Collin Sexton,Bench,Healthy,3,0,1,0,4,0,1,0,2,0,3,0,2,0,0,0,11,0,5,0
+11/20,Indiana Pacers,Drew Peterson,Bench,Healthy,2,1,0,0,0,1,0,0,2,1,0,0,0,0,0,0,4,3,0,0
+11/20,Indiana Pacers,KJ Simpson,Bench,Healthy,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+11/20,Indiana Pacers,Moussa Diabate,Bench,Healthy,1,4,0,0,3,4,0,0,4,2,1,0,0,2,2,0,8,12,3,0
+11/20,Indiana Pacers,Pat Connaughton,Bench,Out,2,0,0,0,0,0,1,0,0,0,0,0,11,2,0,3,13,2,1,3
+11/18,Toronto Raptors,Collin Sexton,Bench,Healthy,0,1,1,0,6,0,1,1,4,1,0,0,7,1,0,1,17,3,2,2
+11/18,Toronto Raptors,Drew Peterson,Bench,Healthy,0,0,0,0,0,0,0,0,0,0,1,0,1,1,0,0,1,1,1,0
+11/18,Toronto Raptors,Moussa Diabate,Bench,Healthy,0,1,0,0,2,1,0,0,4,3,1,0,2,2,1,0,8,7,2,0
+11/18,Toronto Raptors,Pat Connaughton,Bench,Out,0,0,0,0,1,0,0,0,2,0,0,0,2,1,0,0,5,1,0,0
+11/18,Toronto Raptors,Tre Mann,Bench,Healthy,0,1,0,0,4,0,0,0,0,0,0,0,0,0,0,0,4,1,0,0
