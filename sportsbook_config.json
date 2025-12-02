@@ -1,0 +1,74 @@
+{
+  "sportsbooks": {
+    "draftkings": {
+      "name": "DraftKings",
+      "enabled": true,
+      "api_url": "https://sportsbook.draftkings.com/api/",
+      "requires_auth": true,
+      "api_key": "YOUR_API_KEY_HERE",
+      "notes": "API disponible para partners verificados"
+    },
+    "fanduel": {
+      "name": "FanDuel",
+      "enabled": true,
+      "api_url": "https://sportsbook.fanduel.com/api/",
+      "requires_auth": true,
+      "api_key": "YOUR_API_KEY_HERE",
+      "notes": "API disponible para partners verificados"
+    },
+    "betmgm": {
+      "name": "BetMGM",
+      "enabled": true,
+      "api_url": "https://sports.betmgm.com/api/",
+      "requires_auth": true,
+      "api_key": "YOUR_API_KEY_HERE",
+      "notes": "API disponible para partners verificados"
+    },
+    "caesars": {
+      "name": "Caesars",
+      "enabled": false,
+      "api_url": "https://www.williamhill.com/us/api/",
+      "requires_auth": true,
+      "api_key": "YOUR_API_KEY_HERE",
+      "notes": "API limitada"
+    },
+    "odds_api": {
+      "name": "The Odds API",
+      "enabled": true,
+      "api_url": "https://api.the-odds-api.com/v4/",
+      "requires_auth": true,
+      "api_key": "7ad27ca3db23c4d93ab6e454ecb8eb22",
+      "notes": "Servicio agregador de odds - 500 requests gratis/mes",
+      "documentation": "https://the-odds-api.com/",
+      "sports": {
+        "nba": "basketball_nba"
+      },
+      "markets": {
+        "player_points": "player_points",
+        "player_rebounds": "player_rebounds",
+        "player_assists": "player_assists",
+        "player_threes": "player_threes"
+      }
+    }
+  },
+  "default_sportsbook": "odds_api",
+  "comparison_settings": {
+    "min_edge_percentage": 5,
+    "alert_on_high_edge": true,
+    "high_edge_threshold": 10
+  },
+  "player_prop_markets": [
+    "player_points",
+    "player_rebounds",
+    "player_assists",
+    "player_threes",
+    "player_points_rebounds_assists",
+    "player_points_rebounds",
+    "player_points_assists",
+    "player_rebounds_assists"
+  ],
+  "mock_data": {
+    "enabled": false,
+    "note": "Cuando no hay API keys, usar datos de ejemplo para testing"
+  }
+}
