@@ -417,8 +417,9 @@ def generate_mock_betting_data() -> List[Dict]:
         {'player': 'Giannis Antetokounmpo', 'team': 'MIL', 'stat': 'REB', 'mean': 11.4, 'cv': 14.2, 'stars': 4, 'line': 11.5, 'rec': 'UNDER', 'trend': 'DOWN'},
         {'player': 'Anthony Davis', 'team': 'LAL', 'stat': 'REB', 'mean': 13.8, 'cv': 13.1, 'stars': 5, 'line': 12.5, 'rec': 'OVER', 'trend': 'UP'},
         {'player': 'Anthony Davis', 'team': 'LAL', 'stat': 'PTS', 'mean': 26.2, 'cv': 16.4, 'stars': 4, 'line': 25.5, 'rec': 'OVER', 'trend': 'STABLE'},
-        {'player': 'Jayson Tatum', 'team': 'BOS', 'stat': 'PTS', 'mean': 27.8, 'cv': 11.8, 'stars': 5, 'line': 27.5, 'rec': 'OVER', 'trend': 'UP'},
-        {'player': 'Tyrese Haliburton', 'team': 'IND', 'stat': 'AST', 'mean': 11.4, 'cv': 14.2, 'stars': 5, 'line': 10.5, 'rec': 'OVER', 'trend': 'UP'},
+        # EXCLUIDOS - Jugadores OUT:
+        # {'player': 'Jayson Tatum', 'team': 'BOS', 'stat': 'PTS', 'mean': 27.8, 'cv': 11.8, 'stars': 5, 'line': 27.5, 'rec': 'OVER', 'trend': 'UP'},
+        # {'player': 'Tyrese Haliburton', 'team': 'IND', 'stat': 'AST', 'mean': 11.4, 'cv': 14.2, 'stars': 5, 'line': 10.5, 'rec': 'OVER', 'trend': 'UP'},
         {'player': 'Joel Embiid', 'team': 'PHI', 'stat': 'PTS', 'mean': 29.4, 'cv': 12.3, 'stars': 5, 'line': 28.5, 'rec': 'OVER', 'trend': 'STABLE'},
         {'player': 'Joel Embiid', 'team': 'PHI', 'stat': 'REB', 'mean': 10.8, 'cv': 16.7, 'stars': 4, 'line': 10.5, 'rec': 'OVER', 'trend': 'STABLE'},
         {'player': 'Shai Gilgeous-Alexander', 'team': 'OKC', 'stat': 'PTS', 'mean': 30.6, 'cv': 13.4, 'stars': 5, 'line': 30.5, 'rec': 'OVER', 'trend': 'UP'},
