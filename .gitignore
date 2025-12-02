@@ -4,6 +4,8 @@
 # Reportes generados
 betting_report_*.txt
 value_bets_*.txt
+parlays_*.txt
+parlays_*.json
 
 # Python cache
 __pycache__/
