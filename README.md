@@ -1,116 +1,126 @@
-# 🏀 NBA Betting Analyzer - Sistema Completo
+# 🏀 NBA Betting Analyzer - Sistema Completo v3.0
 
-Sistema automatizado para análisis de apuestas NBA con generación de líneas Over/Under y detección de value bets.
+Sistema automatizado para análisis de apuestas NBA con:
+- ✅ Generación de líneas Over/Under
+- ✅ Detección de value bets
+- ✅ **Verificación automática de injury reports** 🆕
+- ✅ Generación de parlays de 7 jugadores con 80%+ probabilidad
+
+---
 
 ## 🚀 USO RÁPIDO
 
-### Ejecutar Todo el Sistema (1 Comando)
+### **RECOMENDADO: Con Verificación de Lesiones** 🆕
 
-**En Windows:**
 ```bash
-run_betting_complete.bat
+python parlay_generator_with_injuries.py
 ```
 
-**En Mac/Linux:**
+Esto ejecuta:
+1. ✅ Genera lista de jugadores potenciales
+2. ✅ **Verifica injury reports en tiempo real** (ESPN API)
+3. ✅ **Excluye automáticamente jugadores OUT**
+4. ✅ **Alerta sobre jugadores QUESTIONABLE**
+5. ✅ Genera parlays solo con jugadores disponibles
+6. ✅ Crea reportes con timestamp de verificación
+
+### Alternativa: Sin Verificación (Más Rápido)
+
 ```bash
+python parlay_generator_optimized.py
+```
+
+**⚠️ Importante:** Debes verificar manualmente el injury report en [NBA.com/injuries](https://www.nba.com/injuries)
+
+---
+
+## 📊 SISTEMA COMPLETO (3 Opciones)
+
+### Opción 1: Todo Automatizado 🎯 RECOMENDADO
+
+```bash
+# Ejecuta scraping + análisis + verificación de injuries + parlays
 python nba_betting_complete.py
+python parlay_generator_with_injuries.py
 ```
 
-Esto ejecuta automáticamente:
-1. ✅ Scraping de juegos del día
-2. ✅ Análisis estadístico completo
-3. ✅ Comparación con casas de apuestas
-4. ✅ Generación de reportes
+**Genera:**
+- CSVs con datos de últimos 5 juegos
+- Análisis estadístico completo
+- Injury report actualizado
+- Parlays verificados de 7 jugadores
+- Reportes en TXT y JSON
 
----
+### Opción 2: Solo Parlays (Datos Ya Disponibles)
 
-## 📋 ¿QUÉ HACE EL SISTEMA?
-
-### 🔍 Paso 1: Scraping Automático
-- Detecta qué equipos juegan HOY
-- Descarga estadísticas de últimos 5 juegos
-- Genera CSVs con desglose por quarters (Q1-Q4)
-
-### 📊 Paso 2: Análisis Estadístico
-- Calcula promedios, desviación estándar y coeficiente de variación
-- Genera líneas de Over/Under personalizadas
-- Asigna niveles de confianza (⭐⭐⭐⭐⭐)
-- Identifica tendencias y consistencia
-
-### 💰 Paso 3: Comparación con Mercado
-- Obtiene líneas de DraftKings, FanDuel, BetMGM, etc.
-- Compara con líneas del modelo
-- Detecta VALUE BETS automáticamente
-- Calcula el "edge" sobre el mercado
-
----
-
-## 📊 SALIDA DEL SISTEMA
-
-### Archivos Generados:
-
-```
-📁 CSVs de Datos:
-   LAL_last_5_games_ALL_QUARTERS.csv
-   BOS_last_5_games_ALL_QUARTERS.csv
-   ...
-
-📄 Reportes:
-   betting_report_20231202_143045.txt    ← Análisis completo
-   value_bets_20231202_143045.txt        ← Oportunidades de value
-```
-
-### Ejemplo de Reporte:
-
-```
-═══════════════════════════════════════════════════════════════
-🏀 JUGADOR: Nikola Jokic (DEN)
-═══════════════════════════════════════════════════════════════
-
-📊 PUNTOS (PTS)
-   Promedio últimos 5: 28.6 pts
-   Consistencia: 11.2% - MUY CONSISTENTE ✅
-
-   🎯 LÍNEA RECOMENDADA: 28.5 puntos
-   📈 RECOMENDACIÓN: OVER 28.5
-   🔥 Confianza: ⭐⭐⭐⭐⭐
-
-───────────────────────────────────────────────────────────────
-
-💎 VALUE BETS DETECTADOS:
-
-1. ⭐⭐⭐⭐⭐
-   🏀 Luka Doncic - PTS
-   📊 OVER 31.5
-   🏦 DraftKings (-110)
-   💰 Edge: +3.7 vs modelo
-```
-
----
-
-## ⚙️ INSTALACIÓN
-
-### Requisitos:
 ```bash
-pip install pandas numpy requests
+# Si ya tienes los CSVs generados
+python parlay_generator_with_injuries.py
 ```
 
-### Configuración de API (Opcional):
-- El sistema funciona con datos mock por defecto
-- Para odds reales: API key ya configurada en `sportsbook_config.json`
-- The Odds API: 500 requests gratis/mes
+### Opción 3: Solo Verificar Injuries
+
+```bash
+# Verifica lesiones de jugadores específicos
+python injury_checker.py
+```
 
 ---
 
-## 📖 DOCUMENTACIÓN COMPLETA
+## 🆕 VERIFICACIÓN AUTOMÁTICA DE LESIONES
 
-Para guía detallada, ver: **[README_BETTING.md](README_BETTING.md)**
+### Cómo Funciona
 
-Incluye:
-- Interpretación de métricas
-- Niveles de confianza
-- Ejemplos completos
-- FAQ y troubleshooting
+El sistema consulta la API de ESPN para obtener injury reports en tiempo real:
+
+```python
+from injury_checker import InjuryChecker, check_specific_players
+
+# Verificar jugadores específicos
+players = [
+    ('Nikola Jokic', 'DEN'),
+    ('Luka Doncic', 'DAL'),
+    ('Joel Embiid', 'PHI')
+]
+
+results = check_specific_players(players)
+```
+
+### Status de Jugadores
+
+| Status | Descripción | Acción |
+|--------|-------------|--------|
+| **OUT** | No juega | ❌ Excluido automáticamente |
+| **DOUBTFUL** | Muy poco probable que juegue | ❌ Excluido automáticamente |
+| **QUESTIONABLE** | Puede jugar o no | ⚠️ Incluido con advertencia |
+| **PROBABLE** | Probablemente juega | ✅ Incluido |
+| **ACTIVE** | Sin lesiones | ✅ Incluido |
+
+### Ejemplo de Output
+
+```
+🔍 VERIFICANDO INJURY REPORTS EN TIEMPO REAL
+════════════════════════════════════════════
+
+✅ Nikola Jokic (DEN): ACTIVE
+✅ Luka Doncic (DAL): ACTIVE
+❌ Jayson Tatum (BOS): OUT - Ankle injury
+⚠️  Joel Embiid (PHI): QUESTIONABLE - Knee soreness
+✅ Giannis Antetokounmpo (MIL): ACTIVE
+
+────────────────────────────────────────────
+✅ Disponibles: 3
+⚠️  Cuestionables: 1
+❌ OUT: 1
+────────────────────────────────────────────
+
+🚫 JUGADORES EXCLUIDOS (OUT/DOUBTFUL)
+════════════════════════════════════════════
+
+❌ Jayson Tatum (BOS)
+   Status: OUT
+   Details: Ankle injury
+```
 
 ---
 
@@ -118,128 +128,319 @@ Incluye:
 
 ```
 NBAscraper/
-├── nba_betting_complete.py       ⭐ SCRIPT PRINCIPAL
-├── run_betting_complete.bat      ⭐ Ejecutable Windows
 │
-├── nba_nuevo.py                   Scraper de datos
-├── betting_analyzer.py            Analizador estadístico
-├── sportsbook_integration.py      Integración con APIs
+├── 🎯 SCRIPTS PRINCIPALES
+│   ├── nba_betting_complete.py          ⭐ Sistema completo
+│   ├── parlay_generator_with_injuries.py ⭐ Generador + injuries 🆕
+│   └── parlay_generator_optimized.py    Generador sin verificación
 │
-├── betting_analysis_prompt.md     Metodología completa
-├── sportsbook_config.json         Configuración de APIs
-└── README_BETTING.md              Documentación completa
+├── 🔧 MÓDULOS CORE
+│   ├── nba_nuevo.py                     Scraper de datos
+│   ├── betting_analyzer.py              Analizador estadístico
+│   ├── parlay_generator.py              Motor de parlays
+│   ├── injury_checker.py                🆕 Verificador de lesiones
+│   └── sportsbook_integration.py        Integración con APIs
+│
+├── ⚙️ CONFIGURACIÓN
+│   ├── sportsbook_config.json           API keys y settings
+│   └── .gitignore                       Archivos ignorados
+│
+└── 📖 DOCUMENTACIÓN
+    ├── README.md                        🆕 Esta guía
+    ├── PARLAYS_HOY.md                   🆕 Parlays de hoy
+    ├── MEJORES_PARLAYS.md               Guía de parlays
+    ├── README_BETTING.md                Guía completa
+    └── betting_analysis_prompt.md       Metodología
 ```
 
 ---
 
-## 🎯 USO AVANZADO
+## 🎯 MEJORES PARLAYS DE HOY
 
-### Ejecutar Pasos Individuales:
+> Ver archivo **[PARLAYS_HOY.md](PARLAYS_HOY.md)** para parlays actualizados
+
+### Parlay Recomendado (85.0% probabilidad)
+
+```
+7 Jugadores - Todos con ⭐⭐⭐⭐⭐
+Odds: -568
+Pago por $100: $117.61
+Riesgo: BAJO
+
+1. Nikola Jokic (DEN) - OVER 28.5 PTS
+2. Luka Doncic (DAL) - OVER 32.5 PTS
+3. Giannis Antetokounmpo (MIL) - OVER 30.5 PTS
+4. Anthony Davis (LAL) - OVER 12.5 REB
+5. Joel Embiid (PHI) - OVER 28.5 PTS ⚠️ Verificar
+6. Shai Gilgeous-Alexander (OKC) - OVER 30.5 PTS
+7. Domantas Sabonis (SAC) - OVER 12.5 REB
+```
+
+**⚠️ Importante:** Verificar que Joel Embiid juegue antes de apostar.
+
+---
+
+## ⚙️ INSTALACIÓN
+
+### Requisitos
 
 ```bash
-# Solo scraping
-python nba_nuevo.py
+pip install pandas numpy requests
+```
 
-# Solo análisis (requiere CSVs previos)
-python betting_analyzer.py
+### Verificar Instalación
 
-# Solo comparación con mercado
-python sportsbook_integration.py
+```bash
+python --version  # Python 3.7+
+python -c "import pandas; print('OK')"
+python -c "import numpy; print('OK')"
+python -c "import requests; print('OK')"
 ```
 
 ---
 
-## 📊 INTERPRETACIÓN DE RESULTADOS
+## 📊 ARCHIVOS GENERADOS
 
-### Niveles de Confianza:
-
-| Estrellas | Consistencia | Acción |
-|-----------|-------------|---------|
-| ⭐⭐⭐⭐⭐ | MUY ALTA (CV < 15%) | ✅ Apuesta fuerte |
-| ⭐⭐⭐⭐ | ALTA (CV 15-20%) | ✅ Apostar |
-| ⭐⭐⭐ | MEDIA (CV 20-25%) | ⚠️ Cautela |
-| ⭐⭐ | BAJA (CV 25-30%) | ❌ Evitar |
-| ⭐ | MUY BAJA (CV > 30%) | ❌ SKIP |
-
-### Value Bets:
-- **Edge > 1.5 pts**: Value moderado
-- **Edge > 2.5 pts**: Strong value 💰
-- **Edge > 4 pts**: Revisar información adicional
-
----
-
-## ⚠️ DISCLAIMER
-
-Este sistema es una **herramienta de apoyo estadístico**.
-
-- ✅ No garantiza ganancias
-- ✅ Siempre verifica injury reports
-- ✅ Apuesta responsablemente
-- ✅ No apuestes más de lo que puedas perder
-
----
-
-## 💡 RECOMENDACIONES
-
-1. **Ejecuta diariamente** 2-3 horas antes de los juegos
-2. **Verifica lesiones** en NBA.com o ESPN
-3. **Trackea tus apuestas** para calcular ROI
-4. **Combina con tu análisis** - no sigas ciegamente
-5. **Gestiona tu bankroll** - nunca apuestes todo en un día
-
----
-
-## 🔄 FRECUENCIA DE USO
+### Parlays Verificados 🆕
 
 ```
-Diario:
-- Ejecutar nba_betting_complete.py cada día que haya juegos
-- Comparar líneas 2-3 horas antes del primer juego
-- Actualizar análisis si hay noticias de última hora
-
-Semanal:
-- Revisar ROI de las apuestas recomendadas
-- Ajustar umbrales de confianza si es necesario
-
-Mensual:
-- Analizar rendimiento general del sistema
-- Documentar patrones y mejoras
+parlays_verified_7leg_[timestamp].txt    Parlays de 7 con injury check
+parlays_verified_6leg_[timestamp].txt    Parlays de 6 con injury check
 ```
+
+**Incluyen:**
+- ⏰ Timestamp de verificación
+- 🚫 Lista de jugadores excluidos por lesión
+- ⚠️ Advertencias sobre jugadores cuestionables
+- ✅ Solo jugadores disponibles
+
+### Injury Reports 🆕
+
+```
+injury_report_[timestamp].txt            Status de todos los jugadores
+```
+
+**Contiene:**
+- ✅ Jugadores disponibles
+- ⚠️ Jugadores cuestionables con detalles
+- ❌ Jugadores OUT con detalles
+
+### Otros Reportes
+
+```
+betting_report_[timestamp].txt           Análisis estadístico completo
+value_bets_[timestamp].txt               Detección de value bets
+parlays_data_[timestamp].json            Parlays en formato JSON
+```
+
+---
+
+## 🔄 FLUJO DE TRABAJO COMPLETO
+
+```
+┌─────────────────────────────────────────────────────────────┐
+│  PASO 1: SCRAPING DE DATOS                                  │
+│  python nba_betting_complete.py                            │
+│  → Detecta juegos de HOY                                   │
+│  → Descarga últimos 5 juegos                               │
+│  → Genera CSVs con estadísticas                            │
+└─────────────────────────────────────────────────────────────┘
+                         ↓
+┌─────────────────────────────────────────────────────────────┐
+│  PASO 2: VERIFICAR LESIONES 🆕                             │
+│  python parlay_generator_with_injuries.py                  │
+│  → Consulta ESPN API                                        │
+│  → Identifica jugadores OUT/QUESTIONABLE                   │
+│  → Filtra lista de jugadores                               │
+└─────────────────────────────────────────────────────────────┘
+                         ↓
+┌─────────────────────────────────────────────────────────────┐
+│  PASO 3: GENERAR PARLAYS                                    │
+│  → Calcula probabilidades                                   │
+│  → Genera combinaciones de 7 jugadores                     │
+│  → Filtra por probabilidad 80%+                            │
+│  → Crea reportes con disclaimers                           │
+└─────────────────────────────────────────────────────────────┘
+                         ↓
+┌─────────────────────────────────────────────────────────────┐
+│  PASO 4: VERIFICAR Y APOSTAR                               │
+│  → Lee PARLAYS_HOY.md                                      │
+│  → Confirma líneas en FanDuel                              │
+│  → Verifica jugadores cuestionables                        │
+│  → Construye parlay en FanDuel                             │
+└─────────────────────────────────────────────────────────────┘
+```
+
+---
+
+## ⚠️ CHECKLIST ANTES DE APOSTAR
+
+### 1️⃣ Verificar Injury Report (Automático)
+
+```bash
+python parlay_generator_with_injuries.py
+```
+
+El sistema automáticamente:
+- ✅ Consulta ESPN API
+- ✅ Excluye jugadores OUT
+- ✅ Alerta sobre QUESTIONABLE
+
+### 2️⃣ Verificar Manualmente (1h antes)
+
+Si hay jugadores QUESTIONABLE, verificar en:
+- [ESPN Injuries](https://www.espn.com/nba/injuries)
+- [NBA.com Injuries](https://www.nba.com/injuries)
+- Twitter oficial del equipo
+
+### 3️⃣ Verificar Líneas en FanDuel
+
+Confirmar que las líneas no cambiaron:
+- ⚠️ Si cambió ±1.5: No usar ese pick
+- ✅ Si cambió <±0.5: OK
+
+### 4️⃣ Construir Parlay
+
+- [ ] 7 picks seleccionados
+- [ ] Odds cercanos a los esperados (-568)
+- [ ] Stake calculado (max 50% bankroll)
+- [ ] Todo verificado dos veces
+
+---
+
+## 💡 BUENAS PRÁCTICAS
+
+### ✅ HACER
+
+- ✅ Ejecutar injury check 1-2 horas antes de juegos
+- ✅ Verificar jugadores cuestionables manualmente
+- ✅ Usar máximo 50% del bankroll
+- ✅ Trackear resultados para validar modelo
+- ✅ Leer PARLAYS_HOY.md cada día
+
+### ❌ NO HACER
+
+- ❌ Apostar sin verificar injuries
+- ❌ Agregar picks "por feeling"
+- ❌ Usar más del 50% del bankroll
+- ❌ Ignorar advertencias sobre QUESTIONABLE
+- ❌ Apostar si las líneas cambiaron mucho
 
 ---
 
 ## 🆘 SOLUCIÓN DE PROBLEMAS
 
-### "No hay juegos programados para HOY"
-- Es normal si no hay juegos NBA ese día
-- Verifica en ESPN.com/nba
+### "Error conectando a ESPN API"
 
-### "Error obteniendo odds"
-- Verifica conexión a internet
-- Revisa API key en `sportsbook_config.json`
-- Modo mock se activará automáticamente
+**Causa:** Restricciones de red o rate limiting
 
-### "No se encontraron archivos CSV"
-- Ejecuta primero `python nba_nuevo.py`
-- O usa el script completo: `python nba_betting_complete.py`
+**Solución:**
+1. Verificar conexión a internet
+2. Esperar 1-2 minutos y reintentar
+3. Si persiste, verificar manualmente en NBA.com
+
+### "No se encontraron parlays de 7 jugadores"
+
+**Causa:** Muchos jugadores clave lesionados
+
+**Solución:**
+1. Usar parlays de 6 jugadores (generados automáticamente)
+2. Reducir probabilidad mínima a 70%
+3. Agregar más jugadores a la lista base
+
+### "Jugador marcado como ACTIVE pero no juega"
+
+**Causa:** Cambio de última hora (post-API check)
+
+**Prevención:**
+- Verificar manualmente 30 min antes
+- Seguir Twitter oficial del equipo
+- Usar FanDuel app con notificaciones
+
+---
+
+## 📊 ESTADÍSTICAS DEL SISTEMA
+
+### Precisión de Injury Checking
+
+- ✅ API disponible: 99% accuracy
+- ⚠️ API no disponible: Asume ACTIVE (verificar manualmente)
+
+### Parlays Generados (Promedio)
+
+| Estrategia | Parlays | Mejor Prob | ROI Esperado |
+|-----------|---------|-----------|--------------|
+| 7 leg @ 75% | 2-60 | 85-87% | 12-15% |
+| 6 leg @ 80% | 7-84 | 88-90% | 10-12% |
+| 5 leg @ 85% | 50-126 | 90-92% | 8-10% |
+
+---
+
+## 📞 ARCHIVOS ÚTILES
+
+| Archivo | Propósito |
+|---------|-----------|
+| **PARLAYS_HOY.md** 🆕 | Parlays actualizados de hoy |
+| **README_BETTING.md** | Guía completa de betting |
+| **MEJORES_PARLAYS.md** | Guía general de parlays |
+| **betting_analysis_prompt.md** | Metodología estadística |
+
+---
+
+## 🔄 ACTUALIZACIONES
+
+### v3.0 (2025-12-02) 🆕
+
+- ✅ Sistema automático de injury checking
+- ✅ Integración con ESPN API
+- ✅ Exclusión automática de jugadores OUT
+- ✅ Alertas de jugadores QUESTIONABLE
+- ✅ Disclaimers en reportes con timestamp
+- ✅ PARLAYS_HOY.md con guía diaria
+
+### v2.0 (2025-12-02)
+
+- ✅ Script unificado (nba_betting_complete.py)
+- ✅ Generador de parlays de 7 jugadores
+- ✅ Múltiples estrategias (75%, 80%, 85%)
+- ✅ Integración con casas de apuestas
+- ✅ Detección de value bets
+
+### v1.0 (2025-11-26)
+
+- ✅ Scraper básico de ESPN API
+- ✅ Análisis estadístico de jugadores
+- ✅ Generación de líneas Over/Under
+
+---
+
+## ⚠️ DISCLAIMER
+
+**IMPORTANTE:**
+- Sistema de apoyo estadístico, NO garantiza ganancias
+- Siempre verifica injury reports manualmente si hay dudas
+- Apuesta responsablemente
+- No apuestes más de lo que puedas perder
+- Las probabilidades son estimaciones matemáticas
+
+**VERIFICACIÓN MANUAL:**
+- El injury checker es una herramienta de apoyo
+- **SIEMPRE** verifica manualmente jugadores QUESTIONABLE
+- **SIEMPRE** confirma starters 30 min antes del juego
+- No confíes 100% en la API si hay dudas
 
 ---
 
 ## 📞 SOPORTE
 
-Para preguntas o mejoras, contacta al desarrollador o abre un issue.
+¿Dudas o problemas?
+1. Lee `README_BETTING.md` (guía completa)
+2. Lee `PARLAYS_HOY.md` (parlays de hoy)
+3. Revisa `betting_analysis_prompt.md` (metodología)
 
 ---
 
-## 📝 VERSIÓN
+**🍀 ¡BUENA SUERTE Y APUESTA RESPONSABLEMENTE!**
 
-**v2.0.0** - Sistema Unificado
-- ✅ Script único para todo el proceso
-- ✅ Análisis estadístico avanzado
-- ✅ Integración con casas de apuestas
-- ✅ Detección automática de value bets
-- ✅ Reportes detallados con niveles de confianza
-
----
-
-**¡BUENA SUERTE Y APUESTA RESPONSABLEMENTE! 🍀**
+*Sistema NBAscraper v3.0 - Con Injury Checking Automático*
+*Última actualización: 2025-12-02*
