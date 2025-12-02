@@ -1,0 +1,31 @@
+# CSVs generados por scrapers
+*_last_5_games*.csv
+
+# Reportes generados
+betting_report_*.txt
+value_bets_*.txt
+
+# Python cache
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+
+# Virtual environments
+venv/
+env/
+ENV/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Jupyter
+.ipynb_checkpoints/
