@@ -3,7 +3,7 @@
 NBA Combo Props Analyzer
 Scrapes last 6 games for players and generates comprehensive betting analysis
 Author: NBA Props Analysis System
-Date: December 5, 2024
+Date: December 5, 2025
 """
 
 import pandas as pd
@@ -918,7 +918,7 @@ def create_summary_sheet(ws, sheet_data: Dict, all_data: Dict):
     # Title
     ws.merge_cells(f'A{current_row}:H{current_row}')
     title_cell = ws[f'A{current_row}']
-    title_cell.value = "NBA COMBO PROPS ANALYSIS - December 5, 2024"
+    title_cell.value = "NBA COMBO PROPS ANALYSIS - December 5, 2025"
     title_cell.font = Font(size=18, bold=True)
     title_cell.alignment = Alignment(horizontal='center', vertical='center')
     current_row += 1
@@ -1048,7 +1048,7 @@ def main():
     print("\n" + "="*80)
     print("NBA COMBO PROPS ANALYZER")
     print("="*80)
-    print(f"Analysis Date: December 5, 2024")
+    print(f"Analysis Date: December 5, 2025")
     print(f"Execution Time: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
     print("="*80 + "\n")
 
