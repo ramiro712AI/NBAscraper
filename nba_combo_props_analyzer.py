@@ -18,6 +18,8 @@ import time
 import re
 from typing import Dict, List, Tuple, Optional
 import traceback
+import statistics
+from collections import defaultdict
 
 # ============================================================================
 # CONFIGURATION DATA
@@ -426,6 +428,193 @@ def parse_date(date_str: str) -> str:
 
 
 # ============================================================================
+# ADVANCED STATISTICAL ANALYSIS FUNCTIONS
+# ============================================================================
+
+def calculate_weighted_average(values: List[float], weights: List[float] = None) -> float:
+    """
+    Calculate weighted average with more weight on recent games
+    Default: Last 3 games get 60% weight, first 3 get 40% weight
+    """
+    if not values:
+        return 0.0
+
+    if weights is None:
+        # Default weights: recent games weighted more heavily
+        n = len(values)
+        if n <= 3:
+            weights = [1.0] * n  # Equal weight for 3 or fewer games
+        else:
+            # Last 3 games: 20% each (60% total)
+            # First 3 games: 13.33% each (40% total)
+            weights = [0.1333] * (n - 3) + [0.2] * min(3, n)
+
+    weighted_sum = sum(v * w for v, w in zip(values, weights))
+    total_weight = sum(weights)
+
+    return round(weighted_sum / total_weight, 2) if total_weight > 0 else 0.0
+
+
+def calculate_consistency_score(values: List[float]) -> Dict:
+    """
+    Calculate consistency metrics using standard deviation
+    Lower std_dev = more consistent
+    Returns consistency score (0-100) where 100 = most consistent
+    """
+    if len(values) < 2:
+        return {
+            'std_dev': 0.0,
+            'consistency_score': 100.0,
+            'consistency_rating': 'INSUFFICIENT DATA'
+        }
+
+    try:
+        mean = statistics.mean(values)
+        std_dev = statistics.stdev(values)
+
+        # Calculate coefficient of variation (CV)
+        cv = (std_dev / mean * 100) if mean != 0 else 0
+
+        # Consistency score: lower CV = higher consistency
+        # CV < 15% = Very Consistent (90-100)
+        # CV 15-25% = Consistent (75-89)
+        # CV 25-35% = Moderate (60-74)
+        # CV 35-50% = Inconsistent (40-59)
+        # CV > 50% = Very Inconsistent (0-39)
+
+        if cv < 15:
+            consistency_score = 100 - cv
+            rating = 'VERY CONSISTENT'
+        elif cv < 25:
+            consistency_score = 90 - cv
+            rating = 'CONSISTENT'
+        elif cv < 35:
+            consistency_score = 75 - cv
+            rating = 'MODERATE'
+        elif cv < 50:
+            consistency_score = 60 - cv
+            rating = 'INCONSISTENT'
+        else:
+            consistency_score = max(0, 50 - cv)
+            rating = 'VERY INCONSISTENT'
+
+        return {
+            'std_dev': round(std_dev, 2),
+            'coefficient_variation': round(cv, 2),
+            'consistency_score': round(max(0, min(100, consistency_score)), 1),
+            'consistency_rating': rating
+        }
+    except:
+        return {
+            'std_dev': 0.0,
+            'coefficient_variation': 0.0,
+            'consistency_score': 50.0,
+            'consistency_rating': 'UNKNOWN'
+        }
+
+
+def calculate_confidence_level(avg: float, line: float, hit_rate: float,
+                               consistency_score: float, trend: str) -> Dict:
+    """
+    Calculate professional confidence level for recommendation
+    Considers: average vs line, hit rate, consistency, and trend
+    """
+    confidence_points = 0
+    factors = []
+
+    # Factor 1: Distance from line (max 30 points)
+    diff = avg - line
+    if abs(diff) >= 5:
+        confidence_points += 30
+        factors.append(f"Strong edge: {diff:+.1f} from line")
+    elif abs(diff) >= 3:
+        confidence_points += 20
+        factors.append(f"Solid edge: {diff:+.1f} from line")
+    elif abs(diff) >= 1.5:
+        confidence_points += 10
+        factors.append(f"Slight edge: {diff:+.1f} from line")
+
+    # Factor 2: Hit rate (max 30 points)
+    if hit_rate >= 83.3:  # 5/6 or better
+        confidence_points += 30
+        factors.append(f"Excellent hit rate: {hit_rate:.1f}%")
+    elif hit_rate >= 66.7:  # 4/6
+        confidence_points += 20
+        factors.append(f"Good hit rate: {hit_rate:.1f}%")
+    elif hit_rate >= 50:  # 3/6
+        confidence_points += 10
+        factors.append(f"Decent hit rate: {hit_rate:.1f}%")
+
+    # Factor 3: Consistency (max 25 points)
+    if consistency_score >= 85:
+        confidence_points += 25
+        factors.append("Very consistent performer")
+    elif consistency_score >= 70:
+        confidence_points += 18
+        factors.append("Consistent performer")
+    elif consistency_score >= 55:
+        confidence_points += 10
+        factors.append("Moderately consistent")
+
+    # Factor 4: Trend (max 15 points)
+    if trend == '↑' and diff > 0:
+        confidence_points += 15
+        factors.append("Trending up (favorable)")
+    elif trend == '↓' and diff < 0:
+        confidence_points += 15
+        factors.append("Trending down (favorable)")
+    elif trend == '→':
+        confidence_points += 8
+        factors.append("Stable trend")
+
+    # Calculate final confidence level
+    if confidence_points >= 80:
+        level = 'VERY HIGH'
+        stars = '⭐⭐⭐'
+    elif confidence_points >= 60:
+        level = 'HIGH'
+        stars = '⭐⭐'
+    elif confidence_points >= 40:
+        level = 'MEDIUM'
+        stars = '⭐'
+    elif confidence_points >= 20:
+        level = 'LOW'
+        stars = '○'
+    else:
+        level = 'VERY LOW'
+        stars = '○'
+
+    return {
+        'confidence_score': confidence_points,
+        'confidence_level': level,
+        'confidence_stars': stars,
+        'factors': factors
+    }
+
+
+def analyze_opponent_performance(games: List[Dict], opponent_abbrev: str) -> Dict:
+    """
+    Analyze player's historical performance against specific opponent
+    """
+    opponent_games = [g for g in games if opponent_abbrev.upper() in g.get('opponent', '').upper()]
+
+    if not opponent_games:
+        return {
+            'games_vs_opponent': 0,
+            'avg_vs_opponent': 0.0,
+            'matchup_edge': 'NO DATA'
+        }
+
+    avg_vs = statistics.mean([g.get('combo_value', 0) for g in opponent_games])
+
+    return {
+        'games_vs_opponent': len(opponent_games),
+        'avg_vs_opponent': round(avg_vs, 1),
+        'matchup_edge': 'FAVORABLE' if len(opponent_games) > 0 else 'NO DATA'
+    }
+
+
+# ============================================================================
 # STATISTICS CALCULATION FUNCTIONS
 # ============================================================================
 
@@ -539,8 +728,36 @@ def calculate_statistics(games: List[Dict], combo_type: str, line: float) -> Dic
     home_avg = round(sum(home_games) / len(home_games), 1) if home_games else 0
     away_avg = round(sum(away_games) / len(away_games), 1) if away_games else 0
 
-    # Generate recommendation
+    # ADVANCED STATISTICAL ANALYSIS
+    # ============================================================================
+
+    # Calculate weighted average (recent games weighted more heavily)
+    combo_values = [g['combo_value'] for g in processed_games]
+    weighted_avg = calculate_weighted_average(combo_values)
+
+    # Calculate consistency metrics
+    consistency_metrics = calculate_consistency_score(combo_values)
+
+    # Generate basic recommendation
     recommendation = generate_recommendation(avg_combo, line, hit_rate)
+
+    # Calculate professional confidence level
+    confidence_analysis = calculate_confidence_level(
+        weighted_avg,
+        line,
+        hit_rate,
+        consistency_metrics['consistency_score'],
+        trend
+    )
+
+    # Enhanced recommendation combining weighted average and confidence
+    if confidence_analysis['confidence_level'] in ['VERY HIGH', 'HIGH']:
+        if weighted_avg > line:
+            enhanced_recommendation = f"OVER {confidence_analysis['confidence_stars']}"
+        else:
+            enhanced_recommendation = f"UNDER {confidence_analysis['confidence_stars']}"
+    else:
+        enhanced_recommendation = recommendation
 
     return {
         'games': processed_games,
@@ -550,6 +767,7 @@ def calculate_statistics(games: List[Dict], combo_type: str, line: float) -> Dic
         'total_assists': total_assists,
         'total_combo': total_combo,
         'avg_combo': avg_combo,
+        'weighted_avg': weighted_avg,
         'hit_rate': hit_rate,
         'hit_count': hit_count,
         'num_games': num_games,
@@ -560,6 +778,15 @@ def calculate_statistics(games: List[Dict], combo_type: str, line: float) -> Dic
         'home_count': len(home_games),
         'away_count': len(away_games),
         'recommendation': recommendation,
+        'enhanced_recommendation': enhanced_recommendation,
+        # Advanced metrics
+        'std_dev': consistency_metrics['std_dev'],
+        'consistency_score': consistency_metrics['consistency_score'],
+        'consistency_rating': consistency_metrics['consistency_rating'],
+        'confidence_score': confidence_analysis['confidence_score'],
+        'confidence_level': confidence_analysis['confidence_level'],
+        'confidence_stars': confidence_analysis['confidence_stars'],
+        'confidence_factors': confidence_analysis['factors'],
     }
 
 
@@ -670,9 +897,15 @@ def create_excel_report(all_data: Dict, filename: str):
                         'team': team,
                         'line': line,
                         'avg': stats['avg_combo'],
+                        'weighted_avg': stats['weighted_avg'],
                         'hit_rate': stats['hit_rate'],
                         'trend': stats['trend'],
+                        'consistency_score': stats['consistency_score'],
+                        'consistency_rating': stats['consistency_rating'],
+                        'confidence_level': stats['confidence_level'],
+                        'confidence_stars': stats['confidence_stars'],
                         'recommendation': stats['recommendation'],
+                        'enhanced_recommendation': stats['enhanced_recommendation'],
                     })
                 else:
                     # Player data not available
@@ -868,12 +1101,29 @@ def add_player_section(ws, start_row: int, player_name: str, team: str,
     ws.merge_cells(f'A{current_row}:I{current_row}')
     analysis_cell = ws[f'A{current_row}']
 
-    analysis_text = f"""ANALYSIS:
-• Average ({stats['avg_combo']}) vs Line ({line}): {stats['avg_combo'] - line:+.1f} {"ADVANTAGE" if stats['avg_combo'] > line else "DISADVANTAGE"}
-• Hit Rate: {stats['hit_count']} out of {stats['num_games']} games OVER ({stats['hit_rate']:.1f}%)
-• Trend: {stats['trend']} {"IMPROVING" if stats['trend'] == "↑" else "DECLINING" if stats['trend'] == "↓" else "STABLE"} (Diff: {stats['trend_diff']:+.1f})
-• Home/Away: Home {stats['home_count']} games (avg {stats['home_avg']}) | Away {stats['away_count']} games (avg {stats['away_avg']})
-• RECOMMENDATION: {stats['recommendation']}"""
+    analysis_text = f"""PROFESSIONAL STATISTICAL ANALYSIS:
+
+📊 AVERAGES:
+• Simple Average: {stats['avg_combo']} vs Line ({line}): {stats['avg_combo'] - line:+.1f}
+• Weighted Average (Recent Games Priority): {stats['weighted_avg']} vs Line: {stats['weighted_avg'] - line:+.1f}
+• Home/Away Split: Home {stats['home_count']}G (avg {stats['home_avg']}) | Away {stats['away_count']}G (avg {stats['away_avg']})
+
+📈 PERFORMANCE METRICS:
+• Hit Rate: {stats['hit_count']}/{stats['num_games']} games OVER ({stats['hit_rate']:.1f}%)
+• Trend: {stats['trend']} {"IMPROVING" if stats['trend'] == "↑" else "DECLINING" if stats['trend'] == "↓" else "STABLE"} (Last 3 vs First 3: {stats['trend_diff']:+.1f})
+• Standard Deviation: {stats['std_dev']}
+
+🎯 CONSISTENCY ANALYSIS:
+• Consistency Score: {stats['consistency_score']}/100
+• Rating: {stats['consistency_rating']}
+• {"Very reliable performer" if stats['consistency_score'] >= 85 else "Consistent enough for props" if stats['consistency_score'] >= 70 else "Moderate consistency - use caution" if stats['consistency_score'] >= 55 else "Highly variable performance"}
+
+💪 CONFIDENCE LEVEL: {stats['confidence_level']} {stats['confidence_stars']}
+• Confidence Score: {stats['confidence_score']}/100
+{chr(10).join(f"  ✓ {factor}" for factor in stats['confidence_factors'][:4])}
+
+🎲 FINAL RECOMMENDATION: {stats['enhanced_recommendation']}
+{"━" * 50}"""
 
     analysis_cell.value = analysis_text
     analysis_cell.fill = light_fill
@@ -967,7 +1217,7 @@ def create_summary_sheet(ws, sheet_data: Dict, all_data: Dict):
             current_row += 1
 
             # Table headers
-            headers = ['Player', 'Team', 'Avg', 'Line', 'Diff', 'Hit Rate', 'Trend', 'Recommendation']
+            headers = ['Player', 'Team', 'Weighted Avg', 'Line', 'Diff', 'Hit Rate', 'Consistency', 'Confidence', 'Recommendation']
             for col_idx, header in enumerate(headers, start=1):
                 cell = ws.cell(row=current_row, column=col_idx)
                 cell.value = header
@@ -989,17 +1239,18 @@ def create_summary_sheet(ws, sheet_data: Dict, all_data: Dict):
                     player_color = PLAYER_COLORS.get(player_data['player'], 'FFFFFF')
                     fill = PatternFill(start_color=player_color, end_color=player_color, fill_type='solid')
 
-                    diff = player_data['avg'] - player_data['line']
+                    diff = player_data['weighted_avg'] - player_data['line']
 
                     row_data = [
                         player_data['player'],
                         player_data['team'],
-                        player_data['avg'],
+                        player_data['weighted_avg'],
                         player_data['line'],
                         f"{diff:+.1f}",
                         f"{player_data['hit_rate']:.1f}%",
-                        player_data['trend'],
-                        player_data['recommendation'],
+                        f"{player_data['consistency_score']:.0f} ({player_data['consistency_rating'][:8]})",
+                        f"{player_data['confidence_level']} {player_data['confidence_stars']}",
+                        player_data['enhanced_recommendation'],
                     ]
 
                     for col_idx, value in enumerate(row_data, start=1):
