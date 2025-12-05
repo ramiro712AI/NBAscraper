@@ -375,17 +375,40 @@ def parse_date(date_str: str) -> str:
     """Parse ESPN date format to YYYY-MM-DD"""
     try:
         # ESPN uses formats like "Wed 12/4", "Thu 11/28", etc.
-        # For current season, assume year 2024
         match = re.search(r'(\d{1,2})/(\d{1,2})', date_str)
         if match:
             month = int(match.group(1))
             day = int(match.group(2))
-            year = 2024
 
-            # If month is less than current month and we're in early year, it's previous year
-            current_month = datetime.now().month
-            if month < current_month and current_month <= 6:
-                year = 2023
+            # Get current date
+            now = datetime.now()
+            current_year = now.year
+            current_month = now.month
+
+            # NBA season logic:
+            # Season runs Oct (10) - Jun (6)
+            # If we're in Oct-Dec and game month is Oct-Dec: same year
+            # If we're in Oct-Dec and game month is Jan-Jun: next year
+            # If we're in Jan-Jun and game month is Oct-Dec: previous year
+            # If we're in Jan-Jun and game month is Jan-Jun: same year
+            # If we're in Jul-Sep (off-season): use previous season
+
+            if current_month >= 10:  # Oct, Nov, Dec
+                if month >= 10:  # Game in Oct-Dec
+                    year = current_year
+                else:  # Game in Jan-Jun (future games in next year)
+                    year = current_year + 1
+            elif current_month <= 6:  # Jan-Jun
+                if month >= 10:  # Game in Oct-Dec (was last year)
+                    year = current_year - 1
+                else:  # Game in Jan-Jun (same year)
+                    year = current_year
+            else:  # Jul-Sep (off-season)
+                # Assume looking at previous season
+                if month >= 10:
+                    year = current_year - 1
+                else:
+                    year = current_year
 
             return f"{year}-{month:02d}-{day:02d}"
 
