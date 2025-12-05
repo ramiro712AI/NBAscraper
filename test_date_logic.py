@@ -9,11 +9,19 @@ import re
 def parse_date(date_str: str) -> str:
     """Parse ESPN date format to YYYY-MM-DD"""
     try:
-        # ESPN uses formats like "Wed 12/4", "Thu 11/28", etc.
-        match = re.search(r'(\d{1,2})/(\d{1,2})', date_str)
+        # ESPN uses formats like "Tue, Dec 4", "Fri, Nov 28", etc.
+        # Map month names to numbers
+        month_map = {
+            'Jan': 1, 'Feb': 2, 'Mar': 3, 'Apr': 4, 'May': 5, 'Jun': 6,
+            'Jul': 7, 'Aug': 8, 'Sep': 9, 'Oct': 10, 'Nov': 11, 'Dec': 12
+        }
+
+        # Try to match "Month Day" pattern (e.g., "Dec 4", "Nov 28")
+        match = re.search(r'(Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)\s+(\d{1,2})', date_str)
         if match:
-            month = int(match.group(1))
+            month_name = match.group(1)
             day = int(match.group(2))
+            month = month_map[month_name]
 
             # Get current date
             now = datetime.now()
@@ -62,13 +70,17 @@ print(f"\nFecha actual: {now.strftime('%Y-%m-%d')} (Mes: {now.month})")
 print(f"Año actual: {now.year}")
 
 test_dates = [
-    "Wed 12/4",   # Diciembre
-    "Thu 11/28",  # Noviembre
-    "Fri 10/25",  # Octubre
-    "Mon 1/15",   # Enero
-    "Tue 2/20",   # Febrero
-    "Wed 3/10",   # Marzo
-    "Thu 4/15",   # Abril
+    "Thu, Dec 4",     # Diciembre (formato real ESPN)
+    "Mon, Dec 1",     # Diciembre
+    "Sun, Nov 30",    # Noviembre
+    "Fri, Nov 28",    # Noviembre
+    "Tue, Nov 25",    # Noviembre
+    "Sun, Nov 23",    # Noviembre
+    "Fri, Oct 25",    # Octubre
+    "Mon, Jan 15",    # Enero (próxima temporada)
+    "Tue, Feb 20",    # Febrero
+    "Wed, Mar 10",    # Marzo
+    "Thu, Apr 15",    # Abril
 ]
 
 print("\nResultados de conversión de fechas:")
