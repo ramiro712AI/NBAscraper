@@ -20,23 +20,23 @@ HEADERS = {
     'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36'
 }
 
-# Paleta de colores pastel (15 colores suaves para que el texto negro sea legible)
+# Paleta de colores vibrantes (15 colores fuertes y distinguibles)
 PASTEL_COLORS = [
-    'FFE6E6',  # Rosa claro
-    'E6F3FF',  # Azul claro
-    'E6FFE6',  # Verde claro
-    'FFF4E6',  # Naranja claro
-    'F3E6FF',  # Púrpura claro
-    'FFFFE6',  # Amarillo claro
-    'E6FFFF',  # Cian claro
-    'FFE6F3',  # Fucsia claro
-    'F0FFE6',  # Lima claro
-    'FFE6CC',  # Melocotón claro
-    'E6E6FF',  # Lavanda claro
-    'CCFFE6',  # Menta claro
-    'FFCCCC',  # Coral claro
-    'CCE6FF',  # Cielo claro
-    'FFFFCC',  # Crema claro
+    '4A90E2',  # Azul fuerte
+    '50C878',  # Verde fuerte
+    'FF8C42',  # Naranja fuerte
+    '9B59B6',  # Púrpura fuerte
+    'F4D03F',  # Amarillo fuerte
+    'FF69B4',  # Rosa fuerte
+    '48D1CC',  # Turquesa fuerte
+    'FF7F50',  # Coral fuerte
+    '32CD32',  # Lima fuerte
+    '8A2BE2',  # Violeta fuerte
+    'FA8072',  # Salmón fuerte
+    'FFD700',  # Dorado fuerte
+    '00CED1',  # Cian fuerte
+    'FF00FF',  # Magenta fuerte
+    '3EB489',  # Menta fuerte
 ]
 
 # Diccionario de abreviaciones a IDs
