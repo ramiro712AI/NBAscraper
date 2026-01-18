@@ -21,7 +21,7 @@ HEADERS = {
 }
 
 # Paleta de colores vibrantes (15 colores fuertes y distinguibles)
-PASTEL_COLORS = [
+VIBRANT_COLORS = [
     '4A90E2',  # Azul fuerte
     '50C878',  # Verde fuerte
     'FF8C42',  # Naranja fuerte
@@ -38,6 +38,42 @@ PASTEL_COLORS = [
     'FF00FF',  # Magenta fuerte
     '3EB489',  # Menta fuerte
 ]
+
+def generate_color_palette(num_colors):
+    """
+    Genera una paleta de colores expandida si hay más de 15 jugadores únicos.
+    Reutiliza los colores base con ligeras variaciones.
+    """
+    colors = []
+    base_colors_count = len(VIBRANT_COLORS)
+
+    for i in range(num_colors):
+        base_idx = i % base_colors_count
+        base_color = VIBRANT_COLORS[base_idx]
+
+        # Si necesitamos más de 15 colores, agregamos variaciones
+        if i >= base_colors_count:
+            # Cada "ciclo" de 15 colores usa una variación diferente
+            cycle = i // base_colors_count
+            # Ajustar brillo alternando entre más claro y más oscuro
+            if cycle % 2 == 1:
+                # Hacer más claro (agregar brillo)
+                r, g, b = int(base_color[0:2], 16), int(base_color[2:4], 16), int(base_color[4:6], 16)
+                r = min(255, r + 30)
+                g = min(255, g + 30)
+                b = min(255, b + 30)
+                base_color = f'{r:02X}{g:02X}{b:02X}'
+            else:
+                # Hacer más oscuro (reducir brillo)
+                r, g, b = int(base_color[0:2], 16), int(base_color[2:4], 16), int(base_color[4:6], 16)
+                r = max(0, r - 30)
+                g = max(0, g - 30)
+                b = max(0, b - 30)
+                base_color = f'{r:02X}{g:02X}{b:02X}'
+
+        colors.append(base_color)
+
+    return colors
 
 # Diccionario de abreviaciones a IDs
 TEAM_ABBREVIATIONS = {
@@ -341,9 +377,69 @@ def get_q1_stats_from_playbyplay(game_id, team_id):
         print(f"  ❌ Error obteniendo estadísticas de Q1: {e}")
         return {}
 
-def save_to_excel_with_colors(df, output_file):
+def collect_team_players(team_id, limit=5):
     """
-    Guarda el DataFrame en Excel con colores por jugador
+    Recopila todos los nombres únicos de jugadores de los últimos N juegos de un equipo.
+    Función ligera para la primera pasada de recopilación de jugadores.
+    """
+    players = set()
+
+    try:
+        games = get_team_schedule(team_id, limit=limit)
+
+        for game in games:
+            game_id = game['game_id']
+
+            try:
+                url = f"https://site.api.espn.com/apis/site/v2/sports/basketball/nba/summary?event={game_id}"
+                response = requests.get(url, timeout=10)
+                data = response.json()
+
+                boxscore = data.get('boxscore', {})
+                players_data = boxscore.get('players', [])
+
+                for team_data in players_data:
+                    current_team_id = team_data.get('team', {}).get('id')
+                    if str(current_team_id) != str(team_id):
+                        continue
+
+                    statistics = team_data.get('statistics', [])
+                    if not statistics:
+                        continue
+
+                    stats_info = statistics[0]
+                    labels = stats_info.get('labels', [])
+                    athletes = stats_info.get('athletes', [])
+
+                    for player in athletes:
+                        athlete_info = player.get('athlete', {})
+                        player_name = athlete_info.get('displayName', '')
+                        stats = player.get('stats', [])
+
+                        if not stats or not player_name:
+                            continue
+
+                        stats_dict = {label: value for label, value in zip(labels, stats)}
+                        minutes = stats_dict.get('MIN', '0')
+
+                        if minutes == '0' or minutes == 0:
+                            continue
+
+                        players.add(player_name)
+
+                time.sleep(0.3)  # Pequeña pausa entre requests
+
+            except Exception:
+                continue
+
+    except Exception:
+        pass
+
+    return players
+
+def save_to_excel_with_colors(df, output_file, player_color_map):
+    """
+    Guarda el DataFrame en Excel con colores por jugador usando el mapeo global
     """
     # Crear workbook
     wb = Workbook()
@@ -362,17 +458,11 @@ def save_to_excel_with_colors(df, output_file):
         cell.font = Font(bold=True, color='FFFFFF')
         cell.alignment = Alignment(horizontal='center', vertical='center')
 
-    # Crear mapeo de jugadores a colores
-    unique_players = df['Player'].unique()
-    player_colors = {}
-    for idx, player in enumerate(unique_players):
-        color_idx = idx % len(PASTEL_COLORS)
-        player_colors[player] = PASTEL_COLORS[color_idx]
-
-    # Escribir datos con colores por jugador
+    # Escribir datos con colores por jugador usando el mapeo global
     for row_num, row_data in enumerate(df.values, 2):
         player_name = row_data[3]  # Player está en la columna 4 (índice 3 después de insertar Team_Name)
-        player_color = player_colors.get(player_name, 'FFFFFF')
+        # Usar el mapeo global de colores
+        player_color = player_color_map.get(player_name, 'FFFFFF')
 
         for col_num, value in enumerate(row_data, 1):
             cell = ws.cell(row=row_num, column=col_num)
@@ -397,9 +487,10 @@ def save_to_excel_with_colors(df, output_file):
     # Guardar archivo
     wb.save(output_file)
 
-def process_team(team_abbr):
+def process_team(team_abbr, player_color_map):
     """
     Procesa un equipo específico y genera su archivo Excel con colores por jugador
+    usando el mapeo global de colores
     """
     team_id, team_name = TEAM_ABBREVIATIONS[team_abbr]
     
@@ -454,13 +545,13 @@ def process_team(team_abbr):
     df = df.sort_values(['Game_Date', 'Player'], ascending=[False, True])
     df['Game_Date'] = pd.to_datetime(df['Game_Date']).dt.strftime('%m/%d')
 
-    # Guardar Excel con colores
+    # Guardar Excel con colores usando el mapeo global
     output_file = f"{team_abbr}_last_5_games.xlsx"
-    save_to_excel_with_colors(df.copy(), output_file)
+    save_to_excel_with_colors(df.copy(), output_file, player_color_map)
 
     print(f"\n✅ EXCEL GUARDADO: {output_file}")
     print(f"📊 Total registros: {len(df)}")
-    print(f"🎨 Colores aplicados por jugador\n")
+    print(f"🎨 Colores consistentes aplicados por jugador\n")
 
     return True
 
@@ -476,25 +567,63 @@ def main():
     
     # Obtener equipos que juegan HOY
     teams_today = get_todays_games()
-    
+
     if not teams_today:
         print("\n⚠️  No hay equipos jugando hoy. Script terminado.")
         return
-    
-    # Procesar cada equipo
+
+    # PRIMERA PASADA: Recopilar todos los jugadores únicos de todos los equipos
+    print(f"\n{'='*60}")
+    print("FASE 1: RECOPILANDO JUGADORES ÚNICOS")
+    print(f"{'='*60}\n")
+
+    all_unique_players = set()
+
+    for idx, team_abbr in enumerate(teams_today, 1):
+        team_id, team_name = TEAM_ABBREVIATIONS[team_abbr]
+        print(f"  [{idx}/{len(teams_today)}] Recopilando jugadores de {team_abbr}...")
+
+        try:
+            team_players = collect_team_players(team_id, limit=5)
+            all_unique_players.update(team_players)
+            print(f"      ✅ {len(team_players)} jugadores encontrados")
+        except Exception as e:
+            print(f"      ⚠️  Error: {e}")
+
+        time.sleep(0.5)
+
+    print(f"\n{'='*60}")
+    print(f"✅ TOTAL DE JUGADORES ÚNICOS: {len(all_unique_players)}")
+    print(f"{'='*60}\n")
+
+    # Crear mapeo global de jugador a color
+    sorted_players = sorted(list(all_unique_players))  # Ordenar para consistencia
+    color_palette = generate_color_palette(len(sorted_players))
+
+    player_color_map = {}
+    for idx, player in enumerate(sorted_players):
+        player_color_map[player] = color_palette[idx]
+
+    print(f"🎨 Paleta de colores creada: {len(color_palette)} colores asignados\n")
+
+    # SEGUNDA PASADA: Procesar cada equipo con el mapeo global de colores
+    print(f"\n{'='*60}")
+    print("FASE 2: GENERANDO ARCHIVOS EXCEL")
+    print(f"{'='*60}")
+
     successful = 0
     failed = 0
-    
+
     for team_abbr in teams_today:
         try:
-            if process_team(team_abbr):
+            if process_team(team_abbr, player_color_map):
                 successful += 1
             else:
                 failed += 1
         except Exception as e:
             print(f"❌ Error procesando {team_abbr}: {e}")
             failed += 1
-        
+
         time.sleep(1)
     
     # Resumen final
