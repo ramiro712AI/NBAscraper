@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """
 NBA SCRAPER AUTOMÁTICO
-Detecta qué equipos juegan HOY y genera CSVs con sus últimos 5 juegos
+Detecta qué equipos juegan HOY y genera archivos Excel (.xlsx) con sus últimos 5 juegos
 """
 
 import requests
@@ -11,11 +11,33 @@ import time
 import re
 from collections import defaultdict
 import os
+from openpyxl import Workbook
+from openpyxl.styles import PatternFill, Font, Alignment
+from openpyxl.utils.dataframe import dataframe_to_rows
 
 # Configuración
 HEADERS = {
     'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36'
 }
+
+# Paleta de colores pastel (15 colores suaves para que el texto negro sea legible)
+PASTEL_COLORS = [
+    'FFE6E6',  # Rosa claro
+    'E6F3FF',  # Azul claro
+    'E6FFE6',  # Verde claro
+    'FFF4E6',  # Naranja claro
+    'F3E6FF',  # Púrpura claro
+    'FFFFE6',  # Amarillo claro
+    'E6FFFF',  # Cian claro
+    'FFE6F3',  # Fucsia claro
+    'F0FFE6',  # Lima claro
+    'FFE6CC',  # Melocotón claro
+    'E6E6FF',  # Lavanda claro
+    'CCFFE6',  # Menta claro
+    'FFCCCC',  # Coral claro
+    'CCE6FF',  # Cielo claro
+    'FFFFCC',  # Crema claro
+]
 
 # Diccionario de abreviaciones a IDs
 TEAM_ABBREVIATIONS = {
@@ -319,9 +341,65 @@ def get_q1_stats_from_playbyplay(game_id, team_id):
         print(f"  ❌ Error obteniendo estadísticas de Q1: {e}")
         return {}
 
+def save_to_excel_with_colors(df, output_file):
+    """
+    Guarda el DataFrame en Excel con colores por jugador
+    """
+    # Crear workbook
+    wb = Workbook()
+    ws = wb.active
+
+    # Insertar columna de Team_Name al inicio
+    team_name = output_file.split('_')[0]  # Extrae "BOS" de "BOS_last_5_games.xlsx"
+    df.insert(0, 'Team_Name', team_name)
+
+    # Escribir headers
+    for col_num, column_title in enumerate(df.columns, 1):
+        cell = ws.cell(row=1, column=col_num)
+        cell.value = column_title
+        # Estilo del header: gris oscuro con texto blanco en negrita
+        cell.fill = PatternFill(start_color='404040', end_color='404040', fill_type='solid')
+        cell.font = Font(bold=True, color='FFFFFF')
+        cell.alignment = Alignment(horizontal='center', vertical='center')
+
+    # Crear mapeo de jugadores a colores
+    unique_players = df['Player'].unique()
+    player_colors = {}
+    for idx, player in enumerate(unique_players):
+        color_idx = idx % len(PASTEL_COLORS)
+        player_colors[player] = PASTEL_COLORS[color_idx]
+
+    # Escribir datos con colores por jugador
+    for row_num, row_data in enumerate(df.values, 2):
+        player_name = row_data[3]  # Player está en la columna 4 (índice 3 después de insertar Team_Name)
+        player_color = player_colors.get(player_name, 'FFFFFF')
+
+        for col_num, value in enumerate(row_data, 1):
+            cell = ws.cell(row=row_num, column=col_num)
+            cell.value = value
+            # Aplicar color de fondo del jugador
+            cell.fill = PatternFill(start_color=player_color, end_color=player_color, fill_type='solid')
+            cell.alignment = Alignment(horizontal='center', vertical='center')
+
+    # Ajustar ancho de columnas
+    for column in ws.columns:
+        max_length = 0
+        column_letter = column[0].column_letter
+        for cell in column:
+            try:
+                if len(str(cell.value)) > max_length:
+                    max_length = len(str(cell.value))
+            except:
+                pass
+        adjusted_width = min(max_length + 2, 20)
+        ws.column_dimensions[column_letter].width = adjusted_width
+
+    # Guardar archivo
+    wb.save(output_file)
+
 def process_team(team_abbr):
     """
-    Procesa un equipo específico y genera su CSV
+    Procesa un equipo específico y genera su archivo Excel con colores por jugador
     """
     team_id, team_name = TEAM_ABBREVIATIONS[team_abbr]
     
@@ -375,14 +453,15 @@ def process_team(team_abbr):
     df = pd.DataFrame(all_data)
     df = df.sort_values(['Game_Date', 'Player'], ascending=[False, True])
     df['Game_Date'] = pd.to_datetime(df['Game_Date']).dt.strftime('%m/%d')
-    
-    # Guardar CSV
-    output_file = f"{team_abbr}_last_5_games.csv"
-    df.to_csv(output_file, index=False)
-    
-    print(f"\n✅ CSV GUARDADO: {output_file}")
-    print(f"📊 Total registros: {len(df)}\n")
-    
+
+    # Guardar Excel con colores
+    output_file = f"{team_abbr}_last_5_games.xlsx"
+    save_to_excel_with_colors(df.copy(), output_file)
+
+    print(f"\n✅ EXCEL GUARDADO: {output_file}")
+    print(f"📊 Total registros: {len(df)}")
+    print(f"🎨 Colores aplicados por jugador\n")
+
     return True
 
 def main():
@@ -424,7 +503,7 @@ def main():
     print("="*60)
     print(f"✅ Equipos procesados exitosamente: {successful}")
     print(f"❌ Equipos con errores: {failed}")
-    print(f"📁 Archivos CSV generados: {successful}")
+    print(f"📁 Archivos Excel (.xlsx) generados: {successful}")
     print("="*60 + "\n")
 
 if __name__ == "__main__":
