@@ -190,17 +190,18 @@ def get_boxscore_totals(game_id, team_id):
             athletes = stats_info.get('athletes', [])
             
             for player in athletes:
-                if not player.get('active', False):
-                    continue
-                    
                 athlete_info = player.get('athlete', {})
                 player_name = athlete_info.get('displayName', '')
                 stats = player.get('stats', [])
-                
+
                 if not stats or not player_name:
                     continue
-                
+
                 stats_dict = {label: value for label, value in zip(labels, stats)}
+                minutes = stats_dict.get('MIN', '0')
+
+                if minutes == '0' or minutes == 0:
+                    continue
                 
                 pts = stats_dict.get('PTS', '0')
                 reb = stats_dict.get('REB', '0')
