@@ -256,14 +256,23 @@ def get_boxscore_totals(game_id, team_id):
                 reb = stats_dict.get('REB', '0')
                 ast = stats_dict.get('AST', '0')
                 three_pt_raw = stats_dict.get('3PT', '0-0')
-                
+
                 three_pt = three_pt_raw.split('-')[0] if '-' in str(three_pt_raw) else '0'
-                
+
+                # Convertir minutos de "MM:SS" a número decimal
+                min_value = 0.0
+                if isinstance(minutes, str) and ':' in minutes:
+                    parts = minutes.split(':')
+                    min_value = int(parts[0]) + (int(parts[1]) / 60.0) if len(parts) == 2 else 0.0
+                elif str(minutes).replace('.', '').isdigit():
+                    min_value = float(minutes)
+
                 players_stats[player_name] = {
                     'PTS_TOTAL': int(pts) if str(pts).isdigit() else 0,
                     'REB_TOTAL': int(reb) if str(reb).isdigit() else 0,
                     'AST_TOTAL': int(ast) if str(ast).isdigit() else 0,
-                    '3PM_TOTAL': int(three_pt) if str(three_pt).isdigit() else 0
+                    '3PM_TOTAL': int(three_pt) if str(three_pt).isdigit() else 0,
+                    'MIN_TOTAL': round(min_value, 1)
                 }
         
         return players_stats
@@ -454,7 +463,8 @@ def save_to_excel_with_colors(df, output_file, player_color_map):
 
     # Escribir datos con colores por jugador usando el mapeo global
     for row_num, row_data in enumerate(df.values, 2):
-        player_name = row_data[3]  # Player está en la columna 4 (índice 3 después de insertar Team_Name)
+        # Después de insertar Team_Name: [Team_Name, Game_Date, Opponent, Is_Home, Player, ...]
+        player_name = row_data[4]  # Player está en la columna 5 (índice 4)
         # Usar el mapeo global de colores
         player_color = player_color_map.get(player_name, 'FFFFFF')
 
@@ -615,7 +625,8 @@ def process_team(team_abbr, player_color_map, next_game_info=None):
                 'PTS_TOTAL': totals[player_name]['PTS_TOTAL'],
                 'REB_TOTAL': totals[player_name]['REB_TOTAL'],
                 'AST_TOTAL': totals[player_name]['AST_TOTAL'],
-                '3PM_TOTAL': totals[player_name]['3PM_TOTAL']
+                '3PM_TOTAL': totals[player_name]['3PM_TOTAL'],
+                'MIN_TOTAL': totals[player_name]['MIN_TOTAL']
             }
             all_data.append(player_data)
         
@@ -623,7 +634,17 @@ def process_team(team_abbr, player_color_map, next_game_info=None):
     
     # Crear DataFrame
     df = pd.DataFrame(all_data)
-    df = df.sort_values(['Game_Date', 'Player'], ascending=[False, True])
+
+    # Calcular promedio de minutos por jugador (para ordenar: regulares primero)
+    player_avg_minutes = df.groupby('Player')['MIN_TOTAL'].mean().to_dict()
+    df['AVG_MIN'] = df['Player'].map(player_avg_minutes)
+
+    # Ordenar: primero por promedio de minutos (desc), luego por fecha (desc), luego por jugador (asc)
+    df = df.sort_values(['AVG_MIN', 'Game_Date', 'Player'], ascending=[False, False, True])
+
+    # Eliminar columna temporal de ordenamiento
+    df = df.drop(columns=['AVG_MIN'])
+
     df['Game_Date'] = pd.to_datetime(df['Game_Date']).dt.strftime('%m/%d')
 
     # CALCULAR PREDICCIONES QUIRÚRGICAS PARA CADA JUGADOR
