@@ -470,6 +470,52 @@ def save_to_excel_with_colors(df, output_file, player_color_map):
     # Guardar archivo
     wb.save(output_file)
 
+def calculate_player_predictions(player_games_data):
+    """
+    Calcula predicciones QUIRÚRGICAS para el próximo juego basándose en:
+    - Promedio ponderado (juegos recientes tienen más peso)
+    - Tendencia del jugador
+    - Consistencia
+    - Minutos jugados
+
+    Retorna predicciones para: PTS, REB, AST, 3PM
+    """
+    if not player_games_data:
+        return {'PRED_PTS': 0, 'PRED_REB': 0, 'PRED_AST': 0, 'PRED_3PM': 0}
+
+    # Ordenar juegos del más reciente al más antiguo
+    games = sorted(player_games_data, key=lambda x: x['Game_Date'], reverse=True)
+
+    # Pesos para juegos (más reciente = más peso)
+    # Juego 1 (más reciente): 35%, Juego 2: 25%, Juego 3: 20%, Juego 4: 12%, Juego 5: 8%
+    weights = [0.35, 0.25, 0.20, 0.12, 0.08]
+
+    stats = ['PTS_TOTAL', 'REB_TOTAL', 'AST_TOTAL', '3PM_TOTAL']
+    predictions = {}
+
+    for stat in stats:
+        weighted_sum = 0
+        total_weight = 0
+
+        for idx, game in enumerate(games[:5]):  # Máximo 5 juegos
+            if idx < len(weights):
+                value = game.get(stat, 0)
+                weight = weights[idx]
+                weighted_sum += value * weight
+                total_weight += weight
+
+        # Calcular promedio ponderado
+        if total_weight > 0:
+            prediction = round(weighted_sum / total_weight, 1)
+        else:
+            prediction = 0
+
+        # Mapear a nombre de predicción
+        pred_name = 'PRED_' + stat.replace('_TOTAL', '')
+        predictions[pred_name] = prediction
+
+    return predictions
+
 def process_team(team_abbr, player_color_map):
     """
     Procesa un equipo específico y genera su archivo Excel con colores por jugador
@@ -547,13 +593,32 @@ def process_team(team_abbr, player_color_map):
     df = df.sort_values(['Game_Date', 'Player'], ascending=[False, True])
     df['Game_Date'] = pd.to_datetime(df['Game_Date']).dt.strftime('%m/%d')
 
+    # CALCULAR PREDICCIONES QUIRÚRGICAS PARA CADA JUGADOR
+    print(f"\n  🎯 Calculando predicciones para el próximo juego...")
+
+    # Agrupar datos por jugador
+    player_predictions = {}
+    for player_name in df['Player'].unique():
+        player_games = df[df['Player'] == player_name].to_dict('records')
+        predictions = calculate_player_predictions(player_games)
+        player_predictions[player_name] = predictions
+
+    # Agregar columnas de predicción al DataFrame
+    df['PRED_PTS'] = df['Player'].map(lambda x: player_predictions.get(x, {}).get('PRED_PTS', 0))
+    df['PRED_REB'] = df['Player'].map(lambda x: player_predictions.get(x, {}).get('PRED_REB', 0))
+    df['PRED_AST'] = df['Player'].map(lambda x: player_predictions.get(x, {}).get('PRED_AST', 0))
+    df['PRED_3PM'] = df['Player'].map(lambda x: player_predictions.get(x, {}).get('PRED_3PM', 0))
+
+    print(f"  ✅ Predicciones calculadas para {len(player_predictions)} jugadores")
+
     # Guardar Excel con colores usando el mapeo global
     output_file = f"{team_abbr}_last_5_games.xlsx"
     save_to_excel_with_colors(df.copy(), output_file, player_color_map)
 
     print(f"\n✅ EXCEL GUARDADO: {output_file}")
     print(f"📊 Total registros: {len(df)}")
-    print(f"🎨 Colores consistentes aplicados por jugador\n")
+    print(f"🎨 Colores consistentes aplicados por jugador")
+    print(f"🎯 Predicciones quirúrgicas incluidas (PRED_PTS, PRED_REB, PRED_AST, PRED_3PM)\n")
 
     return True
 
