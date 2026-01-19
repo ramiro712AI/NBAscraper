@@ -71,62 +71,73 @@ TEAM_ABBREVIATIONS = {
 
 def get_todays_games():
     """
-    Obtiene los equipos que juegan HOY
+    Obtiene los equipos que juegan HOY y sus matchups
+    Returns: (teams_playing, game_info)
+        teams_playing: lista de team abbreviations
+        game_info: dict {team_abbr: {'opponent': str, 'is_home': bool}}
     """
     today = datetime.now().strftime('%Y%m%d')
     url = f"https://site.api.espn.com/apis/site/v2/sports/basketball/nba/scoreboard?dates={today}"
-    
+
     try:
         response = requests.get(url, headers=HEADERS, timeout=10)
         data = response.json()
-        
+
         teams_playing = []
+        game_info = {}
         events = data.get('events', [])
-        
+
         if not events:
             print(f"ℹ️  No hay juegos programados para HOY ({datetime.now().strftime('%Y-%m-%d')})")
-            return []
-        
+            return [], {}
+
         print(f"\n{'='*60}")
         print(f"JUEGOS DE HOY: {datetime.now().strftime('%A, %B %d, %Y')}")
         print(f"{'='*60}\n")
-        
+
         for idx, event in enumerate(events, 1):
             competition = event.get('competitions', [{}])[0]
             competitors = competition.get('competitors', [])
-            
+
             game_time = event.get('date', '')
             status = competition.get('status', {}).get('type', {}).get('name', '')
-            
-            for comp in competitors:
-                team_abbr = comp.get('team', {}).get('abbreviation', '')
-                team_name = comp.get('team', {}).get('displayName', '')
-                
-                if team_abbr and team_abbr in TEAM_ABBREVIATIONS:
-                    teams_playing.append(team_abbr)
-            
+
             # Mostrar info del juego
             if len(competitors) >= 2:
-                away = competitors[0].get('team', {}).get('abbreviation', '')
-                home = competitors[1].get('team', {}).get('abbreviation', '')
-                
+                away_comp = competitors[0]
+                home_comp = competitors[1]
+
+                away = away_comp.get('team', {}).get('abbreviation', '')
+                home = home_comp.get('team', {}).get('abbreviation', '')
+                away_name = away_comp.get('team', {}).get('displayName', '')
+                home_name = home_comp.get('team', {}).get('displayName', '')
+
+                # Agregar equipos a la lista
+                if away and away in TEAM_ABBREVIATIONS:
+                    teams_playing.append(away)
+                    game_info[away] = {'opponent': home_name, 'is_home': False}
+
+                if home and home in TEAM_ABBREVIATIONS:
+                    teams_playing.append(home)
+                    game_info[home] = {'opponent': away_name, 'is_home': True}
+
                 try:
                     dt = datetime.strptime(game_time, '%Y-%m-%dT%H:%MZ')
                     time_str = dt.strftime('%I:%M %p')
                 except:
                     time_str = 'TBD'
-                
+
                 print(f"{idx}. {away} @ {home} - {time_str} ({status})")
-        
+
         print(f"\n{'='*60}")
         print(f"✅ Total de equipos jugando HOY: {len(teams_playing)}")
         print(f"{'='*60}\n")
-        
-        return teams_playing
-        
+
+        return teams_playing, game_info
+
     except Exception as e:
         print(f"❌ Error obteniendo juegos de hoy: {e}")
-        return []
+        return [], {}
 
 def get_team_schedule(team_id, limit=5):
     """
@@ -470,13 +481,14 @@ def save_to_excel_with_colors(df, output_file, player_color_map):
     # Guardar archivo
     wb.save(output_file)
 
-def calculate_player_predictions(player_games_data):
+def calculate_player_predictions(player_games_data, next_opponent, is_home_game):
     """
     Calcula predicciones QUIRÚRGICAS para el próximo juego basándose en:
     - Promedio ponderado (juegos recientes tienen más peso)
+    - Rendimiento en CASA vs VISITANTE
+    - Historial contra el OPONENTE específico
     - Tendencia del jugador
     - Consistencia
-    - Minutos jugados
 
     Retorna predicciones para: PTS, REB, AST, 3PM
     """
@@ -486,9 +498,9 @@ def calculate_player_predictions(player_games_data):
     # Ordenar juegos del más reciente al más antiguo
     games = sorted(player_games_data, key=lambda x: x['Game_Date'], reverse=True)
 
-    # Pesos para juegos (más reciente = más peso)
+    # Pesos base para juegos (más reciente = más peso)
     # Juego 1 (más reciente): 35%, Juego 2: 25%, Juego 3: 20%, Juego 4: 12%, Juego 5: 8%
-    weights = [0.35, 0.25, 0.20, 0.12, 0.08]
+    base_weights = [0.35, 0.25, 0.20, 0.12, 0.08]
 
     stats = ['PTS_TOTAL', 'REB_TOTAL', 'AST_TOTAL', '3PM_TOTAL']
     predictions = {}
@@ -498,9 +510,20 @@ def calculate_player_predictions(player_games_data):
         total_weight = 0
 
         for idx, game in enumerate(games[:5]):  # Máximo 5 juegos
-            if idx < len(weights):
+            if idx < len(base_weights):
                 value = game.get(stat, 0)
-                weight = weights[idx]
+                weight = base_weights[idx]
+
+                # BONUS: Si el juego fue en la misma ubicación (casa/visitante)
+                game_is_home = game.get('Is_Home', False)
+                if game_is_home == is_home_game:
+                    weight *= 1.3  # 30% más peso si es misma ubicación
+
+                # BONUS: Si el juego fue contra el mismo oponente
+                game_opponent = game.get('Opponent', '')
+                if game_opponent == next_opponent:
+                    weight *= 1.5  # 50% más peso si es mismo oponente
+
                 weighted_sum += value * weight
                 total_weight += weight
 
@@ -516,10 +539,15 @@ def calculate_player_predictions(player_games_data):
 
     return predictions
 
-def process_team(team_abbr, player_color_map):
+def process_team(team_abbr, player_color_map, next_game_info=None):
     """
     Procesa un equipo específico y genera su archivo Excel con colores por jugador
     usando el mapeo global de colores
+
+    Args:
+        team_abbr: Abreviación del equipo (ej: 'LAL')
+        player_color_map: Mapeo global de jugador a color
+        next_game_info: Dict con info del próximo juego {'opponent': str, 'is_home': bool}
     """
     team_id, team_name = TEAM_ABBREVIATIONS[team_abbr]
     
@@ -554,9 +582,14 @@ def process_team(team_abbr, player_color_map):
         for player_name in totals:
             player_quarters = quarters_stats.get(player_name, {})
 
+            # Determinar si jugó en casa o visitante
+            is_home = team_name.upper() in game['home_team'].upper()
+            opponent = game['away_team'] if is_home else game['home_team']
+
             player_data = {
                 'Game_Date': game_date,
-                'Opponent': game['away_team'] if team_name.upper() in game['home_team'].upper() else game['home_team'],
+                'Opponent': opponent,
+                'Is_Home': is_home,
                 'Player': player_name,
                 # Q1
                 'PTS_Q1': player_quarters.get('PTS_Q1', 0),
@@ -594,13 +627,22 @@ def process_team(team_abbr, player_color_map):
     df['Game_Date'] = pd.to_datetime(df['Game_Date']).dt.strftime('%m/%d')
 
     # CALCULAR PREDICCIONES QUIRÚRGICAS PARA CADA JUGADOR
-    print(f"\n  🎯 Calculando predicciones para el próximo juego...")
+    if next_game_info:
+        next_opponent = next_game_info.get('opponent', '')
+        is_home_next = next_game_info.get('is_home', False)
+        game_location = "CASA" if is_home_next else "VISITANTE"
+        print(f"\n  🎯 Calculando predicciones para próximo juego:")
+        print(f"      vs {next_opponent} ({game_location})")
+    else:
+        next_opponent = ''
+        is_home_next = False
+        print(f"\n  🎯 Calculando predicciones para el próximo juego...")
 
     # Agrupar datos por jugador
     player_predictions = {}
     for player_name in df['Player'].unique():
         player_games = df[df['Player'] == player_name].to_dict('records')
-        predictions = calculate_player_predictions(player_games)
+        predictions = calculate_player_predictions(player_games, next_opponent, is_home_next)
         player_predictions[player_name] = predictions
 
     # Agregar columnas de predicción al DataFrame
@@ -632,8 +674,8 @@ def main():
     print(f"Fecha/Hora: {datetime.now().strftime('%Y-%m-%d %I:%M:%S %p')}")
     print("="*60 + "\n")
     
-    # Obtener equipos que juegan HOY
-    teams_today = get_todays_games()
+    # Obtener equipos que juegan HOY y su información de matchup
+    teams_today, game_info = get_todays_games()
 
     if not teams_today:
         print("\n⚠️  No hay equipos jugando hoy. Script terminado.")
@@ -683,7 +725,9 @@ def main():
 
     for team_abbr in teams_today:
         try:
-            if process_team(team_abbr, player_color_map):
+            # Obtener info del próximo juego para este equipo
+            next_game = game_info.get(team_abbr, None)
+            if process_team(team_abbr, player_color_map, next_game):
                 successful += 1
             else:
                 failed += 1
