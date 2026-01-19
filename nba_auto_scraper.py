@@ -41,37 +41,17 @@ VIBRANT_COLORS = [
 
 def generate_color_palette(num_colors):
     """
-    Genera una paleta de colores expandida si hay más de 15 jugadores únicos.
-    Reutiliza los colores base con ligeras variaciones.
+    Genera una paleta de colores.
+    Si hay más de 15 jugadores, simplemente repite los colores base.
+    UN COLOR = UN COLOR BASE, sin variaciones claras/oscuras.
     """
     colors = []
     base_colors_count = len(VIBRANT_COLORS)
 
     for i in range(num_colors):
-        base_idx = i % base_colors_count
-        base_color = VIBRANT_COLORS[base_idx]
-
-        # Si necesitamos más de 15 colores, agregamos variaciones
-        if i >= base_colors_count:
-            # Cada "ciclo" de 15 colores usa una variación diferente
-            cycle = i // base_colors_count
-            # Ajustar brillo alternando entre más claro y más oscuro
-            if cycle % 2 == 1:
-                # Hacer más claro (agregar brillo)
-                r, g, b = int(base_color[0:2], 16), int(base_color[2:4], 16), int(base_color[4:6], 16)
-                r = min(255, r + 30)
-                g = min(255, g + 30)
-                b = min(255, b + 30)
-                base_color = f'{r:02X}{g:02X}{b:02X}'
-            else:
-                # Hacer más oscuro (reducir brillo)
-                r, g, b = int(base_color[0:2], 16), int(base_color[2:4], 16), int(base_color[4:6], 16)
-                r = max(0, r - 30)
-                g = max(0, g - 30)
-                b = max(0, b - 30)
-                base_color = f'{r:02X}{g:02X}{b:02X}'
-
-        colors.append(base_color)
+        # Simplemente rotar entre los 15 colores base
+        color_idx = i % base_colors_count
+        colors.append(VIBRANT_COLORS[color_idx])
 
     return colors
 
@@ -281,9 +261,9 @@ def get_boxscore_totals(game_id, team_id):
         print(f"  ❌ Error obteniendo estadísticas totales: {e}")
         return {}
 
-def get_q1_stats_from_playbyplay(game_id, team_id):
+def get_all_quarters_stats_from_playbyplay(game_id, team_id):
     """
-    Extrae estadísticas del Q1 desde el play-by-play
+    Extrae estadísticas de TODOS los quarters (Q1, Q2, Q3, Q4) desde el play-by-play
     """
     url = f"https://site.api.espn.com/apis/site/v2/sports/basketball/nba/summary?event={game_id}"
     
@@ -311,70 +291,73 @@ def get_q1_stats_from_playbyplay(game_id, team_id):
                         if player_name:
                             team_players.add(player_name)
         
-        # Ahora extraer stats del Q1 desde play-by-play
+        # Ahora extraer stats de TODOS los quarters (Q1, Q2, Q3, Q4) desde play-by-play
         plays = data.get('plays', [])
-        
-        q1_stats = defaultdict(lambda: {
-            'PTS_Q1': 0,
-            'REB_Q1': 0,
-            'AST_Q1': 0,
-            '3PM_Q1': 0
+
+        # Inicializar estructura para todos los quarters
+        all_stats = defaultdict(lambda: {
+            'PTS_Q1': 0, 'REB_Q1': 0, 'AST_Q1': 0, '3PM_Q1': 0,
+            'PTS_Q2': 0, 'REB_Q2': 0, 'AST_Q2': 0, '3PM_Q2': 0,
+            'PTS_Q3': 0, 'REB_Q3': 0, 'AST_Q3': 0, '3PM_Q3': 0,
+            'PTS_Q4': 0, 'REB_Q4': 0, 'AST_Q4': 0, '3PM_Q4': 0
         })
-        
+
         for play in plays:
             period = play.get('period', {}).get('number', 0)
-            
-            if period != 1:
+
+            # Procesar solo periods 1, 2, 3, 4 (ignorar overtime)
+            if period not in [1, 2, 3, 4]:
                 continue
-            
+
             text = play.get('text', '')
             scoring_play = play.get('scoringPlay', False)
-            
+            quarter_suffix = f'Q{period}'
+
             # PUNTOS
             if scoring_play:
                 makes_pattern = r'([A-Za-z\'\.\s]+?)\s+makes\s+'
                 match = re.search(makes_pattern, text)
-                
+
                 if match:
                     player = match.group(1).strip()
-                    
+
                     if player not in team_players:
                         continue
-                    
+
                     is_three = 'three point' in text.lower() or '3-point' in text.lower()
-                    
+
                     if is_three:
-                        q1_stats[player]['PTS_Q1'] += 3
-                        q1_stats[player]['3PM_Q1'] += 1
+                        all_stats[player][f'PTS_{quarter_suffix}'] += 3
+                        all_stats[player][f'3PM_{quarter_suffix}'] += 1
                     elif 'free throw' in text.lower():
-                        q1_stats[player]['PTS_Q1'] += 1
+                        all_stats[player][f'PTS_{quarter_suffix}'] += 1
                     else:
-                        q1_stats[player]['PTS_Q1'] += 2
-            
+                        all_stats[player][f'PTS_{quarter_suffix}'] += 2
+
             # REBOTES
             if 'rebound' in text.lower():
                 rebound_pattern = r'([A-Za-z\'\.\s]+?)\s+(defensive|offensive)\s+rebound'
                 match = re.search(rebound_pattern, text)
-                
+
                 if match:
                     player = match.group(1).strip()
                     if player in team_players:
-                        q1_stats[player]['REB_Q1'] += 1
-            
+                        all_stats[player][f'REB_{quarter_suffix}'] += 1
+
             # ASISTENCIAS
             if 'assists)' in text:
                 assist_pattern = r'\(([A-Za-z\'\.\s]+?)\s+assists\)'
                 match = re.search(assist_pattern, text)
-                
+
                 if match:
                     player = match.group(1).strip()
                     if player in team_players:
-                        q1_stats[player]['AST_Q1'] += 1
-        
-        return dict(q1_stats)
-        
+                        all_stats[player][f'AST_{quarter_suffix}'] += 1
+
+        return dict(all_stats)
+
     except Exception as e:
-        print(f"  ❌ Error obteniendo estadísticas de Q1: {e}")
+        print(f"  ❌ Error obteniendo estadísticas de quarters: {e}")
         return {}
 
 def collect_team_players(team_id, limit=5):
@@ -518,19 +501,38 @@ def process_team(team_abbr, player_color_map):
         print(f"  JUEGO {idx}/{len(games)}: {matchup} ({game_date})")
         
         totals = get_boxscore_totals(game_id, team_id)
-        q1_stats = get_q1_stats_from_playbyplay(game_id, team_id)
-        
+        quarters_stats = get_all_quarters_stats_from_playbyplay(game_id, team_id)
+
         print(f"    ✅ {len(totals)} jugadores procesados")
-        
+
         for player_name in totals:
+            player_quarters = quarters_stats.get(player_name, {})
+
             player_data = {
                 'Game_Date': game_date,
                 'Opponent': game['away_team'] if team_name.upper() in game['home_team'].upper() else game['home_team'],
                 'Player': player_name,
-                'PTS_Q1': q1_stats.get(player_name, {}).get('PTS_Q1', 0),
-                'REB_Q1': q1_stats.get(player_name, {}).get('REB_Q1', 0),
-                'AST_Q1': q1_stats.get(player_name, {}).get('AST_Q1', 0),
-                '3PM_Q1': q1_stats.get(player_name, {}).get('3PM_Q1', 0),
+                # Q1
+                'PTS_Q1': player_quarters.get('PTS_Q1', 0),
+                'REB_Q1': player_quarters.get('REB_Q1', 0),
+                'AST_Q1': player_quarters.get('AST_Q1', 0),
+                '3PM_Q1': player_quarters.get('3PM_Q1', 0),
+                # Q2
+                'PTS_Q2': player_quarters.get('PTS_Q2', 0),
+                'REB_Q2': player_quarters.get('REB_Q2', 0),
+                'AST_Q2': player_quarters.get('AST_Q2', 0),
+                '3PM_Q2': player_quarters.get('3PM_Q2', 0),
+                # Q3
+                'PTS_Q3': player_quarters.get('PTS_Q3', 0),
+                'REB_Q3': player_quarters.get('REB_Q3', 0),
+                'AST_Q3': player_quarters.get('AST_Q3', 0),
+                '3PM_Q3': player_quarters.get('3PM_Q3', 0),
+                # Q4
+                'PTS_Q4': player_quarters.get('PTS_Q4', 0),
+                'REB_Q4': player_quarters.get('REB_Q4', 0),
+                'AST_Q4': player_quarters.get('AST_Q4', 0),
+                '3PM_Q4': player_quarters.get('3PM_Q4', 0),
+                # TOTALES
                 'PTS_TOTAL': totals[player_name]['PTS_TOTAL'],
                 'REB_TOTAL': totals[player_name]['REB_TOTAL'],
                 'AST_TOTAL': totals[player_name]['AST_TOTAL'],
