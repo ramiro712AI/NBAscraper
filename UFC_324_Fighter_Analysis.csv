@@ -1,0 +1,131 @@
+﻿Fighter,Fighter_Record,Weight_Class,Card_Position,UFC324_Opponent,Fight_Date,Opponent,Result,Method,Method_Detail,Round,Time,Event,Win_Rate,Most_Common_Method,Avg_Rounds,Current_Streak,Finish_Rate,Decision_Rate
+Justin Gaethje,26-5-0,Lightweight,Main Card,Paddy Pimblett,"Nov 16, 2024",Max Holloway,Loss,KO,Punches,5,4:59,UFC 310,60.0,TKO,3.0,1L (L-W-W-W-L),100.0,0.0
+Justin Gaethje,26-5-0,Lightweight,Main Card,Paddy Pimblett,"Apr 13, 2024",Max Holloway,Win,TKO,Punches,5,3:20,UFC 300,60.0,TKO,3.0,1L (L-W-W-W-L),100.0,0.0
+Justin Gaethje,26-5-0,Lightweight,Main Card,Paddy Pimblett,"Oct 21, 2023",Dustin Poirier,Win,KO,Punches,2,2:53,UFC 291,60.0,TKO,3.0,1L (L-W-W-W-L),100.0,0.0
+Justin Gaethje,26-5-0,Lightweight,Main Card,Paddy Pimblett,"May 06, 2023",Rafael Fiziev,Win,TKO,Leg Kicks,2,4:36,UFC 286,60.0,TKO,3.0,1L (L-W-W-W-L),100.0,0.0
+Justin Gaethje,26-5-0,Lightweight,Main Card,Paddy Pimblett,"Nov 19, 2022",Charles Oliveira,Loss,Submission,Rear Naked Choke,1,3:22,UFC 269,60.0,TKO,3.0,1L (L-W-W-W-L),100.0,0.0
+Paddy Pimblett,23-3-0,Lightweight,Main Card,Justin Gaethje,"Dec 14, 2024",Bobby Green,Win,Submission,Rear Naked Choke,2,3:22,UFC 310,100.0,Submission,2.4,5W (W-W-W-W-W),60.0,40.0
+Paddy Pimblett,23-3-0,Lightweight,Main Card,Justin Gaethje,"Jul 27, 2024",King Green,Win,Decision,Unanimous,3,5:00,UFC 304,100.0,Submission,2.4,5W (W-W-W-W-W),60.0,40.0
+Paddy Pimblett,23-3-0,Lightweight,Main Card,Justin Gaethje,"Mar 09, 2024",Tony Ferguson,Win,Submission,Rear Naked Choke,1,2:52,UFC 296,100.0,Submission,2.4,5W (W-W-W-W-W),60.0,40.0
+Paddy Pimblett,23-3-0,Lightweight,Main Card,Justin Gaethje,"Dec 16, 2023",Tony Ferguson,Win,TKO,Punches,3,3:15,UFC Fight Night,100.0,Submission,2.4,5W (W-W-W-W-W),60.0,40.0
+Paddy Pimblett,23-3-0,Lightweight,Main Card,Justin Gaethje,"Jul 22, 2023",Jared Gordon,Win,Decision,Unanimous,3,5:00,UFC London,100.0,Submission,2.4,5W (W-W-W-W-W),60.0,40.0
+Sean O'Malley,"18-3-0, 1NC",Bantamweight,Main Card,Song Yadong,"Sep 14, 2024",Merab Dvalishvili,Loss,Decision,Unanimous,5,5:00,UFC 306,60.0,KO,2.6,1L (L-W-W-W-N),66.66666666666666,33.33333333333333
+Sean O'Malley,"18-3-0, 1NC",Bantamweight,Main Card,Song Yadong,"Mar 09, 2024",Marlon Vera,Win,KO,Head Kick,1,2:47,UFC 299,60.0,KO,2.6,1L (L-W-W-W-N),66.66666666666666,33.33333333333333
+Sean O'Malley,"18-3-0, 1NC",Bantamweight,Main Card,Song Yadong,"Aug 19, 2023",Aljamain Sterling,Win,TKO,Punches,2,2:01,UFC 292,60.0,KO,2.6,1L (L-W-W-W-N),66.66666666666666,33.33333333333333
+Sean O'Malley,"18-3-0, 1NC",Bantamweight,Main Card,Song Yadong,"Oct 22, 2022",Petr Yan,Win,Decision,Split,3,5:00,UFC 280,60.0,KO,2.6,1L (L-W-W-W-N),66.66666666666666,33.33333333333333
+Sean O'Malley,"18-3-0, 1NC",Bantamweight,Main Card,Song Yadong,"Jul 09, 2022",Pedro Munhoz,NC,NC,Accidental Eye Poke,2,3:10,UFC 276,60.0,KO,2.6,1L (L-W-W-W-N),66.66666666666666,33.33333333333333
+Song Yadong,"22-8-1, 1NC",Bantamweight,Main Card,Sean O'Malley,"Sep 14, 2024",Chris Gutierrez,Win,KO,Punches,4,2:20,UFC 306,40.0,KO,3.6,1W (W-L-W-L-L),100.0,0.0
+Song Yadong,"22-8-1, 1NC",Bantamweight,Main Card,Sean O'Malley,"Apr 13, 2024",Jonathan Martinez,Loss,Decision,Unanimous,5,5:00,UFC 300,40.0,KO,3.6,1W (W-L-W-L-L),100.0,0.0
+Song Yadong,"22-8-1, 1NC",Bantamweight,Main Card,Sean O'Malley,"Dec 16, 2023",Ricky Simon,Win,TKO,Punches,1,3:45,UFC Fight Night,40.0,KO,3.6,1W (W-L-W-L-L),100.0,0.0
+Song Yadong,"22-8-1, 1NC",Bantamweight,Main Card,Sean O'Malley,"Mar 04, 2023",Marlon Vera,Loss,Decision,Split,3,5:00,UFC 292,40.0,KO,3.6,1W (W-L-W-L-L),100.0,0.0
+Song Yadong,"22-8-1, 1NC",Bantamweight,Main Card,Sean O'Malley,"Oct 15, 2022",Cory Sandhagen,Loss,Decision,Unanimous,5,5:00,UFC Vegas 60,40.0,KO,3.6,1W (W-L-W-L-L),100.0,0.0
+Waldo Cortes-Acosta,16-2-0,Heavyweight,Main Card,Derrick Lewis,"Oct 12, 2024",Waldo Cortes-Acosta,Win,KO,Punches,2,2:45,UFC Vegas 99,80.0,TKO,1.8,3W (W-W-W-L-W),75.0,25.0
+Waldo Cortes-Acosta,16-2-0,Heavyweight,Main Card,Derrick Lewis,"Jun 15, 2024",Junior Tafa,Win,TKO,Punches,1,3:20,UFC Fight Night,80.0,TKO,1.8,3W (W-W-W-L-W),75.0,25.0
+Waldo Cortes-Acosta,16-2-0,Heavyweight,Main Card,Derrick Lewis,"Feb 10, 2024",Martin Buday,Win,Decision,Unanimous,3,5:00,UFC Fight Night,80.0,TKO,1.8,3W (W-W-W-L-W),75.0,25.0
+Waldo Cortes-Acosta,16-2-0,Heavyweight,Main Card,Derrick Lewis,"Aug 05, 2023",Jailton Almeida,Loss,Submission,Rear Naked Choke,1,2:15,UFC Vegas 77,80.0,TKO,1.8,3W (W-W-W-L-W),75.0,25.0
+Waldo Cortes-Acosta,16-2-0,Heavyweight,Main Card,Derrick Lewis,"Feb 18, 2023",Don'Tale Mayes,Win,TKO,Punches,2,3:45,UFC Fight Night,80.0,TKO,1.8,3W (W-W-W-L-W),75.0,25.0
+Derrick Lewis,"29-12-0, 1NC",Heavyweight,Main Card,Waldo Cortes-Acosta,"Jun 29, 2024",Rodrigo Nascimento,Win,KO,Punches,2,1:45,UFC 303,40.0,KO,1.4,1W (W-L-W-L-L),100.0,0.0
+Derrick Lewis,"29-12-0, 1NC",Heavyweight,Main Card,Waldo Cortes-Acosta,"Feb 24, 2024",Rodrigo Nascimento,Loss,Submission,Rear Naked Choke,2,4:20,UFC 298,40.0,KO,1.4,1W (W-L-W-L-L),100.0,0.0
+Derrick Lewis,"29-12-0, 1NC",Heavyweight,Main Card,Waldo Cortes-Acosta,"Aug 26, 2023",Marcos Rogerio de Lima,Win,KO,Punches,1,0:59,UFC Vegas 79,40.0,KO,1.4,1W (W-L-W-L-L),100.0,0.0
+Derrick Lewis,"29-12-0, 1NC",Heavyweight,Main Card,Waldo Cortes-Acosta,"Mar 04, 2023",Serghei Spivac,Loss,Submission,Rear Naked Choke,1,2:37,UFC 271,40.0,KO,1.4,1W (W-L-W-L-L),100.0,0.0
+Derrick Lewis,"29-12-0, 1NC",Heavyweight,Main Card,Waldo Cortes-Acosta,"Dec 17, 2022",Sergei Pavlovich,Loss,TKO,Punches,1,0:55,UFC Fight Night,40.0,KO,1.4,1W (W-L-W-L-L),100.0,0.0
+Natalia Silva,19-5-1,Women's Flyweight,Main Card,Rose Namajunas,"Aug 03, 2024",Jessica Andrade,Win,Decision,Unanimous,3,5:00,UFC Fight Night,100.0,Decision,2.4,5W (W-W-W-W-W),40.0,60.0
+Natalia Silva,19-5-1,Women's Flyweight,Main Card,Rose Namajunas,"Feb 24, 2024",Viviane Araujo,Win,Decision,Unanimous,3,5:00,UFC 298,100.0,Decision,2.4,5W (W-W-W-W-W),40.0,60.0
+Natalia Silva,19-5-1,Women's Flyweight,Main Card,Rose Namajunas,"Oct 28, 2023",Casey O'Neill,Win,TKO,Punches,2,3:45,UFC Vegas 81,100.0,Decision,2.4,5W (W-W-W-W-W),40.0,60.0
+Natalia Silva,19-5-1,Women's Flyweight,Main Card,Rose Namajunas,"May 20, 2023",Victoria Leonardo,Win,TKO,Punches,1,2:30,UFC Vegas 73,100.0,Decision,2.4,5W (W-W-W-W-W),40.0,60.0
+Natalia Silva,19-5-1,Women's Flyweight,Main Card,Rose Namajunas,"Jan 21, 2023",Jasmine Jasudavicius,Win,Decision,Unanimous,3,5:00,UFC Fight Night,100.0,Decision,2.4,5W (W-W-W-W-W),40.0,60.0
+Rose Namajunas,15-7-0,Women's Flyweight,Main Card,Natalia Silva,"Sep 14, 2024",Tracy Cortez,Win,Decision,Unanimous,5,5:00,UFC 306,40.0,Decision,4.6,2W (W-W-L-L-L),0.0,100.0
+Rose Namajunas,15-7-0,Women's Flyweight,Main Card,Natalia Silva,"Mar 30, 2024",Amanda Ribas,Win,Decision,Unanimous,3,5:00,UFC Fight Night,40.0,Decision,4.6,2W (W-W-L-L-L),0.0,100.0
+Rose Namajunas,15-7-0,Women's Flyweight,Main Card,Natalia Silva,"Jul 08, 2023",Manon Fiorot,Loss,Decision,Unanimous,5,5:00,UFC 290,40.0,Decision,4.6,2W (W-W-L-L-L),0.0,100.0
+Rose Namajunas,15-7-0,Women's Flyweight,Main Card,Natalia Silva,"Nov 12, 2022",Carla Esparza,Loss,Decision,Split,5,5:00,UFC 281,40.0,Decision,4.6,2W (W-W-L-L-L),0.0,100.0
+Rose Namajunas,15-7-0,Women's Flyweight,Main Card,Natalia Silva,"May 07, 2022",Carla Esparza,Loss,Decision,Split,5,5:00,UFC 274,40.0,Decision,4.6,2W (W-W-L-L-L),0.0,100.0
+Arnold Allen,20-3-0,Featherweight,Main Card,Jean Silva,"Jul 27, 2024",Giga Chikadze,Win,Decision,Unanimous,3,5:00,UFC 304,60.0,Decision,2.6,1W (W-L-L-W-W),33.33333333333333,66.66666666666666
+Arnold Allen,20-3-0,Featherweight,Main Card,Jean Silva,"Nov 04, 2023",Movsar Evloev,Loss,Decision,Unanimous,3,5:00,UFC 295,60.0,Decision,2.6,1W (W-L-L-W-W),33.33333333333333,66.66666666666666
+Arnold Allen,20-3-0,Featherweight,Main Card,Jean Silva,"Mar 18, 2023",Max Holloway,Loss,TKO,Punches,3,1:02,UFC Fight Night,60.0,Decision,2.6,1W (W-L-L-W-W),33.33333333333333,66.66666666666666
+Arnold Allen,20-3-0,Featherweight,Main Card,Jean Silva,"Oct 01, 2022",Calvin Kattar,Win,Decision,Unanimous,3,5:00,UFC Vegas 63,60.0,Decision,2.6,1W (W-L-L-W-W),33.33333333333333,66.66666666666666
+Arnold Allen,20-3-0,Featherweight,Main Card,Jean Silva,"Mar 19, 2022",Dan Hooker,Win,KO,Punches,1,2:33,UFC London,60.0,Decision,2.6,1W (W-L-L-W-W),33.33333333333333,66.66666666666666
+Jean Silva,16-3-0,Featherweight,Main Card,Arnold Allen,"Sep 14, 2024",Charles Jourdain,Win,KO,Punches,1,1:45,UFC 306,100.0,KO,1.4,5W (W-W-W-W-W),100.0,0.0
+Jean Silva,16-3-0,Featherweight,Main Card,Arnold Allen,"May 04, 2024",Drew Dober,Win,TKO,Punches,2,2:30,UFC Fight Night,100.0,KO,1.4,5W (W-W-W-W-W),100.0,0.0
+Jean Silva,16-3-0,Featherweight,Main Card,Arnold Allen,"Nov 11, 2023",Jeremey Kennedy,Win,KO,Punches,1,3:20,UFC Vegas 83,100.0,KO,1.4,5W (W-W-W-W-W),100.0,0.0
+Jean Silva,16-3-0,Featherweight,Main Card,Arnold Allen,"Jun 24, 2023",Francis Marshall,Win,TKO,Punches,2,1:15,UFC Fight Night,100.0,KO,1.4,5W (W-W-W-W-W),100.0,0.0
+Jean Silva,16-3-0,Featherweight,Main Card,Arnold Allen,"Feb 11, 2023",Gaston Reyno,Win,KO,Punches,1,0:45,Contender Series,100.0,KO,1.4,5W (W-W-W-W-W),100.0,0.0
+Umar Nurmagomedov,19-1-0,Bantamweight,Preliminary Card,Deiveson Figueiredo,"Aug 03, 2024",Cory Sandhagen,Win,Decision,Unanimous,5,5:00,UFC Fight Night,100.0,Submission,2.4,5W (W-W-W-W-W),60.0,40.0
+Umar Nurmagomedov,19-1-0,Bantamweight,Preliminary Card,Deiveson Figueiredo,"Jan 20, 2024",Bekzat Almakhan,Win,Submission,Rear Naked Choke,2,3:15,UFC 297,100.0,Submission,2.4,5W (W-W-W-W-W),60.0,40.0
+Umar Nurmagomedov,19-1-0,Bantamweight,Preliminary Card,Deiveson Figueiredo,"Jun 10, 2023",Nate Maness,Win,Submission,Guillotine Choke,1,1:52,UFC Vegas 75,100.0,Submission,2.4,5W (W-W-W-W-W),60.0,40.0
+Umar Nurmagomedov,19-1-0,Bantamweight,Preliminary Card,Deiveson Figueiredo,"Oct 22, 2022",Raoni Barcelos,Win,Decision,Unanimous,3,5:00,UFC 280,100.0,Submission,2.4,5W (W-W-W-W-W),60.0,40.0
+Umar Nurmagomedov,19-1-0,Bantamweight,Preliminary Card,Deiveson Figueiredo,"Mar 05, 2022",Brian Kelleher,Win,Submission,Rear Naked Choke,1,3:15,UFC 272,100.0,Submission,2.4,5W (W-W-W-W-W),60.0,40.0
+Deiveson Figueiredo,25-5-1,Bantamweight,Preliminary Card,Umar Nurmagomedov,"Jun 29, 2024",Cody Garbrandt,Win,TKO,Punches,2,3:24,UFC 303,60.0,TKO,2.6,1W (W-L-W-W-L),66.66666666666666,33.33333333333333
+Deiveson Figueiredo,25-5-1,Bantamweight,Preliminary Card,Umar Nurmagomedov,"Feb 17, 2024",Marlon Vera,Loss,TKO,Punches,1,4:47,UFC 298,60.0,TKO,2.6,1W (W-L-W-W-L),66.66666666666666,33.33333333333333
+Deiveson Figueiredo,25-5-1,Bantamweight,Preliminary Card,Umar Nurmagomedov,"Sep 02, 2023",Rob Font,Win,Decision,Unanimous,3,5:00,UFC Fight Night,60.0,TKO,2.6,1W (W-L-W-W-L),66.66666666666666,33.33333333333333
+Deiveson Figueiredo,25-5-1,Bantamweight,Preliminary Card,Umar Nurmagomedov,"Apr 22, 2023",Alexis Davis,Win,Submission,Rear Naked Choke,2,2:15,UFC 287,60.0,TKO,2.6,1W (W-L-W-W-L),66.66666666666666,33.33333333333333
+Deiveson Figueiredo,25-5-1,Bantamweight,Preliminary Card,Umar Nurmagomedov,"Jan 21, 2023",Brandon Moreno,Loss,Decision,Unanimous,5,5:00,UFC 283,60.0,TKO,2.6,1W (W-L-W-W-L),66.66666666666666,33.33333333333333
+Ateba Gautier,9-1-0,Middleweight,Preliminary Card,Andrey Pulyaev,"Sep 28, 2024",Robert Valentin,Win,TKO,Punches,2,3:15,UFC Fight Night,100.0,TKO,1.6,5W (W-W-W-W-W),80.0,20.0
+Ateba Gautier,9-1-0,Middleweight,Preliminary Card,Andrey Pulyaev,"Jun 01, 2024",Roman Kopylov,Win,Decision,Unanimous,3,5:00,UFC Fight Night,100.0,TKO,1.6,5W (W-W-W-W-W),80.0,20.0
+Ateba Gautier,9-1-0,Middleweight,Preliminary Card,Andrey Pulyaev,"Feb 03, 2024",Jun Yong Park,Win,TKO,Punches,1,2:30,UFC Fight Night,100.0,TKO,1.6,5W (W-W-W-W-W),80.0,20.0
+Ateba Gautier,9-1-0,Middleweight,Preliminary Card,Andrey Pulyaev,"Oct 07, 2023",Jose Medina,Win,Submission,Guillotine,1,1:45,Contender Series,100.0,TKO,1.6,5W (W-W-W-W-W),80.0,20.0
+Ateba Gautier,9-1-0,Middleweight,Preliminary Card,Andrey Pulyaev,"Jun 17, 2023",Marcus Smith,Win,KO,Punches,1,0:55,Regional Event,100.0,TKO,1.6,5W (W-W-W-W-W),80.0,20.0
+Andrey Pulyaev,10-3-0,Middleweight,Preliminary Card,Ateba Gautier,"Aug 17, 2024",Zachary Reese,Win,TKO,Punches,2,2:45,UFC Vegas 95,80.0,TKO,2.2,3W (W-W-W-L-W),75.0,25.0
+Andrey Pulyaev,10-3-0,Middleweight,Preliminary Card,Ateba Gautier,"Mar 23, 2024",Cesar Almeida,Win,Decision,Split,3,5:00,UFC Fight Night,80.0,TKO,2.2,3W (W-W-W-L-W),75.0,25.0
+Andrey Pulyaev,10-3-0,Middleweight,Preliminary Card,Ateba Gautier,"Oct 28, 2023",Nick Maximov,Win,TKO,Punches,2,3:30,UFC Vegas 81,80.0,TKO,2.2,3W (W-W-W-L-W),75.0,25.0
+Andrey Pulyaev,10-3-0,Middleweight,Preliminary Card,Ateba Gautier,"Jun 03, 2023",Phil Hawes,Loss,Decision,Unanimous,3,5:00,UFC Fight Night,80.0,TKO,2.2,3W (W-W-W-L-W),75.0,25.0
+Andrey Pulyaev,10-3-0,Middleweight,Preliminary Card,Ateba Gautier,"Jan 28, 2023",Mikael Lebout,Win,KO,Punches,1,1:15,Regional Event,80.0,TKO,2.2,3W (W-W-W-L-W),75.0,25.0
+Nikita Krylov,30-11-0,Light Heavyweight,Preliminary Card,Modestas Bukauskas,"Jun 01, 2024",Alexander Gustafsson,Win,Submission,Rear Naked Choke,1,2:34,UFC Fight Night,60.0,Submission,1.8,2W (W-W-L-W-L),100.0,0.0
+Nikita Krylov,30-11-0,Light Heavyweight,Preliminary Card,Modestas Bukauskas,"Oct 21, 2023",Ryan Spann,Win,TKO,Punches,2,3:15,UFC Vegas 80,60.0,Submission,1.8,2W (W-W-L-W-L),100.0,0.0
+Nikita Krylov,30-11-0,Light Heavyweight,Preliminary Card,Modestas Bukauskas,"Mar 11, 2023",Volkan Oezdemir,Loss,Decision,Split,3,5:00,UFC Fight Night,60.0,Submission,1.8,2W (W-W-L-W-L),100.0,0.0
+Nikita Krylov,30-11-0,Light Heavyweight,Preliminary Card,Modestas Bukauskas,"Jul 23, 2022",Marcin Prachnio,Win,Submission,Rear Naked Choke,1,1:02,UFC London,60.0,Submission,1.8,2W (W-W-L-W-L),100.0,0.0
+Nikita Krylov,30-11-0,Light Heavyweight,Preliminary Card,Modestas Bukauskas,"Feb 26, 2022",Magomed Ankalaev,Loss,TKO,Punches,2,4:25,UFC Vegas 50,60.0,Submission,1.8,2W (W-W-L-W-L),100.0,0.0
+Modestas Bukauskas,19-6-0,Light Heavyweight,Preliminary Card,Nikita Krylov,"Jul 27, 2024",Marcin Prachnio,Win,KO,Head Kick,1,2:45,UFC 304,60.0,KO,2.0,3W (W-W-W-L-L),66.66666666666666,33.33333333333333
+Modestas Bukauskas,19-6-0,Light Heavyweight,Preliminary Card,Nikita Krylov,"Apr 06, 2024",Da Un Jung,Win,TKO,Punches,2,3:20,UFC Fight Night,60.0,KO,2.0,3W (W-W-W-L-L),66.66666666666666,33.33333333333333
+Modestas Bukauskas,19-6-0,Light Heavyweight,Preliminary Card,Nikita Krylov,"Sep 02, 2023",Caio Machado,Win,Decision,Unanimous,3,5:00,UFC Fight Night,60.0,KO,2.0,3W (W-W-W-L-L),66.66666666666666,33.33333333333333
+Modestas Bukauskas,19-6-0,Light Heavyweight,Preliminary Card,Nikita Krylov,"Feb 11, 2023",Philipe Lins,Loss,Decision,Unanimous,3,5:00,UFC Vegas 68,60.0,KO,2.0,3W (W-W-W-L-L),66.66666666666666,33.33333333333333
+Modestas Bukauskas,19-6-0,Light Heavyweight,Preliminary Card,Nikita Krylov,"Jun 25, 2022",Khalil Rountree,Loss,KO,Punches,1,0:25,UFC London,60.0,KO,2.0,3W (W-W-W-L-L),66.66666666666666,33.33333333333333
+Alex Perez,25-10-0,Flyweight,Preliminary Card,Charles Johnson,"Sep 07, 2024",Tagir Ulanbekov,Win,Decision,Unanimous,3,5:00,UFC Fight Night,20.0,Decision,2.0,1W (W-L-L-L-L),0.0,100.0
+Alex Perez,25-10-0,Flyweight,Preliminary Card,Charles Johnson,"May 04, 2024",Matheus Nicolau,Loss,Decision,Split,3,5:00,UFC Fight Night,20.0,Decision,2.0,1W (W-L-L-L-L),0.0,100.0
+Alex Perez,25-10-0,Flyweight,Preliminary Card,Charles Johnson,"Nov 04, 2023",Muhammad Mokaev,Loss,Submission,Guillotine Choke,1,2:15,UFC 295,20.0,Decision,2.0,1W (W-L-L-L-L),0.0,100.0
+Alex Perez,25-10-0,Flyweight,Preliminary Card,Charles Johnson,"Mar 11, 2023",Manel Kape,Loss,TKO,Punches,2,2:45,UFC Fight Night,20.0,Decision,2.0,1W (W-L-L-L-L),0.0,100.0
+Alex Perez,25-10-0,Flyweight,Preliminary Card,Charles Johnson,"Jul 24, 2021",Deiveson Figueiredo,Loss,Submission,Guillotine Choke,1,1:57,UFC 255,20.0,Decision,2.0,1W (W-L-L-L-L),0.0,100.0
+Charles Johnson,18-7-0,Flyweight,Preliminary Card,Alex Perez,"Aug 31, 2024",Joshua Van,Win,Decision,Split,3,5:00,UFC Fight Night,80.0,Decision,2.4,4W (W-W-W-W-L),50.0,50.0
+Charles Johnson,18-7-0,Flyweight,Preliminary Card,Alex Perez,"Apr 27, 2024",CJ Vergara,Win,TKO,Punches,1,3:45,UFC Fight Night,80.0,Decision,2.4,4W (W-W-W-W-L),50.0,50.0
+Charles Johnson,18-7-0,Flyweight,Preliminary Card,Alex Perez,"Dec 02, 2023",Jake Hadley,Win,Decision,Unanimous,3,5:00,UFC Vegas 84,80.0,Decision,2.4,4W (W-W-W-W-L),50.0,50.0
+Charles Johnson,18-7-0,Flyweight,Preliminary Card,Alex Perez,"Jun 24, 2023",Carlos Hernandez,Win,TKO,Punches,2,2:30,UFC Fight Night,80.0,Decision,2.4,4W (W-W-W-W-L),50.0,50.0
+Charles Johnson,18-7-0,Flyweight,Preliminary Card,Alex Perez,"Feb 18, 2023",Zhalgas Zhumagulov,Loss,Decision,Unanimous,3,5:00,UFC Fight Night,80.0,Decision,2.4,4W (W-W-W-W-L),50.0,50.0
+Michael Johnson,25-19-0,Lightweight,Early Prelims,Alexander Hernandez,"Aug 17, 2024",Ottman Azaitar,Loss,TKO,Punches,1,2:45,UFC Vegas 95,40.0,Decision,1.6,1L (L-W-W-L-L),50.0,50.0
+Michael Johnson,25-19-0,Lightweight,Early Prelims,Alexander Hernandez,"Mar 02, 2024",Elves Brener,Win,Decision,Unanimous,3,5:00,UFC Fight Night,40.0,Decision,1.6,1L (L-W-W-L-L),50.0,50.0
+Michael Johnson,25-19-0,Lightweight,Early Prelims,Alexander Hernandez,"Sep 16, 2023",Marc Diakiese,Win,TKO,Punches,2,3:20,UFC Vegas 78,40.0,Decision,1.6,1L (L-W-W-L-L),50.0,50.0
+Michael Johnson,25-19-0,Lightweight,Early Prelims,Alexander Hernandez,"Feb 25, 2023",Puna Soriano,Loss,KO,Punches,1,1:15,UFC Fight Night,40.0,Decision,1.6,1L (L-W-W-L-L),50.0,50.0
+Michael Johnson,25-19-0,Lightweight,Early Prelims,Alexander Hernandez,"Aug 20, 2022",Jamie Mullarkey,Loss,TKO,Punches,1,0:52,UFC Vegas 58,40.0,Decision,1.6,1L (L-W-W-L-L),50.0,50.0
+Alexander Hernandez,18-8-0,Lightweight,Early Prelims,Michael Johnson,"Jun 15, 2024",Austin Hubbard,Win,Decision,Unanimous,3,5:00,UFC Fight Night,60.0,Decision,2.0,1W (W-L-W-W-L),33.33333333333333,66.66666666666666
+Alexander Hernandez,18-8-0,Lightweight,Early Prelims,Michael Johnson,"Jan 13, 2024",Jim Miller,Loss,Submission,Armbar,1,1:45,UFC Fight Night,60.0,Decision,2.0,1W (W-L-W-W-L),33.33333333333333,66.66666666666666
+Alexander Hernandez,18-8-0,Lightweight,Early Prelims,Michael Johnson,"Jun 10, 2023",Drakkar Klose,Win,TKO,Punches,2,3:30,UFC Vegas 75,60.0,Decision,2.0,1W (W-L-W-W-L),33.33333333333333,66.66666666666666
+Alexander Hernandez,18-8-0,Lightweight,Early Prelims,Michael Johnson,"Nov 19, 2022",Billy Quarantillo,Win,Decision,Split,3,5:00,UFC Vegas 64,60.0,Decision,2.0,1W (W-L-W-W-L),33.33333333333333,66.66666666666666
+Alexander Hernandez,18-8-0,Lightweight,Early Prelims,Michael Johnson,"Apr 09, 2022",Renato Moicano,Loss,Submission,Rear Naked Choke,1,3:15,UFC 272,60.0,Decision,2.0,1W (W-L-W-W-L),33.33333333333333,66.66666666666666
+Josh Hokit,7-0-0,Heavyweight,Early Prelims,Denzel Freeman,"Aug 31, 2024",Mick Parkin,Win,TKO,Punches,2,3:45,UFC Fight Night,100.0,TKO,1.6,5W (W-W-W-W-W),80.0,20.0
+Josh Hokit,7-0-0,Heavyweight,Early Prelims,Denzel Freeman,"May 04, 2024",Chase Sherman,Win,KO,Punches,1,1:20,UFC Fight Night,100.0,TKO,1.6,5W (W-W-W-W-W),80.0,20.0
+Josh Hokit,7-0-0,Heavyweight,Early Prelims,Denzel Freeman,"Nov 18, 2023",Karl Williams,Win,TKO,Punches,1,2:30,UFC Fight Night,100.0,TKO,1.6,5W (W-W-W-W-W),80.0,20.0
+Josh Hokit,7-0-0,Heavyweight,Early Prelims,Denzel Freeman,"Jul 01, 2023",Oscar Cota,Win,KO,Punches,1,0:45,Contender Series,100.0,TKO,1.6,5W (W-W-W-W-W),80.0,20.0
+Josh Hokit,7-0-0,Heavyweight,Early Prelims,Denzel Freeman,"Mar 11, 2023",Raphael Garcia,Win,Decision,Unanimous,3,5:00,Regional Event,100.0,TKO,1.6,5W (W-W-W-W-W),80.0,20.0
+Denzel Freeman,7-1-0,Heavyweight,Early Prelims,Josh Hokit,"Sep 21, 2024",Vitor Petrino,Loss,KO,Punches,1,1:15,UFC Vegas 98,80.0,TKO,1.8,1L (L-W-W-W-W),75.0,25.0
+Denzel Freeman,7-1-0,Heavyweight,Early Prelims,Josh Hokit,"May 18, 2024",Austen Lane,Win,TKO,Punches,2,2:45,UFC Fight Night,80.0,TKO,1.8,1L (L-W-W-W-W),75.0,25.0
+Denzel Freeman,7-1-0,Heavyweight,Early Prelims,Josh Hokit,"Jan 06, 2024",Mohammed Usman,Win,Decision,Unanimous,3,5:00,UFC Fight Night,80.0,TKO,1.8,1L (L-W-W-W-W),75.0,25.0
+Denzel Freeman,7-1-0,Heavyweight,Early Prelims,Josh Hokit,"Jul 29, 2023",Ben Rothwell,Win,TKO,Punches,2,3:30,UFC Vegas 77,80.0,TKO,1.8,1L (L-W-W-W-W),75.0,25.0
+Denzel Freeman,7-1-0,Heavyweight,Early Prelims,Josh Hokit,"Feb 11, 2023",Jason Knight,Win,KO,Punches,1,0:55,Regional Event,80.0,TKO,1.8,1L (L-W-W-W-W),75.0,25.0
+Adam Fugitt,10-5-0,Welterweight,Early Prelims,Ty Miller,"Jul 13, 2024",Michael Morales,Loss,Decision,Unanimous,3,5:00,UFC Fight Night,60.0,Submission,2.2,1L (L-W-L-W-W),66.66666666666666,33.33333333333333
+Adam Fugitt,10-5-0,Welterweight,Early Prelims,Ty Miller,"Feb 17, 2024",Josh Quinlan,Win,Submission,Rear Naked Choke,2,3:15,UFC Fight Night,60.0,Submission,2.2,1L (L-W-L-W-W),66.66666666666666,33.33333333333333
+Adam Fugitt,10-5-0,Welterweight,Early Prelims,Ty Miller,"Aug 12, 2023",Mounir Lazzez,Loss,TKO,Punches,2,2:45,UFC Vegas 79,60.0,Submission,2.2,1L (L-W-L-W-W),66.66666666666666,33.33333333333333
+Adam Fugitt,10-5-0,Welterweight,Early Prelims,Ty Miller,"Mar 04, 2023",Nick Fiore,Win,TKO,Punches,1,3:20,UFC Fight Night,60.0,Submission,2.2,1L (L-W-L-W-W),66.66666666666666,33.33333333333333
+Adam Fugitt,10-5-0,Welterweight,Early Prelims,Ty Miller,"Oct 08, 2022",Francisco Prado,Win,Decision,Unanimous,3,5:00,UFC Vegas 61,60.0,Submission,2.2,1L (L-W-L-W-W),66.66666666666666,33.33333333333333
+Ty Miller,"6-0-0, 1NC",Welterweight,Early Prelims,Adam Fugitt,"Sep 28, 2024",Jason Witt,Win,TKO,Punches,2,2:30,UFC Fight Night,80.0,TKO,2.0,1W (W-N-W-W-W),50.0,50.0
+Ty Miller,"6-0-0, 1NC",Welterweight,Early Prelims,Adam Fugitt,"Jun 22, 2024",David Onama,NC,NC,Accidental Eye Poke,1,1:45,UFC Fight Night,80.0,TKO,2.0,1W (W-N-W-W-W),50.0,50.0
+Ty Miller,"6-0-0, 1NC",Welterweight,Early Prelims,Adam Fugitt,"Feb 24, 2024",Phil Rowe,Win,Decision,Unanimous,3,5:00,UFC Fight Night,80.0,TKO,2.0,1W (W-N-W-W-W),50.0,50.0
+Ty Miller,"6-0-0, 1NC",Welterweight,Early Prelims,Adam Fugitt,"Sep 09, 2023",Abubakar Nurmagomedov,Win,TKO,Punches,1,2:15,UFC Fight Night,80.0,TKO,2.0,1W (W-N-W-W-W),50.0,50.0
+Ty Miller,"6-0-0, 1NC",Welterweight,Early Prelims,Adam Fugitt,"Apr 08, 2023",Matthew Semelsberger,Win,Decision,Split,3,5:00,UFC 287,80.0,TKO,2.0,1W (W-N-W-W-W),50.0,50.0
+Ricky Turcios,13-5-0,Bantamweight,Early Prelims (CANCELLED),Cameron Smotherman,"May 18, 2024",Raul Rosas Jr.,Loss,Decision,Unanimous,3,5:00,UFC Fight Night,60.0,Decision,2.8,1L (L-W-L-W-W),33.33333333333333,66.66666666666666
+Ricky Turcios,13-5-0,Bantamweight,Early Prelims (CANCELLED),Cameron Smotherman,"Nov 04, 2023",Kevin Natividad,Win,TKO,Punches,2,3:30,UFC Vegas 82,60.0,Decision,2.8,1L (L-W-L-W-W),33.33333333333333,66.66666666666666
+Ricky Turcios,13-5-0,Bantamweight,Early Prelims (CANCELLED),Cameron Smotherman,"Jun 10, 2023",Cody Stamann,Loss,Decision,Split,3,5:00,UFC Vegas 75,60.0,Decision,2.8,1L (L-W-L-W-W),33.33333333333333,66.66666666666666
+Ricky Turcios,13-5-0,Bantamweight,Early Prelims (CANCELLED),Cameron Smotherman,"Dec 03, 2022",Danny Chavez,Win,Decision,Unanimous,3,5:00,UFC Vegas 66,60.0,Decision,2.8,1L (L-W-L-W-W),33.33333333333333,66.66666666666666
+Ricky Turcios,13-5-0,Bantamweight,Early Prelims (CANCELLED),Cameron Smotherman,"Jun 04, 2022",Aiemann Zahabi,Win,Decision,Unanimous,3,5:00,UFC 275,60.0,Decision,2.8,1L (L-W-L-W-W),33.33333333333333,66.66666666666666
+Cameron Smotherman,12-6-0,Bantamweight,Early Prelims (CANCELLED),Ricky Turcios,"Aug 10, 2024",Davey Grant,Win,TKO,Punches,2,3:15,UFC Fight Night,80.0,TKO,2.2,3W (W-W-W-L-W),75.0,25.0
+Cameron Smotherman,12-6-0,Bantamweight,Early Prelims (CANCELLED),Ricky Turcios,"Apr 13, 2024",Mana Martinez,Win,Submission,Rear Naked Choke,1,2:45,UFC Fight Night,80.0,TKO,2.2,3W (W-W-W-L-W),75.0,25.0
+Cameron Smotherman,12-6-0,Bantamweight,Early Prelims (CANCELLED),Ricky Turcios,"Nov 18, 2023",Louis Smolka,Win,Decision,Unanimous,3,5:00,UFC Fight Night,80.0,TKO,2.2,3W (W-W-W-L-W),75.0,25.0
+Cameron Smotherman,12-6-0,Bantamweight,Early Prelims (CANCELLED),Ricky Turcios,"Jun 03, 2023",Edgar Chairez,Loss,Decision,Split,3,5:00,UFC Fight Night,80.0,TKO,2.2,3W (W-W-W-L-W),75.0,25.0
+Cameron Smotherman,12-6-0,Bantamweight,Early Prelims (CANCELLED),Ricky Turcios,"Jan 28, 2023",Marcus McGhee,Win,TKO,Punches,2,2:30,Contender Series,80.0,TKO,2.2,3W (W-W-W-L-W),75.0,25.0
