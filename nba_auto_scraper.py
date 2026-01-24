@@ -261,8 +261,8 @@ def calculate_predictions(player_games, next_opponent, is_home):
 
     return predictions
 
-def save_to_excel(df, output_file, player_colors):
-    """Guarda Excel con colores por jugador"""
+def save_to_excel(df, output_file):
+    """Guarda Excel con colores por jugador - UN COLOR POR JUGADOR"""
     wb = Workbook()
     ws = wb.active
 
@@ -278,7 +278,17 @@ def save_to_excel(df, output_file, player_colors):
         cell.font = Font(bold=True, color='FFFFFF')
         cell.alignment = Alignment(horizontal='center', vertical='center')
 
-    # Datos con colores
+    # ASIGNAR COLORES POR JUGADOR DENTRO DE ESTE ARCHIVO
+    # Obtener jugadores únicos en el orden en que aparecen (ya ordenados por minutos)
+    unique_players = df['Player'].unique()
+
+    # Asignar un color único a cada jugador (rotar si hay más de 15)
+    player_colors = {}
+    for idx, player in enumerate(unique_players):
+        color_idx = idx % len(VIBRANT_COLORS)
+        player_colors[player] = VIBRANT_COLORS[color_idx]
+
+    # Datos con colores - TODAS las filas del mismo jugador = MISMO COLOR
     for row_num, row_data in enumerate(df.values, 2):
         player_name = row_data[4]  # Player column
         player_color = player_colors.get(player_name, 'FFFFFF')
@@ -303,7 +313,7 @@ def save_to_excel(df, output_file, player_colors):
 
     wb.save(output_file)
 
-def process_team(team_abbr, player_colors, next_game_info):
+def process_team(team_abbr, next_game_info):
     """Procesa un equipo y genera Excel"""
     team_id = TEAM_ABBREVIATIONS[team_abbr]
 
@@ -402,11 +412,12 @@ def process_team(team_abbr, player_colors, next_game_info):
 
     # Guardar Excel
     output_file = f"{team_abbr}_last_5_games.xlsx"
-    save_to_excel(df.copy(), output_file, player_colors)
+    save_to_excel(df.copy(), output_file)
 
     print(f"\n✅ EXCEL: {output_file}")
     print(f"📊 Registros: {len(df)} (SOLO REGULARES)")
-    print(f"🎨 Colores aplicados\n")
+    print(f"👥 Jugadores únicos: {len(df['Player'].unique())}")
+    print(f"🎨 Un color único por jugador\n")
 
     return True
 
@@ -428,40 +439,9 @@ def main():
         print("\n⚠️  No hay equipos jugando hoy")
         return
 
-    # Recopilar jugadores únicos (solo regulares)
+    # Procesar equipos directamente
     print(f"\n{'='*70}")
-    print("FASE 1: RECOPILANDO JUGADORES REGULARES")
-    print(f"{'='*70}\n")
-
-    all_players = set()
-    for idx, team_abbr in enumerate(teams_today, 1):
-        team_id = TEAM_ABBREVIATIONS[team_abbr]
-        print(f"  [{idx}/{len(teams_today)}] {team_abbr}...")
-
-        try:
-            games = get_team_last_games(team_id, limit=5)
-            for game in games:
-                stats = get_game_stats(game['game_id'], team_id)
-                all_players.update(stats.keys())
-        except:
-            pass
-
-        time.sleep(0.3)
-
-    print(f"\n✅ Total jugadores únicos: {len(all_players)}\n")
-
-    # Asignar colores
-    sorted_players = sorted(list(all_players))
-    player_colors = {}
-    for idx, player in enumerate(sorted_players):
-        color_idx = idx % len(VIBRANT_COLORS)
-        player_colors[player] = VIBRANT_COLORS[color_idx]
-
-    print(f"🎨 Colores asignados: {len(player_colors)}\n")
-
-    # Procesar equipos
-    print(f"\n{'='*70}")
-    print("FASE 2: GENERANDO ARCHIVOS EXCEL")
+    print("GENERANDO ARCHIVOS EXCEL")
     print(f"{'='*70}")
 
     successful = 0
@@ -470,7 +450,7 @@ def main():
     for team_abbr in teams_today:
         try:
             next_game = game_info.get(team_abbr, None)
-            if process_team(team_abbr, player_colors, next_game):
+            if process_team(team_abbr, next_game):
                 successful += 1
             else:
                 failed += 1
