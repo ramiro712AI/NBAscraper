@@ -69,6 +69,18 @@ class FighterStats:
     finish_rate: float
     decision_rate: float
     total_fights_analyzed: int
+    # New metrics
+    ko_count: int = 0
+    tko_count: int = 0
+    submission_count: int = 0
+    decision_count: int = 0
+    nc_count: int = 0
+    wins_by_ko: int = 0
+    wins_by_sub: int = 0
+    wins_by_dec: int = 0
+    losses_by_ko: int = 0
+    losses_by_sub: int = 0
+    losses_by_dec: int = 0
 
     def to_dict(self) -> dict:
         return {
@@ -79,6 +91,26 @@ class FighterStats:
             'Finish Rate (%)': f"{self.finish_rate:.1f}%",
             'Decision Rate (%)': f"{self.decision_rate:.1f}%",
             'Peleas Analizadas': self.total_fights_analyzed
+        }
+
+    def to_detailed_dict(self) -> dict:
+        return {
+            'Win Rate (%)': f"{self.win_rate:.1f}%",
+            'Método Más Frecuente': self.most_common_method,
+            'Promedio de Rounds': f"{self.avg_rounds:.2f}",
+            'Racha Actual': self.current_streak,
+            'Finish Rate (%)': f"{self.finish_rate:.1f}%",
+            'Decision Rate (%)': f"{self.decision_rate:.1f}%",
+            'Peleas Analizadas': self.total_fights_analyzed,
+            'KO/TKO (Total)': self.ko_count + self.tko_count,
+            'Submissions (Total)': self.submission_count,
+            'Decisions (Total)': self.decision_count,
+            'Victorias por KO/TKO': self.wins_by_ko,
+            'Victorias por Submission': self.wins_by_sub,
+            'Victorias por Decision': self.wins_by_dec,
+            'Derrotas por KO/TKO': self.losses_by_ko,
+            'Derrotas por Submission': self.losses_by_sub,
+            'Derrotas por Decision': self.losses_by_dec,
         }
 
 
@@ -601,6 +633,23 @@ def calculate_fighter_stats(fights: List[Fight]) -> FighterStats:
         finish_rate = 0
         decision_rate = 0
 
+    # NEW: Count methods across ALL fights (not just wins)
+    ko_count = sum(1 for f in fights if f.method == 'KO')
+    tko_count = sum(1 for f in fights if f.method == 'TKO')
+    submission_count = sum(1 for f in fights if f.method == 'Submission')
+    decision_count = sum(1 for f in fights if f.method == 'Decision')
+    nc_count = sum(1 for f in fights if f.method == 'NC' or f.result == 'NC')
+
+    # Wins by method
+    wins_by_ko = sum(1 for f in fights if f.result == 'Win' and f.method in ['KO', 'TKO'])
+    wins_by_sub = sum(1 for f in fights if f.result == 'Win' and f.method == 'Submission')
+    wins_by_dec = sum(1 for f in fights if f.result == 'Win' and f.method == 'Decision')
+
+    # Losses by method
+    losses_by_ko = sum(1 for f in fights if f.result == 'Loss' and f.method in ['KO', 'TKO'])
+    losses_by_sub = sum(1 for f in fights if f.result == 'Loss' and f.method == 'Submission')
+    losses_by_dec = sum(1 for f in fights if f.result == 'Loss' and f.method == 'Decision')
+
     return FighterStats(
         win_rate=win_rate,
         most_common_method=most_common_method,
@@ -608,7 +657,18 @@ def calculate_fighter_stats(fights: List[Fight]) -> FighterStats:
         current_streak=current_streak,
         finish_rate=finish_rate,
         decision_rate=decision_rate,
-        total_fights_analyzed=total_fights
+        total_fights_analyzed=total_fights,
+        ko_count=ko_count,
+        tko_count=tko_count,
+        submission_count=submission_count,
+        decision_count=decision_count,
+        nc_count=nc_count,
+        wins_by_ko=wins_by_ko,
+        wins_by_sub=wins_by_sub,
+        wins_by_dec=wins_by_dec,
+        losses_by_ko=losses_by_ko,
+        losses_by_sub=losses_by_sub,
+        losses_by_dec=losses_by_dec
     )
 
 
@@ -811,20 +871,44 @@ def get_demo_fights(fighter_name: str) -> List[Fight]:
 
 
 # =============================================================================
-# EXCEL EXPORT
+# EXCEL EXPORT - ENHANCED WITH COLOR-CODED MATCHUPS
 # =============================================================================
 
+# Define 13 distinct colors for each fight matchup
+FIGHT_COLORS = [
+    "90EE90",  # Fight 1 - Light Green (Gaethje vs Pimblett)
+    "87CEEB",  # Fight 2 - Sky Blue (O'Malley vs Yadong)
+    "FFB6C1",  # Fight 3 - Light Pink (Cortes-Acosta vs Lewis)
+    "DDA0DD",  # Fight 4 - Plum (Natalia Silva vs Namajunas)
+    "F0E68C",  # Fight 5 - Khaki (Arnold Allen vs Jean Silva)
+    "98FB98",  # Fight 6 - Pale Green (Nurmagomedov vs Figueiredo)
+    "FFA07A",  # Fight 7 - Light Salmon (Gautier vs Pulyaev)
+    "87CEFA",  # Fight 8 - Light Sky Blue (Krylov vs Bukauskas)
+    "FFDAB9",  # Fight 9 - Peach Puff (Perez vs Johnson)
+    "E6E6FA",  # Fight 10 - Lavender (M. Johnson vs Hernandez)
+    "F5DEB3",  # Fight 11 - Wheat (Hokit vs Freeman)
+    "B0E0E6",  # Fight 12 - Powder Blue (Fugitt vs Miller)
+    "D3D3D3",  # Fight 13 - Light Gray (Turcios vs Smotherman - CANCELLED)
+]
+
+def extract_year(date_str: str) -> str:
+    """Extract year from date string."""
+    year_match = re.search(r'20\d{2}', date_str)
+    return year_match.group() if year_match else "N/A"
+
+
 def create_excel_report(fighters: List[Fighter], output_path: str = "UFC_324_Fighter_Analysis.xlsx"):
-    """Create a comprehensive Excel report with all fighter data."""
+    """Create a comprehensive Excel report with color-coded fight matchups."""
 
     wb = Workbook()
 
     # Styles
     header_font = Font(bold=True, color="FFFFFF", size=11)
+    header_font_dark = Font(bold=True, color="000000", size=11)
     header_fill = PatternFill(start_color="1F4E79", end_color="1F4E79", fill_type="solid")
     subheader_fill = PatternFill(start_color="5B9BD5", end_color="5B9BD5", fill_type="solid")
-    win_fill = PatternFill(start_color="C6EFCE", end_color="C6EFCE", fill_type="solid")
-    loss_fill = PatternFill(start_color="FFC7CE", end_color="FFC7CE", fill_type="solid")
+    win_fill = PatternFill(start_color="00B050", end_color="00B050", fill_type="solid")
+    loss_fill = PatternFill(start_color="FF0000", end_color="FF0000", fill_type="solid")
     nc_fill = PatternFill(start_color="FFEB9C", end_color="FFEB9C", fill_type="solid")
     thin_border = Border(
         left=Side(style='thin'),
@@ -832,80 +916,298 @@ def create_excel_report(fighters: List[Fighter], output_path: str = "UFC_324_Fig
         top=Side(style='thin'),
         bottom=Side(style='thin')
     )
+    thick_border = Border(
+        left=Side(style='medium'),
+        right=Side(style='medium'),
+        top=Side(style='medium'),
+        bottom=Side(style='medium')
+    )
 
     # Remove default sheet
     default_sheet = wb.active
     wb.remove(default_sheet)
 
-    # Create Summary Sheet
-    summary_ws = wb.create_sheet("RESUMEN UFC 324")
+    # ==========================================================================
+    # SHEET 1: MATCHUPS BY FIGHT (COLOR-CODED)
+    # ==========================================================================
+    matchup_ws = wb.create_sheet("PELEAS UFC 324")
 
     # Title
-    summary_ws.merge_cells('A1:H1')
-    summary_ws['A1'] = "UFC 324 - ANÁLISIS DE PELEADORES (24 de Enero 2026)"
-    summary_ws['A1'].font = Font(bold=True, size=16)
+    matchup_ws.merge_cells('A1:R1')
+    matchup_ws['A1'] = "UFC 324 - TODAS LAS PELEAS CON COLORES DIFERENCIADOS (24 de Enero 2026)"
+    matchup_ws['A1'].font = Font(bold=True, size=16, color="FFFFFF")
+    matchup_ws['A1'].fill = header_fill
+    matchup_ws['A1'].alignment = Alignment(horizontal='center')
+
+    # Headers for matchup view
+    matchup_headers = [
+        'Pelea #', 'Peleador 1', 'Récord', 'VS', 'Peleador 2', 'Récord',
+        'Categoría', 'Cartelera', 'Win Rate P1', 'Win Rate P2',
+        'Finish Rate P1', 'Finish Rate P2', 'Racha P1', 'Racha P2',
+        'KO/TKO P1', 'KO/TKO P2', 'SUB P1', 'SUB P2'
+    ]
+    matchup_ws.append([])  # Empty row
+    matchup_ws.append(matchup_headers)
+
+    for col, header in enumerate(matchup_headers, 1):
+        cell = matchup_ws.cell(row=3, column=col)
+        cell.font = header_font
+        cell.fill = header_fill
+        cell.alignment = Alignment(horizontal='center', wrap_text=True)
+        cell.border = thin_border
+
+    # Group fighters by fight number
+    fights_by_number = {}
+    for fighter in fighters:
+        if fighter.fight_number not in fights_by_number:
+            fights_by_number[fighter.fight_number] = []
+        fights_by_number[fighter.fight_number].append(fighter)
+
+    row_num = 4
+    for fight_num in sorted(fights_by_number.keys()):
+        fight_fighters = fights_by_number[fight_num]
+        if len(fight_fighters) >= 2:
+            f1, f2 = fight_fighters[0], fight_fighters[1]
+
+            # Get color for this fight
+            color_idx = (fight_num - 1) % len(FIGHT_COLORS)
+            fight_color = PatternFill(start_color=FIGHT_COLORS[color_idx],
+                                     end_color=FIGHT_COLORS[color_idx],
+                                     fill_type="solid")
+
+            row_data = [
+                fight_num,
+                f1.name,
+                f1.record,
+                'VS',
+                f2.name,
+                f2.record,
+                f1.weight_class,
+                f1.card_position,
+                f"{f1.stats.win_rate:.1f}%" if f1.stats else "N/A",
+                f"{f2.stats.win_rate:.1f}%" if f2.stats else "N/A",
+                f"{f1.stats.finish_rate:.1f}%" if f1.stats else "N/A",
+                f"{f2.stats.finish_rate:.1f}%" if f2.stats else "N/A",
+                f1.stats.current_streak if f1.stats else "N/A",
+                f2.stats.current_streak if f2.stats else "N/A",
+                f"{f1.stats.ko_count + f1.stats.tko_count}" if f1.stats else "0",
+                f"{f2.stats.ko_count + f2.stats.tko_count}" if f2.stats else "0",
+                f"{f1.stats.submission_count}" if f1.stats else "0",
+                f"{f2.stats.submission_count}" if f2.stats else "0",
+            ]
+            matchup_ws.append(row_data)
+
+            # Apply fight color to entire row
+            for col in range(1, len(matchup_headers) + 1):
+                cell = matchup_ws.cell(row=row_num, column=col)
+                cell.fill = fight_color
+                cell.border = thin_border
+                cell.alignment = Alignment(horizontal='center')
+                if col == 4:  # VS column
+                    cell.font = Font(bold=True, size=12)
+
+            row_num += 1
+
+    # Adjust column widths for matchup sheet
+    matchup_col_widths = [8, 22, 12, 4, 22, 12, 18, 20, 10, 10, 10, 10, 18, 18, 8, 8, 6, 6]
+    for col, width in enumerate(matchup_col_widths, 1):
+        if col <= 18:
+            col_letter = chr(64 + col) if col <= 26 else f"A{chr(64 + col - 26)}"
+            if col <= 26:
+                matchup_ws.column_dimensions[col_letter].width = width
+
+    # ==========================================================================
+    # SHEET 2: DETAILED FIGHT HISTORY (ALL FIGHTERS, COLOR-CODED)
+    # ==========================================================================
+    detail_ws = wb.create_sheet("HISTORIAL DETALLADO")
+
+    # Title
+    detail_ws.merge_cells('A1:N1')
+    detail_ws['A1'] = "UFC 324 - HISTORIAL DE ÚLTIMAS 5 PELEAS DE CADA PELEADOR"
+    detail_ws['A1'].font = Font(bold=True, size=16, color="FFFFFF")
+    detail_ws['A1'].fill = header_fill
+    detail_ws['A1'].alignment = Alignment(horizontal='center')
+
+    # Headers
+    detail_headers = [
+        'Pelea UFC 324', 'Peleador', 'Oponente UFC 324', 'Pelea #',
+        'Año', 'Oponente', 'Resultado', 'Método', 'Detalle',
+        'Round', 'Tiempo', 'Evento', 'KOs (Total)', 'SUBs (Total)'
+    ]
+    detail_ws.append([])
+    detail_ws.append(detail_headers)
+
+    for col, header in enumerate(detail_headers, 1):
+        cell = detail_ws.cell(row=3, column=col)
+        cell.font = header_font
+        cell.fill = header_fill
+        cell.alignment = Alignment(horizontal='center', wrap_text=True)
+        cell.border = thin_border
+
+    row_num = 4
+    for fighter in fighters:
+        # Get color for this fighter's matchup
+        color_idx = (fighter.fight_number - 1) % len(FIGHT_COLORS)
+        fight_color = PatternFill(start_color=FIGHT_COLORS[color_idx],
+                                 end_color=FIGHT_COLORS[color_idx],
+                                 fill_type="solid")
+
+        for fight_idx, fight in enumerate(fighter.fights, 1):
+            year = extract_year(fight.date)
+            row_data = [
+                fighter.fight_number,
+                fighter.name,
+                fighter.opponent_name,
+                fight_idx,
+                year,
+                fight.opponent,
+                fight.result,
+                fight.method,
+                fight.method_detail,
+                fight.round_ended,
+                fight.time,
+                fight.event,
+                fighter.stats.ko_count + fighter.stats.tko_count if fighter.stats else 0,
+                fighter.stats.submission_count if fighter.stats else 0,
+            ]
+            detail_ws.append(row_data)
+
+            # Apply color and styling
+            for col in range(1, len(detail_headers) + 1):
+                cell = detail_ws.cell(row=row_num, column=col)
+                cell.fill = fight_color
+                cell.border = thin_border
+                cell.alignment = Alignment(horizontal='center')
+
+                # Special styling for result column
+                if col == 7:  # Result
+                    if cell.value == 'Win':
+                        cell.font = Font(bold=True, color="006400")  # Dark green
+                    elif cell.value == 'Loss':
+                        cell.font = Font(bold=True, color="8B0000")  # Dark red
+
+            row_num += 1
+
+    # Adjust column widths
+    detail_col_widths = [10, 22, 22, 8, 6, 22, 10, 12, 20, 7, 7, 28, 8, 8]
+    for col, width in enumerate(detail_col_widths, 1):
+        if col <= 14:
+            col_letter = chr(64 + col)
+            detail_ws.column_dimensions[col_letter].width = width
+
+    # ==========================================================================
+    # SHEET 3: COMPREHENSIVE SUMMARY
+    # ==========================================================================
+    summary_ws = wb.create_sheet("RESUMEN COMPLETO")
+
+    # Title
+    summary_ws.merge_cells('A1:T1')
+    summary_ws['A1'] = "UFC 324 - RESUMEN COMPLETO DE ESTADÍSTICAS POR PELEADOR"
+    summary_ws['A1'].font = Font(bold=True, size=16, color="FFFFFF")
+    summary_ws['A1'].fill = header_fill
     summary_ws['A1'].alignment = Alignment(horizontal='center')
 
-    # Summary headers
-    summary_headers = ['Peleador', 'Récord', 'Categoría', 'Cartelera', 'Win Rate',
-                      'Método Frecuente', 'Racha Actual', 'Finish Rate']
-    summary_ws.append([])  # Empty row
+    # Headers with all metrics
+    summary_headers = [
+        'Pelea #', 'Peleador', 'Récord', 'Categoría', 'Oponente UFC 324',
+        'Win Rate', 'Finish Rate', 'Decision Rate', 'Racha',
+        'Wins KO/TKO', 'Wins SUB', 'Wins DEC',
+        'Losses KO/TKO', 'Losses SUB', 'Losses DEC',
+        'Total KO/TKO', 'Total SUB', 'Total DEC', 'Total NC', 'Avg Rounds'
+    ]
+    summary_ws.append([])
     summary_ws.append(summary_headers)
 
     for col, header in enumerate(summary_headers, 1):
         cell = summary_ws.cell(row=3, column=col)
         cell.font = header_font
         cell.fill = header_fill
-        cell.alignment = Alignment(horizontal='center')
+        cell.alignment = Alignment(horizontal='center', wrap_text=True)
         cell.border = thin_border
 
-    # Add fighter summary data
+    row_num = 4
     for fighter in fighters:
+        # Get color for this fighter's matchup
+        color_idx = (fighter.fight_number - 1) % len(FIGHT_COLORS)
+        fight_color = PatternFill(start_color=FIGHT_COLORS[color_idx],
+                                 end_color=FIGHT_COLORS[color_idx],
+                                 fill_type="solid")
+
+        stats = fighter.stats
         row_data = [
+            fighter.fight_number,
             fighter.name,
             fighter.record,
             fighter.weight_class,
-            fighter.card_position,
-            fighter.stats.win_rate if fighter.stats else "N/A",
-            fighter.stats.most_common_method if fighter.stats else "N/A",
-            fighter.stats.current_streak if fighter.stats else "N/A",
-            fighter.stats.finish_rate if fighter.stats else "N/A"
+            fighter.opponent_name,
+            f"{stats.win_rate:.1f}%" if stats else "N/A",
+            f"{stats.finish_rate:.1f}%" if stats else "N/A",
+            f"{stats.decision_rate:.1f}%" if stats else "N/A",
+            stats.current_streak if stats else "N/A",
+            stats.wins_by_ko if stats else 0,
+            stats.wins_by_sub if stats else 0,
+            stats.wins_by_dec if stats else 0,
+            stats.losses_by_ko if stats else 0,
+            stats.losses_by_sub if stats else 0,
+            stats.losses_by_dec if stats else 0,
+            stats.ko_count + stats.tko_count if stats else 0,
+            stats.submission_count if stats else 0,
+            stats.decision_count if stats else 0,
+            stats.nc_count if stats else 0,
+            f"{stats.avg_rounds:.1f}" if stats else "N/A",
         ]
         summary_ws.append(row_data)
 
-    # Style summary data
-    for row in range(4, summary_ws.max_row + 1):
+        # Apply color
         for col in range(1, len(summary_headers) + 1):
-            cell = summary_ws.cell(row=row, column=col)
+            cell = summary_ws.cell(row=row_num, column=col)
+            cell.fill = fight_color
             cell.border = thin_border
             cell.alignment = Alignment(horizontal='center')
 
-    # Adjust column widths for summary
-    column_widths = [25, 12, 20, 18, 12, 18, 18, 12]
-    for col, width in enumerate(column_widths, 1):
-        summary_ws.column_dimensions[chr(64 + col)].width = width
+        row_num += 1
 
-    # Create individual fighter sheets
+    # Adjust column widths
+    summary_col_widths = [8, 22, 12, 18, 22, 9, 10, 10, 18, 9, 8, 8, 10, 10, 10, 10, 8, 8, 7, 9]
+    for col, width in enumerate(summary_col_widths, 1):
+        if col <= 20:
+            if col <= 26:
+                col_letter = chr(64 + col)
+                summary_ws.column_dimensions[col_letter].width = width
+
+    # ==========================================================================
+    # INDIVIDUAL FIGHTER SHEETS (WITH COLORS)
+    # ==========================================================================
     for fighter in fighters:
+        # Get color for this fighter's matchup
+        color_idx = (fighter.fight_number - 1) % len(FIGHT_COLORS)
+        fight_color = PatternFill(start_color=FIGHT_COLORS[color_idx],
+                                 end_color=FIGHT_COLORS[color_idx],
+                                 fill_type="solid")
+
         # Sanitize sheet name (Excel has 31 char limit)
         sheet_name = fighter.name[:31].replace('/', '-').replace('\\', '-').replace('*', '-')
         ws = wb.create_sheet(sheet_name)
 
-        # Fighter info header
-        ws.merge_cells('A1:H1')
+        # Fighter info header with matchup color
+        ws.merge_cells('A1:J1')
         ws['A1'] = f"{fighter.name} - Últimas 5 Peleas"
-        ws['A1'].font = Font(bold=True, size=14)
+        ws['A1'].font = Font(bold=True, size=14, color="000000")
         ws['A1'].alignment = Alignment(horizontal='center')
-        ws['A1'].fill = header_fill
+        ws['A1'].fill = fight_color
 
         # Fighter details
         ws['A2'] = f"Récord: {fighter.record}"
         ws['C2'] = f"Categoría: {fighter.weight_class}"
-        ws['E2'] = f"Oponente UFC 324: {fighter.opponent_name}"
+        ws['E2'] = f"Pelea #{fighter.fight_number}"
+        ws['G2'] = f"vs {fighter.opponent_name}"
+
+        for col in range(1, 10):
+            ws.cell(row=2, column=col).fill = fight_color
 
         # Fight history headers
-        fight_headers = ['Fecha', 'Oponente', 'Resultado', 'Método', 'Detalle', 'Round', 'Tiempo', 'Evento']
-        ws.append([])  # Empty row
+        fight_headers = ['#', 'Año', 'Fecha', 'Oponente', 'Resultado', 'Método', 'Detalle', 'Round', 'Tiempo', 'Evento']
+        ws.append([])
         ws.append(fight_headers)
 
         header_row = 4
@@ -916,9 +1218,12 @@ def create_excel_report(fighters: List[Fighter], output_path: str = "UFC_324_Fig
             cell.alignment = Alignment(horizontal='center')
             cell.border = thin_border
 
-        # Add fight data
-        for fight in fighter.fights:
+        # Add fight data with year
+        for fight_idx, fight in enumerate(fighter.fights, 1):
+            year = extract_year(fight.date)
             fight_row = [
+                fight_idx,
+                year,
                 fight.date,
                 fight.opponent,
                 fight.result,
@@ -931,38 +1236,106 @@ def create_excel_report(fighters: List[Fighter], output_path: str = "UFC_324_Fig
             ws.append(fight_row)
 
         # Style fight data with conditional formatting
-        for row in range(5, ws.max_row + 1):
+        for row in range(5, 5 + len(fighter.fights)):
             for col in range(1, len(fight_headers) + 1):
                 cell = ws.cell(row=row, column=col)
                 cell.border = thin_border
                 cell.alignment = Alignment(horizontal='center')
 
                 # Color code results
-                if col == 3:  # Result column
+                if col == 5:  # Result column
                     if cell.value == 'Win':
-                        cell.fill = win_fill
+                        cell.fill = PatternFill(start_color="C6EFCE", end_color="C6EFCE", fill_type="solid")
+                        cell.font = Font(bold=True, color="006400")
                     elif cell.value == 'Loss':
-                        cell.fill = loss_fill
+                        cell.fill = PatternFill(start_color="FFC7CE", end_color="FFC7CE", fill_type="solid")
+                        cell.font = Font(bold=True, color="8B0000")
                     elif cell.value in ['NC', 'Draw']:
                         cell.fill = nc_fill
 
-        # Add statistics section
+        # Add detailed statistics section
         if fighter.stats:
             stats_start_row = ws.max_row + 2
-            ws.cell(row=stats_start_row, column=1, value="ESTADÍSTICAS").font = Font(bold=True, size=12)
-            ws.cell(row=stats_start_row, column=1).fill = header_fill
-            ws.merge_cells(f'A{stats_start_row}:B{stats_start_row}')
 
-            stats_data = fighter.stats.to_dict()
+            # Section title
+            ws.cell(row=stats_start_row, column=1, value="ESTADÍSTICAS DETALLADAS")
+            ws.cell(row=stats_start_row, column=1).font = Font(bold=True, size=12, color="FFFFFF")
+            ws.cell(row=stats_start_row, column=1).fill = header_fill
+            ws.merge_cells(f'A{stats_start_row}:D{stats_start_row}')
+
+            # Use detailed stats
+            stats_data = fighter.stats.to_detailed_dict()
+
+            col_offset = 1
+            row_offset = stats_start_row + 1
+
             for i, (key, value) in enumerate(stats_data.items()):
-                row_num = stats_start_row + i + 1
-                ws.cell(row=row_num, column=1, value=key).border = thin_border
-                ws.cell(row=row_num, column=2, value=str(value)).border = thin_border
+                if i < 9:  # First column
+                    r = row_offset + i
+                    c = 1
+                else:  # Second column
+                    r = row_offset + (i - 9)
+                    c = 3
+
+                ws.cell(row=r, column=c, value=key).border = thin_border
+                ws.cell(row=r, column=c).font = Font(bold=True)
+                ws.cell(row=r, column=c+1, value=str(value)).border = thin_border
 
         # Adjust column widths
-        fight_col_widths = [15, 25, 10, 12, 20, 8, 8, 30]
+        fight_col_widths = [4, 6, 14, 25, 10, 12, 20, 7, 7, 30]
         for col, width in enumerate(fight_col_widths, 1):
             ws.column_dimensions[chr(64 + col)].width = width
+
+    # ==========================================================================
+    # COLOR LEGEND SHEET
+    # ==========================================================================
+    legend_ws = wb.create_sheet("LEYENDA COLORES")
+
+    legend_ws.merge_cells('A1:D1')
+    legend_ws['A1'] = "LEYENDA DE COLORES POR PELEA"
+    legend_ws['A1'].font = Font(bold=True, size=14, color="FFFFFF")
+    legend_ws['A1'].fill = header_fill
+    legend_ws['A1'].alignment = Alignment(horizontal='center')
+
+    legend_headers = ['Pelea #', 'Peleador 1', 'VS', 'Peleador 2']
+    legend_ws.append([])
+    legend_ws.append(legend_headers)
+
+    for col, header in enumerate(legend_headers, 1):
+        cell = legend_ws.cell(row=3, column=col)
+        cell.font = header_font
+        cell.fill = header_fill
+        cell.border = thin_border
+
+    row_num = 4
+    for fight_num in sorted(fights_by_number.keys()):
+        fight_fighters = fights_by_number[fight_num]
+        if len(fight_fighters) >= 2:
+            f1, f2 = fight_fighters[0], fight_fighters[1]
+
+            color_idx = (fight_num - 1) % len(FIGHT_COLORS)
+            fight_color = PatternFill(start_color=FIGHT_COLORS[color_idx],
+                                     end_color=FIGHT_COLORS[color_idx],
+                                     fill_type="solid")
+
+            legend_ws.cell(row=row_num, column=1, value=f"Pelea {fight_num}")
+            legend_ws.cell(row=row_num, column=2, value=f1.name)
+            legend_ws.cell(row=row_num, column=3, value="VS")
+            legend_ws.cell(row=row_num, column=4, value=f2.name)
+
+            for col in range(1, 5):
+                cell = legend_ws.cell(row=row_num, column=col)
+                cell.fill = fight_color
+                cell.border = thin_border
+                cell.alignment = Alignment(horizontal='center')
+
+            row_num += 1
+
+    # Adjust widths
+    legend_ws.column_dimensions['A'].width = 12
+    legend_ws.column_dimensions['B'].width = 25
+    legend_ws.column_dimensions['C'].width = 5
+    legend_ws.column_dimensions['D'].width = 25
 
     # Save workbook
     wb.save(output_path)
@@ -976,13 +1349,17 @@ def create_csv_report(fighters: List[Fighter], output_path: str = "UFC_324_Fight
     all_data = []
 
     for fighter in fighters:
-        for fight in fighter.fights:
+        for fight_idx, fight in enumerate(fighter.fights, 1):
+            year = extract_year(fight.date)
             row = {
+                'Fight_Number': fighter.fight_number,
                 'Fighter': fighter.name,
                 'Fighter_Record': fighter.record,
                 'Weight_Class': fighter.weight_class,
                 'Card_Position': fighter.card_position,
                 'UFC324_Opponent': fighter.opponent_name,
+                'Fight_Index': fight_idx,
+                'Year': year,
                 'Fight_Date': fight.date,
                 'Opponent': fight.opponent,
                 'Result': fight.result,
@@ -1001,6 +1378,17 @@ def create_csv_report(fighters: List[Fighter], output_path: str = "UFC_324_Fight
                 row['Current_Streak'] = fighter.stats.current_streak
                 row['Finish_Rate'] = fighter.stats.finish_rate
                 row['Decision_Rate'] = fighter.stats.decision_rate
+                # New detailed metrics
+                row['Total_KO_TKO'] = fighter.stats.ko_count + fighter.stats.tko_count
+                row['Total_Submissions'] = fighter.stats.submission_count
+                row['Total_Decisions'] = fighter.stats.decision_count
+                row['Total_NC'] = fighter.stats.nc_count
+                row['Wins_by_KO_TKO'] = fighter.stats.wins_by_ko
+                row['Wins_by_Submission'] = fighter.stats.wins_by_sub
+                row['Wins_by_Decision'] = fighter.stats.wins_by_dec
+                row['Losses_by_KO_TKO'] = fighter.stats.losses_by_ko
+                row['Losses_by_Submission'] = fighter.stats.losses_by_sub
+                row['Losses_by_Decision'] = fighter.stats.losses_by_dec
 
             all_data.append(row)
 
