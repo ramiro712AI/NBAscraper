@@ -1,0 +1,124 @@
+# NBA Betting System Configuration
+
+# Feature Engineering
+features:
+  rolling_window: 10  # Last N games for rolling stats
+  min_games_for_stats: 5  # Minimum games needed to calculate stats
+
+  # Which features to include
+  include:
+    - team_rolling_stats
+    - opponent_rolling_stats
+    - rest_days
+    - back_to_back
+    - home_away
+    - travel_distance
+    - injuries
+    - market_features
+
+# Modeling
+modeling:
+  # Train/validation split
+  test_size: 0.2
+  validation_split: 0.2
+
+  # Models to train
+  models:
+    moneyline:
+      - logistic_regression
+      - lightgbm
+    spread:
+      - ridge
+      - gradient_boosting
+    totals:
+      - ridge
+      - gradient_boosting
+
+  # Calibration
+  calibration:
+    method: isotonic  # or 'platt'
+    cv_folds: 5
+
+  # Hyperparameters (defaults)
+  hyperparams:
+    lightgbm:
+      n_estimators: 100
+      learning_rate: 0.05
+      max_depth: 6
+      num_leaves: 31
+      min_child_samples: 20
+
+    gradient_boosting:
+      n_estimators: 100
+      learning_rate: 0.1
+      max_depth: 5
+      min_samples_split: 20
+
+# Backtesting
+backtest:
+  start_date: "2023-10-01"
+  end_date: "2024-04-30"
+  initial_bankroll: 10000
+  walk_forward_window: 60  # days
+  retrain_frequency: 30  # days
+
+# Betting Strategy
+betting:
+  # EV thresholds
+  min_ev_pct: 2.0  # Minimum 2% EV to place bet
+  max_ev_pct: 50.0  # Maximum EV (sanity check)
+
+  # Probability filters
+  min_prob: 0.40  # Don't bet on longshots < 40%
+  max_prob: 0.80  # Don't bet on heavy favorites > 80%
+
+  # Kelly Criterion
+  use_kelly: true
+  kelly_fraction: 0.25  # Quarter Kelly for safety
+  max_bet_pct: 5.0  # Never bet more than 5% of bankroll
+  min_bet_pct: 0.5  # Minimum bet size 0.5%
+
+  # Risk management
+  max_bets_per_day: 5
+  max_exposure_pct: 15.0  # Total exposure limit
+
+  # Markets to bet
+  markets:
+    - moneyline
+    - spread
+    - totals
+
+# Data Sources
+data:
+  # NBA API
+  nba_api:
+    enabled: true
+    cache_enabled: true
+    rate_limit_delay: 0.6  # seconds between requests
+
+  # Odds API
+  odds_api:
+    enabled: true
+    use_stub_if_no_key: true
+    markets:
+      - h2h  # moneyline
+      - spreads
+      - totals
+    bookmakers:
+      - fanduel
+      - draftkings
+      - betmgm
+
+  # Injuries
+  injuries:
+    use_stub: true  # Use CSV stub by default
+    csv_path: "data_raw/injuries.csv"
+
+# Logging
+logging:
+  level: INFO
+  format: "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
+  file: "logs/nba_betting.log"
+
+# Reproducibility
+random_seed: 42
