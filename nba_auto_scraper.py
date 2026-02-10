@@ -75,7 +75,7 @@ def get_todays_games():
                 try:
                     dt = datetime.strptime(game_time, '%Y-%m-%dT%H:%MZ')
                     time_str = dt.strftime('%I:%M %p')
-                except:
+                except (ValueError, TypeError):
                     time_str = 'TBD'
                 
                 print(f"{idx}. {away} @ {home} - {time_str} ({status})")
@@ -120,7 +120,7 @@ def get_team_schedule(team_id, limit=5):
                     try:
                         date_obj = datetime.strptime(game_date, '%Y-%m-%dT%H:%MZ')
                         game_date_str = date_obj.strftime('%Y-%m-%d')
-                    except:
+                    except (ValueError, TypeError):
                         continue
                 
                 # Obtener nombres de equipos
@@ -192,16 +192,20 @@ def get_boxscore_totals(game_id, team_id):
             for player in athletes:
                 if not player.get('active', False):
                     continue
-                    
+
                 athlete_info = player.get('athlete', {})
                 player_name = athlete_info.get('displayName', '')
                 stats = player.get('stats', [])
-                
+
                 if not stats or not player_name:
                     continue
-                
+
                 stats_dict = {label: value for label, value in zip(labels, stats)}
-                
+                minutes = stats_dict.get('MIN', '0')
+
+                if minutes == '0' or minutes == 0:
+                    continue
+
                 pts = stats_dict.get('PTS', '0')
                 reb = stats_dict.get('REB', '0')
                 ast = stats_dict.get('AST', '0')
@@ -273,7 +277,7 @@ def get_q1_stats_from_playbyplay(game_id, team_id):
             
             # PUNTOS
             if scoring_play:
-                makes_pattern = r'([A-Za-z\'\.\s]+?)\s+makes\s+'
+                makes_pattern = r'([A-Za-z\'\.\-\s]+?)\s+makes\s+'
                 match = re.search(makes_pattern, text)
                 
                 if match:
@@ -294,7 +298,7 @@ def get_q1_stats_from_playbyplay(game_id, team_id):
             
             # REBOTES
             if 'rebound' in text.lower():
-                rebound_pattern = r'([A-Za-z\'\.\s]+?)\s+(defensive|offensive)\s+rebound'
+                rebound_pattern = r'([A-Za-z\'\.\-\s]+?)\s+(defensive|offensive)\s+rebound'
                 match = re.search(rebound_pattern, text)
                 
                 if match:
@@ -304,7 +308,7 @@ def get_q1_stats_from_playbyplay(game_id, team_id):
             
             # ASISTENCIAS
             if 'assists)' in text:
-                assist_pattern = r'\(([A-Za-z\'\.\s]+?)\s+assists\)'
+                assist_pattern = r'\(([A-Za-z\'\.\-\s]+?)\s+assists\)'
                 match = re.search(assist_pattern, text)
                 
                 if match:
@@ -355,7 +359,7 @@ def process_team(team_abbr):
         for player_name in totals:
             player_data = {
                 'Game_Date': game_date,
-                'Opponent': game['away_team'] if team_name.upper() in game['home_team'].upper() else game['home_team'],
+                'Opponent': game['away_team'] if team_name.lower() in game['home_team'].lower() else game['home_team'],
                 'Player': player_name,
                 'PTS_Q1': q1_stats.get(player_name, {}).get('PTS_Q1', 0),
                 'REB_Q1': q1_stats.get(player_name, {}).get('REB_Q1', 0),

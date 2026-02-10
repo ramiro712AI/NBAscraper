@@ -71,7 +71,7 @@ def get_todays_games():
                 try:
                     dt = datetime.strptime(game_time, '%Y-%m-%dT%H:%MZ')
                     time_str = dt.strftime('%I:%M %p')
-                except:
+                except (ValueError, TypeError):
                     time_str = 'TBD'
                 
                 print(f"{idx}. {away} @ {home} - {time_str} ({status})")
@@ -113,7 +113,7 @@ def get_team_schedule(team_id, limit=5):
                     try:
                         date_obj = datetime.strptime(game_date, '%Y-%m-%dT%H:%MZ')
                         game_date_str = date_obj.strftime('%Y-%m-%d')
-                    except:
+                    except (ValueError, TypeError):
                         continue
                 
                 competitors = competition.get('competitors', [])
@@ -267,8 +267,8 @@ def get_quarter_stats_from_playbyplay(game_id, team_id):
             # PUNTOS
             if scoring_play:
                 makes_patterns = [
-                    r'([A-Za-z\'\.\s]+?)\s+makes',
-                    r'([A-Za-z\'\.\s]+?)\s+made'
+                    r'([A-Za-z\'\.\-\s]+?)\s+makes',
+                    r'([A-Za-z\'\.\-\s]+?)\s+made'
                 ]
                 
                 player = None
@@ -292,8 +292,8 @@ def get_quarter_stats_from_playbyplay(game_id, team_id):
             # REBOTES
             if 'rebound' in text.lower():
                 rebound_patterns = [
-                    r'([A-Za-z\'\.\s]+?)\s+(defensive|offensive)\s+rebound',
-                    r'([A-Za-z\'\.\s]+?)\s+rebound'
+                    r'([A-Za-z\'\.\-\s]+?)\s+(defensive|offensive)\s+rebound',
+                    r'([A-Za-z\'\.\-\s]+?)\s+rebound'
                 ]
                 
                 for pattern in rebound_patterns:
@@ -307,8 +307,8 @@ def get_quarter_stats_from_playbyplay(game_id, team_id):
             # ASISTENCIAS
             if 'assist' in text.lower():
                 assist_patterns = [
-                    r'\(([A-Za-z\'\.\s]+?)\s+assists\)',
-                    r'([A-Za-z\'\.\s]+?)\s+assists'
+                    r'\(([A-Za-z\'\.\-\s]+?)\s+assists\)',
+                    r'([A-Za-z\'\.\-\s]+?)\s+assists'
                 ]
                 
                 for pattern in assist_patterns:
@@ -362,7 +362,7 @@ def process_team(team_abbr):
             
             player_data = {
                 'Game_Date': game_date,
-                'Opponent': game['away_team'] if team_name.upper() in game['home_team'].upper() else game['home_team'],
+                'Opponent': game['away_team'] if team_name.lower() in game['home_team'].lower() else game['home_team'],
                 'Player': player_name,
                 # Q1
                 'PTS_Q1': player_quarter_data.get('PTS_Q1', 0),

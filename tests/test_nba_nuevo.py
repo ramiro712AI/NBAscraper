@@ -552,15 +552,14 @@ class TestRegexPatterns:
         assert m is not None
         assert m.group(1).strip() == "Jaylen Brown"
 
-    def test_hyphenated_name_not_matched(self):
-        """Documents a known gap: hyphenated names are not captured by current regex."""
+    def test_hyphenated_name_now_matched(self):
+        """Hyphenated names are now captured after the regex fix."""
         import re
-        pattern = r'([A-Za-z\'\.\s]+?)\s+makes'
+        pattern = r'([A-Za-z\'\.\-\s]+?)\s+makes'
         text = "Shai Gilgeous-Alexander makes driving layup"
         m = re.search(pattern, text)
-        if m:
-            # The regex stops at the hyphen, so it won't capture the full name
-            assert m.group(1).strip() != "Shai Gilgeous-Alexander"
+        assert m is not None
+        assert m.group(1).strip() == "Shai Gilgeous-Alexander"
 
     def test_jr_suffix_name(self):
         """Documents potential edge case with Jr./Sr. suffixes."""

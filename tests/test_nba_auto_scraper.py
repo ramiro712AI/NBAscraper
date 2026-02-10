@@ -40,17 +40,15 @@ class TestAutoScraperGetBoxscoreTotals:
         assert 'Injured Player' not in result
 
     @patch('nba_auto_scraper.requests.get')
-    def test_does_not_filter_zero_minutes(self, mock_get, boxscore_response):
-        """Unlike nba_nuevo.py, the auto_scraper does NOT filter by minutes played.
-        This means the 'Bench Player' with 0 minutes IS included (but active=True)."""
+    def test_filters_zero_minutes(self, mock_get, boxscore_response):
+        """nba_auto_scraper now filters by both active flag AND minutes played."""
         mock_response = MagicMock()
         mock_response.json.return_value = boxscore_response
         mock_get.return_value = mock_response
 
         result = nba_auto_scraper.get_boxscore_totals('123', '2')
-        # Bench Player is active=True but has 0 minutes.
-        # nba_auto_scraper only checks active flag, not minutes.
-        assert 'Bench Player' in result
+        # Bench Player is active=True but has 0 minutes - should be filtered out
+        assert 'Bench Player' not in result
 
     @patch('nba_auto_scraper.requests.get')
     def test_handles_network_error(self, mock_get):
