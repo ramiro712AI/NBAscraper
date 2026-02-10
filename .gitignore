@@ -4,4 +4,5 @@ __pycache__/
 .pytest_cache/
 *.egg-info/
 *_BETTING_ANALYSIS.csv
+*_BETTING_ANALYSIS.xlsx
 *_last_5_games*.csv

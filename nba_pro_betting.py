@@ -22,6 +22,9 @@ import time
 import re
 import math
 from collections import defaultdict
+from openpyxl import Workbook
+from openpyxl.styles import Font, PatternFill, Alignment, Border, Side
+from openpyxl.utils import get_column_letter
 
 # ============================================================================
 # CONFIGURACION
@@ -496,6 +499,101 @@ def calculate_std_dev(values):
 
 
 # ============================================================================
+# EXCEL CON COLORES
+# ============================================================================
+def save_colored_excel(df, filename, team_abbr):
+    """Genera archivo Excel (.xlsx) con colores unicos por jugador."""
+    wb = Workbook()
+    ws = wb.active
+    ws.title = f"{team_abbr} Betting"
+
+    # Estilos
+    header_fill = PatternFill(start_color="1A1A2E", end_color="1A1A2E", fill_type="solid")
+    header_font = Font(name="Calibri", bold=True, color="FFFFFF", size=11)
+    thin_border = Border(
+        left=Side(style='thin', color='CCCCCC'),
+        right=Side(style='thin', color='CCCCCC'),
+        top=Side(style='thin', color='CCCCCC'),
+        bottom=Side(style='thin', color='CCCCCC')
+    )
+
+    # Escribir headers
+    columns = list(df.columns)
+    for col_idx, col_name in enumerate(columns, 1):
+        cell = ws.cell(row=1, column=col_idx, value=col_name)
+        cell.fill = header_fill
+        cell.font = header_font
+        cell.alignment = Alignment(horizontal='center')
+        cell.border = thin_border
+
+    # Escribir datos con colores
+    for row_idx, (_, row_data) in enumerate(df.iterrows(), 2):
+        hex_color = str(row_data.get('Color_HEX', '#FFFFFF')).replace('#', '')
+        player_fill = PatternFill(start_color=hex_color, end_color=hex_color, fill_type="solid")
+
+        # Determinar si el texto debe ser blanco o negro segun el color de fondo
+        r, g, b = int(hex_color[:2], 16), int(hex_color[2:4], 16), int(hex_color[4:6], 16)
+        brightness = (r * 299 + g * 587 + b * 114) / 1000
+        text_color = "000000" if brightness > 128 else "FFFFFF"
+
+        over_fill = PatternFill(start_color="C6EFCE", end_color="C6EFCE", fill_type="solid")
+        under_fill = PatternFill(start_color="FFC7CE", end_color="FFC7CE", fill_type="solid")
+
+        for col_idx, col_name in enumerate(columns, 1):
+            value = row_data[col_name]
+            cell = ws.cell(row=row_idx, column=col_idx, value=value)
+            cell.border = thin_border
+            cell.alignment = Alignment(horizontal='center')
+            cell.font = Font(name="Calibri", size=10)
+
+            # Color de fondo del jugador en columnas Player y Color_HEX
+            if col_name in ('Player', 'Color_HEX'):
+                cell.fill = player_fill
+                cell.font = Font(name="Calibri", size=10, bold=True, color=text_color)
+
+            # OVER verde, UNDER rojo
+            elif col_name in ('PTS_OVER', 'REB_OVER', 'AST_OVER', '3PM_OVER'):
+                if value == 'OVER':
+                    cell.fill = over_fill
+                    cell.font = Font(name="Calibri", size=10, bold=True, color="006100")
+                elif value == 'UNDER':
+                    cell.fill = under_fill
+                    cell.font = Font(name="Calibri", size=10, bold=True, color="9C0006")
+
+            # Hit rates altos en verde, bajos en rojo
+            elif 'HIT%' in col_name:
+                try:
+                    hit_val = float(value)
+                    if hit_val >= 70:
+                        cell.fill = PatternFill(start_color="C6EFCE", end_color="C6EFCE", fill_type="solid")
+                        cell.font = Font(name="Calibri", size=10, bold=True, color="006100")
+                    elif hit_val <= 30:
+                        cell.fill = PatternFill(start_color="FFC7CE", end_color="FFC7CE", fill_type="solid")
+                        cell.font = Font(name="Calibri", size=10, bold=True, color="9C0006")
+                except (ValueError, TypeError):
+                    pass
+
+            # Role: STARTER azul, ROTATION gris
+            elif col_name == 'Role':
+                if value == 'STARTER':
+                    cell.fill = PatternFill(start_color="4472C4", end_color="4472C4", fill_type="solid")
+                    cell.font = Font(name="Calibri", size=10, bold=True, color="FFFFFF")
+                else:
+                    cell.fill = PatternFill(start_color="A9A9A9", end_color="A9A9A9", fill_type="solid")
+                    cell.font = Font(name="Calibri", size=10, color="FFFFFF")
+
+    # Ajustar ancho de columnas
+    for col_idx, col_name in enumerate(columns, 1):
+        max_len = max(len(str(col_name)), 8)
+        ws.column_dimensions[get_column_letter(col_idx)].width = max_len + 2
+
+    # Congelar primera fila (headers)
+    ws.freeze_panes = 'A2'
+
+    wb.save(filename)
+
+
+# ============================================================================
 # PROCESAMIENTO PRINCIPAL
 # ============================================================================
 def process_team(team_abbr):
@@ -706,10 +804,15 @@ def process_team(team_abbr):
     df['Game_Date'] = pd.to_datetime(df['Game_Date']).dt.strftime('%m/%d')
 
     # Guardar CSV
-    output_file = f"{team_abbr}_BETTING_ANALYSIS.csv"
-    df.to_csv(output_file, index=False)
+    csv_file = f"{team_abbr}_BETTING_ANALYSIS.csv"
+    df.to_csv(csv_file, index=False)
 
-    print(f"\n  CSV GUARDADO: {output_file}")
+    # Guardar Excel con colores
+    xlsx_file = f"{team_abbr}_BETTING_ANALYSIS.xlsx"
+    save_colored_excel(df, xlsx_file, team_abbr)
+
+    print(f"\n  CSV GUARDADO: {csv_file}")
+    print(f"  EXCEL GUARDADO: {xlsx_file}")
     print(f"  Total registros: {len(df)}")
     print(f"  Jugadores calificados (25+ min): {len(qualified_players)}")
 
