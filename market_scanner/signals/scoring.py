@@ -126,16 +126,22 @@ def rule_rsi_momentum(snap: dict) -> float:
 
 
 def rule_rsi_oversold(snap: dict) -> float:
-    """RSI < 35 (mean reversion buy trigger)."""
+    """RSI < 42 (mean reversion buy trigger). More extreme oversold = higher confidence."""
     rsi = snap.get("rsi")
     if rsi is None:
         return 0.0
+    if rsi < 20:
+        return 1.0    # Extreme oversold
     if rsi < 25:
-        return 1.0
+        return 0.9
+    if rsi < 30:
+        return 0.75
     if rsi < 35:
-        return 0.7
+        return 0.6
+    if rsi < 38:
+        return 0.4
     if rsi < 42:
-        return 0.3
+        return 0.2
     return 0.0
 
 
@@ -288,16 +294,22 @@ def rule_stoch_not_overbought(snap: dict) -> float:
 
 
 def rule_stoch_oversold(snap: dict) -> float:
-    """Stoch K < 20 (oversold)."""
+    """Stoch K < 30 (oversold). Deeper = higher confidence."""
     k = snap.get("stoch_k")
     if k is None:
         return 0.0
-    if k < 15:
+    if k < 5:
         return 1.0
-    if k < 20:
+    if k < 10:
+        return 0.85
+    if k < 15:
         return 0.7
+    if k < 20:
+        return 0.55
+    if k < 25:
+        return 0.35
     if k < 30:
-        return 0.3
+        return 0.2
     return 0.0
 
 
@@ -322,11 +334,24 @@ def rule_price_breaks_resistance(snap: dict) -> float:
 
 
 def rule_price_near_support(snap: dict) -> float:
-    """Price near Donchian lower (support zone)."""
+    """
+    Price near Donchian lower (support zone).
+
+    In a sustained downtrend the Donchian lower keeps declining so it is NOT
+    real support. We discount the rule when the lower band itself is still
+    falling (previous lower > current lower means a new low was made).
+    """
     close     = snap.get("close")
     don_lower = snap.get("donchian_lower")
     if close is None or don_lower is None:
         return 0.0
+
+    # Discount if the lower band is actively declining (downtrend, not support)
+    prev_don_lower = snap.get("_prev", {}).get("donchian_lower")
+    if prev_don_lower and don_lower < prev_don_lower * 0.999:
+        # Band is declining → not real support, return minimal confidence
+        return 0.0
+
     pct_above = (close - don_lower) / don_lower if don_lower > 0 else 1.0
     if pct_above <= 0.01:
         return 1.0

@@ -292,14 +292,14 @@ STRATEGY_PRESETS: Dict[str, StrategyPreset] = {
         description="Buy oversold dips into major support/MAs",
         timeframes=["1h", "4h"],
         rules={
-            "rsi_oversold":            25.0,   # RSI < 35
-            "price_near_support":      20.0,
-            "stoch_oversold":          15.0,
-            "bb_lower_band_touch":     15.0,
-            "volume_above_avg":        10.0,
-            "market_regime_neutral":   15.0,
+            "rsi_oversold":            25.0,   # RSI < 42, deeper = higher score
+            "bb_lower_band_touch":     20.0,   # Price at/near BB lower band
+            "stoch_oversold":          20.0,   # Stochastic oversold
+            "price_near_support":      15.0,   # Stable Donchian support (not declining)
+            "volume_above_avg":        10.0,   # Volume confirmation
+            "market_regime_neutral":   10.0,   # Market not in strong trend
         },
-        min_score=50.0,
+        min_score=58.0,
     ),
 }
 

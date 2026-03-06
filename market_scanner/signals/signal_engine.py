@@ -31,7 +31,15 @@ logger = logging.getLogger(__name__)
 
 
 def _determine_direction(snap: dict, rule_results: Dict[str, float]) -> str:
-    """Infer long/short direction from leading rules."""
+    """
+    Infer long/short direction from leading rules and indicator context.
+
+    For strategies that use oversold/mean-reversion rules (no explicit bull/bear
+    trend rules in their rule_results), fall back to indicator context:
+    - Oversold RSI or Stochastic → buy (expect bounce)
+    - Overbought RSI or Stochastic → sell (expect reversal)
+    - Otherwise use EMA alignment
+    """
     bull_rules = [
         "ema_alignment_bullish", "price_above_vwap", "rsi_bullish_range",
         "rsi_momentum", "macd_bullish", "macd_histogram_rising",
@@ -43,13 +51,48 @@ def _determine_direction(snap: dict, rule_results: Dict[str, float]) -> str:
     bull_score = sum(rule_results.get(r, 0) for r in bull_rules)
     bear_score = sum(rule_results.get(r, 0) for r in bear_rules)
 
-    # Also check EMA alignment directly
+    # Check if any directional rules were actually evaluated
+    has_directional_rules = any(r in rule_results for r in bull_rules + bear_rules)
+
+    if not has_directional_rules:
+        # Fallback: use oversold/overbought indicators for direction
+        rsi = snap.get("rsi")
+        stoch_k = snap.get("stoch_k")
+
+        oversold_score = 0
+        overbought_score = 0
+
+        if rsi is not None:
+            if rsi < 35:
+                oversold_score += 2
+            elif rsi < 45:
+                oversold_score += 1
+            elif rsi > 65:
+                overbought_score += 2
+            elif rsi > 55:
+                overbought_score += 1
+
+        if stoch_k is not None:
+            if stoch_k < 25:
+                oversold_score += 1
+            elif stoch_k > 75:
+                overbought_score += 1
+
+        # mean_reversion: buy oversold, sell overbought
+        if oversold_score > overbought_score:
+            return "buy"
+        elif overbought_score > oversold_score:
+            return "sell"
+
+    # EMA alignment tiebreaker
     ema9  = snap.get("ema_9")
     ema20 = snap.get("ema_20")
     ema50 = snap.get("ema_50")
     if ema9 and ema20 and ema50:
         if ema9 > ema20 > ema50:
             bull_score += 1
+        elif ema9 < ema20 < ema50:
+            bear_score += 1
 
     return "buy" if bull_score >= bear_score else "sell"
 
