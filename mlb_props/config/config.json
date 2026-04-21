@@ -1,0 +1,14 @@
+{
+  "season": 2025,
+  "max_games_lookback": 10,
+  "min_games_required": 3,
+  "output_dir": "output",
+  "log_dir": "logs",
+  "log_level": "INFO",
+  "api_timeout_seconds": 30,
+  "api_max_retries": 3,
+  "local_timezone": "America/New_York",
+  "positions_to_include": ["1B", "2B", "3B", "SS", "LF", "CF", "RF", "DH", "C"],
+  "excel_freeze_pane": "E2",
+  "call_delay_seconds": 0.08
+}
